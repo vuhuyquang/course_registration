@@ -15,16 +15,16 @@ class CreateGiangviensTable extends Migration
     {
         Schema::create('giangviens', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_giang_vien')->unique();
-            $table->string('ho_ten');
+            $table->string('ma_giang_vien', 20)->unique();
+            $table->string('ho_ten', 50);
             $table->string('trinh_do');
             $table->integer('khoa_id');
-            $table->string('mat_khau');
+            $table->string('mat_khau', 50);
             $table->date('ngay_sinh');
             $table->string('gioi_tinh');    // Nam, nữ, khác
-            $table->string('que_quan');
-            $table->string('email')->unique();
-            $table->string('so_dien_thoai')->unique();
+            $table->string('que_quan', 80);
+            $table->string('email', 50)->unique();
+            $table->string('so_dien_thoai', 20)->unique();
             $table->string('quyen');
             $table->timestamps();
         });

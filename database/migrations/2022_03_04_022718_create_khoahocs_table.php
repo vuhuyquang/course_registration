@@ -15,8 +15,8 @@ class CreateKhoahocsTable extends Migration
     {
         Schema::create('khoahocs', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_khoa_hoc')->unique();
-            $table->string('mo_ta');
+            $table->string('ma_khoa_hoc', 20)->unique();
+            $table->string('mo_ta', 50)->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KhoaHoc;
+use App\Models\LopHoc;
 use Illuminate\Http\Request;
 
 class KhoaHocController extends Controller
@@ -61,9 +62,10 @@ class KhoaHocController extends Controller
      * @param  \App\Models\KhoaHoc  $khoaHoc
      * @return \Illuminate\Http\Response
      */
-    public function show(KhoaHoc $khoaHoc)
+    public function classlist($id)
     {
-        //
+        $lophocs = LopHoc::where('khoa_hoc_id', '=', $id)->get();
+        return view('quantrivien.qlkhoahoc.danhsachlop', compact('lophocs'));
     }
 
     /**

@@ -3,7 +3,7 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
 @include('layouts.header')
-<div class="heading">THÊM MỚI KHOA</div>
+<div class="heading">THÊM MỚI MÔN HỌC</div>
 <div class="container mt-5">
     @if (session('thongbao'))
     <div class="alert alert-success">
@@ -11,25 +11,56 @@
     </div>
     @endif
     <div class="card">
-        <div class="card-heading">THÊM MỚI KHOA</div>
+        <div class="card-heading">THÊM MỚI MÔN HỌC</div>
         <div class="card-body">
-            <form action="{{ route('khoa.store') }}" method="POST">
+            <form action="{{ route('mon-hoc.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="ma_khoa" class="form-label">Mã khoa <label style="color: red;"
-                            for="ma_khoa">*</label></label>
-                    <input type="text" class="form-control" id="ma_khoa" name="ma_khoa" placeholder="Nhập mã khoa"
+                    <label for="ma_mon_hoc" class="form-label">Mã môn học <label style="color: red;"
+                            for="ma_mon_hoc">*</label></label>
+                    <input type="text" class="form-control" id="ma_mon_hoc" name="ma_mon_hoc" placeholder="Nhập mã môn học"
                         required autocomplete="off">
-                    @error('ma_khoa')
+                    @error('ma_mon_hoc')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="ten_khoa" class="form-label">Tên khoa <label style="color: red;"
-                            for="ten_khoa">*</label></label>
-                    <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Nhập tên khoa"
+                    <label for="ten_mon_hoc" class="form-label">Tên môn học <label style="color: red;"
+                            for="ten_mon_hoc">*</label></label>
+                    <input type="text" class="form-control" id="ten_mon_hoc" name="ten_mon_hoc" placeholder="Nhập tên môn học"
                         required autocomplete="off">
-                    @error('ten_khoa')
+                    @error('ten_mon_hoc')
+                        <span class="form-text">{{ $message }}.</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="so_tin_chi" class="form-label">Số tín chỉ <label style="color: red;"
+                            for="so_tin_chi">*</label></label>
+                    <input type="number" class="form-control" id="so_tin_chi" name="so_tin_chi" placeholder="Nhập số tín chỉ"
+                        required autocomplete="off">
+                    @error('so_tin_chi')
+                        <span class="form-text">{{ $message }}.</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="hoc_phi" class="form-label">Học phí <label style="color: red;"
+                            for="hoc_phi">*</label></label>
+                    <input type="number" class="form-control" id="hoc_phi" name="hoc_phi" placeholder="Nhập số tín chỉ"
+                        required autocomplete="off">
+                    @error('hoc_phi')
+                        <span class="form-text">{{ $message }}.</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="khoa_id" class="form-label">Khoa <label style="color: red;"
+                            for="khoa_id">*</label></label>
+                    <select class="form-control" name="khoa_id" id="gioi_tinh">
+                        <option value="" selected="" disabled="">--- Chọn khoa ---</option>
+                        @foreach ($khoas as $khoa)
+                            <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
+                        @endforeach
+                    </select>
+                    @error('khoa_id')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>

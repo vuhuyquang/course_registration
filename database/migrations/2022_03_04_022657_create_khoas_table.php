@@ -15,8 +15,8 @@ class CreateKhoasTable extends Migration
     {
         Schema::create('khoas', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_khoa')->unique();
-            $table->string('ten_khoa');
+            $table->string('ma_khoa', 20)->unique();
+            $table->string('ten_khoa', 50);
             $table->timestamps();
         });
     }

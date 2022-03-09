@@ -19,7 +19,7 @@
 	}
 </style>
 @include('layouts.header')
-<div class="heading">DANH SÁCH KHOA</div>
+<div class="heading">DANH SÁCH GIẢNG VIÊN</div>
 {{-- <div class="container">
 @if (session('thongbao'))
 <div class="alert alert-success">
@@ -27,22 +27,26 @@
 </div>
 @endif
 </div> --}}
-<a href="{{ route('khoa.create') }}" class="js-add btn-them">Thêm mới</a>
+<a href="{{ route('giang-vien.create') }}" class="js-add btn-them">Thêm mới</a>
 <table>
     <tr>
         <th>STT</th>
-        <th>Mã khoa</th>
-        <th>Tên khoa</th>
+        <th>Mã giảng viên</th>
+        <th>Họ tên</th>
+        <th>Đơn vị</th>
+        <th>Xem chi tiết</th>
         <th>Sửa</th>
         <th>Xóa</th>
     </tr>
-    @foreach ($khoas as $key => $khoa)
+    @foreach ($giangviens as $key => $giangvien)
         <tr>
             <td>{{ $key + 1 }}</td>
-            <td>{{ $khoa->ma_khoa }}</td>
-            <td>{{ $khoa->ten_khoa }}</td>
-            <td><a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('khoa.destroy', ['id' => $khoa->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
+            <td>{{ $giangvien->ma_giang_vien }}</td>
+            <td>{{ $giangvien->ho_ten }}</td>
+            <td>{{ $giangvien->khoas->ten_khoa }}</td>
+            <td><a href=""><img class="img-icon" src="{{ asset('images/detail.png') }}" alt="Sửa"></a></td>
+            <td><a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
+            <td><a href="{{ route('giang-vien.destroy', ['id' => $giangvien->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
                         src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
         </tr>
     @endforeach

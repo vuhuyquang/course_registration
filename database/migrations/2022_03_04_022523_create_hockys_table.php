@@ -15,9 +15,9 @@ class CreateHockysTable extends Migration
     {
         Schema::create('hockys', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_hoc_ky')->unique();
-            $table->string('mo_ta');
-            $table->string('trang_thai');   // Mở, đóng
+            $table->string('ma_hoc_ky', 20)->unique();
+            $table->string('mo_ta', 50)->nullable();
+            $table->string('trang_thai', 50)->default('Đóng đăng ký');   // Mở, đóng
             $table->timestamps();
         });
     }

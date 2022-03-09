@@ -3,7 +3,7 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
 @include('layouts.header')
-<div class="heading">THÊM MỚI KHOA</div>
+<div class="heading">THÊM MỚI HỌC KỲ</div>
 <div class="container mt-5">
     @if (session('thongbao'))
     <div class="alert alert-success">
@@ -11,25 +11,24 @@
     </div>
     @endif
     <div class="card">
-        <div class="card-heading">THÊM MỚI KHOA</div>
+        <div class="card-heading">THÊM MỚI HỌC KỲ</div>
         <div class="card-body">
-            <form action="{{ route('khoa.store') }}" method="POST">
+            <form action="{{ route('hoc-ky.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="ma_khoa" class="form-label">Mã khoa <label style="color: red;"
-                            for="ma_khoa">*</label></label>
-                    <input type="text" class="form-control" id="ma_khoa" name="ma_khoa" placeholder="Nhập mã khoa"
+                    <label for="ma_hoc_ky" class="form-label">Mã học kỳ <label style="color: red;"
+                            for="ma_hoc_ky">*</label></label>
+                    <input type="text" class="form-control" id="ma_hoc_ky" name="ma_hoc_ky" placeholder="Nhập mã học kỳ"
                         required autocomplete="off">
-                    @error('ma_khoa')
+                    @error('ma_hoc_ky')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="ten_khoa" class="form-label">Tên khoa <label style="color: red;"
-                            for="ten_khoa">*</label></label>
-                    <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Nhập tên khoa"
+                    <label for="mo_ta" class="form-label">Mô tả</label>
+                    <input type="text" class="form-control" id="mo_ta" name="mo_ta" placeholder="Nhập mô tả"
                         required autocomplete="off">
-                    @error('ten_khoa')
+                    @error('mo_ta')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>

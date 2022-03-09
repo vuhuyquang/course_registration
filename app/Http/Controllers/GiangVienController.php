@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GiangVien;
+use App\Models\Khoa;
 use Illuminate\Http\Request;
 
 class GiangVienController extends Controller
@@ -14,7 +15,8 @@ class GiangVienController extends Controller
      */
     public function index()
     {
-        //
+        $giangviens = GiangVien::all();
+        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens'));
     }
 
     /**
@@ -24,7 +26,8 @@ class GiangVienController extends Controller
      */
     public function create()
     {
-        //
+        $khoas = Khoa::all();
+        return view('quantrivien.qlgiangvien.them', compact('khoas'));
     }
 
     /**
@@ -78,8 +81,10 @@ class GiangVienController extends Controller
      * @param  \App\Models\GiangVien  $giangVien
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GiangVien $giangVien)
+    public function destroy($id)
     {
-        //
+        $giangvien = GiangVien::findOrFail($id);
+        $giangvien->delete();
+        return redirect()->back()->with('thongbao', 'Xóa thành công');
     }
 }

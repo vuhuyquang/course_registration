@@ -15,9 +15,9 @@ class CreateMonhocsTable extends Migration
     {
         Schema::create('monhocs', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_mon_hoc')->unique();
+            $table->string('ma_mon_hoc', 20)->unique();
             $table->integer('khoa_id');
-            $table->string('ten_mon_hoc');
+            $table->string('ten_mon_hoc', 80);
             $table->integer('so_tin_chi');
             $table->double('hoc_phi');
             $table->timestamps();

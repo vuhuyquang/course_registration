@@ -19,7 +19,7 @@
 	}
 </style>
 @include('layouts.header')
-<div class="heading">DANH SÁCH KHOA</div>
+<div class="heading">DANH SÁCH MÔN HỌC</div>
 {{-- <div class="container">
 @if (session('thongbao'))
 <div class="alert alert-success">
@@ -27,22 +27,28 @@
 </div>
 @endif
 </div> --}}
-<a href="{{ route('khoa.create') }}" class="js-add btn-them">Thêm mới</a>
+<a href="{{ route('mon-hoc.create') }}" class="js-add btn-them">Thêm mới</a>
 <table>
     <tr>
         <th>STT</th>
-        <th>Mã khoa</th>
+        <th>Mã môn học</th>
+        <th>Tên môn học</th>
+        <th>Số tín chỉ</th>
+        <th>Học phí</th>
         <th>Tên khoa</th>
         <th>Sửa</th>
         <th>Xóa</th>
     </tr>
-    @foreach ($khoas as $key => $khoa)
+    @foreach ($monhocs as $key => $monhoc)
         <tr>
             <td>{{ $key + 1 }}</td>
-            <td>{{ $khoa->ma_khoa }}</td>
-            <td>{{ $khoa->ten_khoa }}</td>
-            <td><a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('khoa.destroy', ['id' => $khoa->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
+            <td>{{ $monhoc->ma_mon_hoc }}</td>
+            <td>{{ $monhoc->ten_mon_hoc }}</td>
+            <td>{{ $monhoc->so_tin_chi }}</td>
+            <td>{{ $monhoc->hoc_phi }}</td>
+            <td>{{ $monhoc->khoas->ten_khoa }}</td>
+            <td><a href="{{ route('mon-hoc.edit', ['id' => $monhoc->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
+            <td><a href="{{ route('mon-hoc.destroy', ['id' => $monhoc->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
                         src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
         </tr>
     @endforeach

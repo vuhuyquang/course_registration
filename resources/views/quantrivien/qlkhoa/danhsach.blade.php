@@ -33,6 +33,7 @@
         <th>STT</th>
         <th>Mã khoa</th>
         <th>Tên khoa</th>
+        <th>Danh sách lớp</th>
         <th>Sửa</th>
         <th>Xóa</th>
     </tr>
@@ -41,6 +42,7 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $khoa->ma_khoa }}</td>
             <td>{{ $khoa->ten_khoa }}</td>
+            <td><a href="{{ route('khoa.classlist', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/detail.png') }}" alt="Sửa"></a></td>
             <td><a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
             <td><a href="{{ route('khoa.destroy', ['id' => $khoa->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
                         src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>

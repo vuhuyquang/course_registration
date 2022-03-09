@@ -36,24 +36,27 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/sua/{id}', [KhoaController::class, 'edit'])->name('khoa.edit');
         Route::post('/sua/{id}', [KhoaController::class, 'update'])->name('khoa.update');
         Route::get('/xoa/{id}', [KhoaController::class, 'destroy'])->name('khoa.destroy');
+        Route::get('/danh-sach-lop/{id}', [KhoaController::class, 'classlist'])->name('khoa.classlist');
     });
 
         Route::prefix('giang-vien')->group(function () {
         Route::get('/', [GiangVienController::class, 'index'])->name('giang-vien.index');
-        Route::get('them', [GiangVienController::class, 'create'])->name('giang-vien.create');
-        Route::post('them', [GiangVienController::class, 'store'])->name('giang-vien.store');
-        Route::get('sua', [GiangVienController::class, 'edit'])->name('giang-vien.edit');
-        Route::post('sua', [GiangVienController::class, 'update'])->name('giang-vien.update');
-        Route::get('xoa', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
+        Route::get('/them', [GiangVienController::class, 'create'])->name('giang-vien.create');
+        Route::post('/them', [GiangVienController::class, 'store'])->name('giang-vien.store');
+        Route::get('/sua/{id}', [GiangVienController::class, 'edit'])->name('giang-vien.edit');
+        Route::post('/sua/{id}', [GiangVienController::class, 'update'])->name('giang-vien.update');
+        Route::get('/xoa/{id}', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
     });
 
     Route::prefix('hoc-ky')->group(function () {
         Route::get('/', [HocKyController::class, 'index'])->name('hoc-ky.index');
-        Route::get('them', [HocKyController::class, 'create'])->name('hoc-ky.create');
-        Route::post('them', [HocKyController::class, 'store'])->name('hoc-ky.store');
-        Route::get('sua', [HocKyController::class, 'edit'])->name('hoc-ky.edit');
-        Route::post('sua', [HocKyController::class, 'update'])->name('hoc-ky.update');
-        Route::get('xoa', [HocKyController::class, 'destroy'])->name('hoc-ky.destroy');
+        Route::get('/them', [HocKyController::class, 'create'])->name('hoc-ky.create');
+        Route::post('/them', [HocKyController::class, 'store'])->name('hoc-ky.store');
+        Route::get('/sua/{id}', [HocKyController::class, 'edit'])->name('hoc-ky.edit');
+        Route::post('/sua/{id}', [HocKyController::class, 'update'])->name('hoc-ky.update');
+        Route::get('/xoa/{id}', [HocKyController::class, 'destroy'])->name('hoc-ky.destroy');
+        Route::get('/xet-trang-thai', [HocKyController::class, 'setstatus'])->name('hoc-ky.setstatus');
+        Route::post('/xet-trang-thai', [HocKyController::class, 'storesetstatus'])->name('hoc-ky.storesetstatus');
     });
 
     Route::prefix('khoa-hoc')->group(function () {
@@ -63,6 +66,7 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/sua/{id}', [KhoaHocController::class, 'edit'])->name('khoa-hoc.edit');
         Route::post('/sua/{id}', [KhoaHocController::class, 'update'])->name('khoa-hoc.update');
         Route::get('/xoa/{id}', [KhoaHocController::class, 'destroy'])->name('khoa-hoc.destroy');
+        Route::get('/danh-sach-lop/{id}', [KhoaHocController::class, 'classlist'])->name('khoa-hoc.classlist');
     });
 
     Route::prefix('lop-hoc')->group(function () {
@@ -76,11 +80,11 @@ Route::prefix('quan-tri-vien')->group(function () {
 
     Route::prefix('mon-hoc')->group(function () {
         Route::get('/', [MonHocController::class, 'index'])->name('mon-hoc.index');
-        Route::get('them', [MonHocController::class, 'create'])->name('mon-hoc.create');
-        Route::post('them', [MonHocController::class, 'store'])->name('mon-hoc.store');
-        Route::get('sua', [MonHocController::class, 'edit'])->name('mon-hoc.edit');
-        Route::post('sua', [MonHocController::class, 'update'])->name('mon-hoc.update');
-        Route::get('xoa', [MonHocController::class, 'destroy'])->name('mon-hoc.destroy');
+        Route::get('/them', [MonHocController::class, 'create'])->name('mon-hoc.create');
+        Route::post('/them', [MonHocController::class, 'store'])->name('mon-hoc.store');
+        Route::get('/sua/{id}', [MonHocController::class, 'edit'])->name('mon-hoc.edit');
+        Route::post('/sua/{id}', [MonHocController::class, 'update'])->name('mon-hoc.update');
+        Route::get('/xoa/{id}', [MonHocController::class, 'destroy'])->name('mon-hoc.destroy');
     });
 
     Route::prefix('sinh-vien')->group(function () {
