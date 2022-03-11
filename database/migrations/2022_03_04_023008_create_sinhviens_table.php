@@ -25,7 +25,7 @@ class CreateSinhviensTable extends Migration
             $table->string('que_quan', 80);
             $table->string('email', 50)->unique();
             $table->text('avatar');
-            $table->string('quyen');
+            $table->string('quyen')->default('student');
             $table->timestamps();
         });
     }

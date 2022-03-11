@@ -39,12 +39,11 @@ class KhoaHocController extends Controller
     {
         $request->validate([
             'ma_khoa_hoc' => 'required|unique:khoahocs,ma_khoa_hoc|max:20',
-            'mo_ta' => 'required|unique:khoahocs,mo_ta|max:50'
+            'mo_ta' => 'unique:khoahocs,mo_ta|max:50'
         ], [
             'ma_khoa_hoc.required' => 'Dữ liệu nhập vào không được để trống',
             'ma_khoa_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
             'ma_khoa_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'mo_ta.required' => 'Dữ liệu nhập vào không được để trống',
             'mo_ta.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
             'mo_ta.unique' => 'Dữ liệu nhập vào không được trùng lặp'
         ]);
@@ -92,12 +91,11 @@ class KhoaHocController extends Controller
         $khoahoc = KhoaHoc::findOrFail($id);
         $request->validate([
             'ma_khoa_hoc' => 'required|max:20|unique:khoahocs,ma_khoa_hoc,'.$id,
-            'mo_ta' => 'required|max:50|unique:khoahocs,mo_ta,'.$id
+            'mo_ta' => 'max:50|unique:khoahocs,mo_ta,'.$id
         ], [
             'ma_khoa_hoc.required' => 'Dữ liệu nhập vào không được để trống',
             'ma_khoa_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
             'ma_khoa_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'mo_ta.required' => 'Dữ liệu nhập vào không được để trống',
             'mo_ta.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
             'mo_ta.unique' => 'Dữ liệu nhập vào không được trùng lặp'
         ]);

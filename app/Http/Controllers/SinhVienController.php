@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SinhVien;
+use App\Models\Khoa;
 use Illuminate\Http\Request;
 
 class SinhVienController extends Controller
@@ -14,7 +15,8 @@ class SinhVienController extends Controller
      */
     public function index()
     {
-        //
+        $sinhviens = SinhVien::all();
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens'));
     }
 
     /**
@@ -24,7 +26,8 @@ class SinhVienController extends Controller
      */
     public function create()
     {
-        //
+        $khoas = Khoa::all();
+        return view('quantrivien.qlsinhvien.them', compact('khoas'));
     }
 
     /**

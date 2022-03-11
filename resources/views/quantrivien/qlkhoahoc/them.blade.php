@@ -27,7 +27,7 @@
                 <div class="mb-3">
                     <label for="mo_ta" class="form-label">Mô tả</label>
                     <input type="text" class="form-control" id="mo_ta" name="mo_ta" placeholder="Nhập mô tả"
-                        required autocomplete="off">
+                         autocomplete="off">
                     @error('mo_ta')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror

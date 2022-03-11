@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-heading">THÊM MỚI GIẢNG VIÊN</div>
         <div class="card-body">
-            <form action="{{ route('khoa.store') }}" method="POST">
+            <form action="{{ route('giang-vien.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="ma_giang_vien" class="form-label">Mã giảng viên <label style="color: red;"
@@ -36,7 +36,7 @@
                 <div class="mb-3">
                     <label for="trinh_do" class="form-label">Trình độ <label style="color: red;"
                             for="trinh_do">*</label></label>
-                    <select class="form-control" name="trinh_do" id="trình_do">
+                    <select class="form-control" name="trinh_do" id="trinh_do">
                             <option value="" selected="" disabled="">--- Chọn trình độ ---</option>
                             <option value="Cử nhân">Cử nhân</option>
                             <option value="Kỹ sư">Kỹ sư</option>
@@ -50,7 +50,7 @@
                 <div class="mb-3">
                     <label for="khoa_id" class="form-label">Khoa <label style="color: red;"
                             for="khoa_id">*</label></label>
-                    <select class="form-control" name="khoa_id" id="gioi_tinh">
+                    <select class="form-control" name="khoa_id" id="khoa_id">
                         <option value="" selected="" disabled="">--- Chọn khoa ---</option>
                         @foreach ($khoas as $khoa)
                             <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
@@ -61,7 +61,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="ngay_sinh" class="form-label">Mật khẩu <label style="color: red;"
+                    <label for="mat_khau" class="form-label">Mật khẩu <label style="color: red;"
                             for="mat_khau">*</label></label>
                     <input type="password" class="form-control" id="mat_khau" name="mat_khau" placeholder="Nhập mật khẩu"
                         required autocomplete="off">
@@ -70,7 +70,8 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="ngay_sinh" class="form-label">Ngày sinh </label>
+                    <label for="ngay_sinh" class="form-label">Ngày sinh <label style="color: red;"
+                        for="gioi_tinh">*</label></label>
                     <input type="date" class="form-control" id="ngay_sinh" name="ngay_sinh"
                         required autocomplete="off">
                     @error('ngay_sinh')
@@ -91,7 +92,8 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="que_quan" class="form-label">Quê quán </label>
+                    <label for="que_quan" class="form-label">Quê quán <label style="color: red;"
+                        for="gioi_tinh">*</label></label>
                     <input type="text" class="form-control" id="que_quan" name="que_quan" placeholder="Nhập quê quán"
                         required autocomplete="off">
                     @error('que_quan')
@@ -99,7 +101,8 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email </label>
+                    <label for="email" class="form-label">Email <label style="color: red;"
+                        for="gioi_tinh">*</label></label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email"
                         required autocomplete="off">
                     @error('email')
@@ -109,7 +112,7 @@
                 <div class="mb-3">
                     <label for="so_dien_thoai" class="form-label">Số điện thoại </label>
                     <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai" placeholder="Nhập số điện thoại"
-                        required autocomplete="off">
+                         autocomplete="off">
                     @error('so_dien_thoai')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror

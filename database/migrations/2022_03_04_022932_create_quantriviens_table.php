@@ -25,7 +25,7 @@ class CreateQuantriviensTable extends Migration
             $table->string('que_quan');
             $table->string('email')->unique();
             $table->string('so_dien_thoai')->unique();
-            $table->string('quyen');
+            $table->string('quyen')->default('admin');
             $table->timestamps();
         });
     }
