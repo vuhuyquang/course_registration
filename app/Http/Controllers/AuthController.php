@@ -10,4 +10,9 @@ class AuthController extends Controller
     {
         return view('quantrivien.index');
     }
+
+    public function home3()
+    {
+        return view('sinhvien.index');
+    }
 }

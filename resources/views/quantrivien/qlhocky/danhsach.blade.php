@@ -42,7 +42,13 @@
         <tr>
             <td>{{ $key + 1 }}</td>
             <td>{{ $hocky->ma_hoc_ky }}</td>
-            <td>{{ $hocky->mo_ta }}</td>
+            <td>
+                @if ($hocky->mo_ta === null)
+                    <i>Chưa có thông tin</i>
+                @else
+                    {{ $hocky->mo_ta }}
+                @endif
+            </td>
             <td>{{ $hocky->trang_thai }}</td>
             <td><a href="{{ route('hoc-ky.edit', ['id' => $hocky->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
             <td><a href="{{ route('hoc-ky.destroy', ['id' => $hocky->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"

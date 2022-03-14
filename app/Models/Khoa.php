@@ -11,13 +11,8 @@ class Khoa extends Model
     protected $table = 'khoas';
     protected $fillable = ['ma_khoa', 'ten_khoa'];
 
-    public function lophocs()
+    public function nganhhocs()
     {
-        return $this->hasMany(LopHoc::class, 'khoa_id', 'id');
-    }
-
-    public function monhocs()
-    {
-        return $this->hasMany(MonHoc::class, 'khoa_id', 'id');
+        return $this->hasMany(NganhHoc::class, 'khoa_id', 'id');
     }
 }

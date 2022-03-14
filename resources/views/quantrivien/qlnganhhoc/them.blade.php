@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/style_back.css') }}">
 @include('layouts.header')
-<div class="heading">THÊM MỚI LỚP HỌC</div>
+<div class="heading">THÊM MỚI CHUYÊN NGÀNH</div>
 <div class="container mt-5">
     @if (session('thongbao'))
         <div class="alert alert-success">
@@ -12,19 +12,28 @@
         </div>
     @endif
     <span>
-        <a class="btn-a" href="{{ route('lop-hoc.index') }}"><img style="height: 20px;" src="{{ asset('images/left-arrow.png') }}" alt="Quay lại"> Quay lại</a>
+        <a class="btn-a" href="{{ route('nganh-hoc.index') }}"><img style="height: 20px;" src="{{ asset('images/left-arrow.png') }}" alt="Quay lại"> Quay lại</a>
     </span>
     <div class="card">
-        <div class="card-heading">THÊM MỚI LỚP HỌC</div>
+        <div class="card-heading">THÊM MỚI CHUYÊN NGÀNH</div>
         <div class="card-body">
-            <form action="{{ route('lop-hoc.store') }}" method="POST">
+            <form action="{{ route('nganh-hoc.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="ma_lop" class="form-label">Mã lớp học <label style="color: red;"
-                            for="ma_lop">*</label></label>
-                    <input type="text" class="form-control" id="ma_lop" name="ma_lop" placeholder="Nhập mã lớp học"
+                    <label for="ma_nganh" class="form-label">Mã ngành <label style="color: red;"
+                            for="ma_nganh">*</label></label>
+                    <input type="text" class="form-control" id="ma_nganh" name="ma_nganh" placeholder="Nhập mã ngành"
                         required autocomplete="off">
-                    @error('ma_lop')
+                    @error('ma_nganh')
+                        <span class="form-text">{{ $message }}.</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="ten_nganh" class="form-label">Tên ngành <label style="color: red;"
+                            for="ten_nganh">*</label></label>
+                    <input type="text" class="form-control" id="ten_nganh" name="ten_nganh" placeholder="Nhập tên ngành"
+                        required autocomplete="off">
+                    @error('ten_nganh')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>
@@ -38,19 +47,6 @@
                         @endforeach
                     </select>
                     @error('khoa_id')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="khoa_hoc_id" class="form-label">Khóa học <label style="color: red;"
-                            for="khoa_hoc_id">*</label></label>
-                    <select class="form-control" name="khoa_hoc_id" id="gioi_tinh">
-                        <option value="" selected="" disabled="">--- Chọn khóa học ---</option>
-                        @foreach ($khoahocs as $khoahoc)
-                            <option value="{{ $khoahoc->id }}">{{ $khoahoc->ma_khoa_hoc }}</option>
-                        @endforeach
-                    </select>
-                    @error('khoa_hoc_id')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>

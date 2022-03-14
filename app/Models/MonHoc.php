@@ -11,8 +11,8 @@ class MonHoc extends Model
     protected $table = 'monhocs';
     protected $fillable = ['ma_mon_hoc', 'khoa_id', 'ten_mon_hoc', 'so_tin_chi', 'hoc_phi'];
 
-    public function khoas()
+    public function nganhhocs()
     {
-        return $this->hasOne(Khoa::class, 'id', 'khoa_id');
+        return $this->hasOne(NganhHoc::class, 'id', 'nganh_id');
     }
 }

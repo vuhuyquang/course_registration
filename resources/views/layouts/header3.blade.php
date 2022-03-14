@@ -7,25 +7,13 @@
     |
     <a href="{{ route('quan-tri-vien.home') }}">Trang chủ</a>
     |
-    <a href="{{ route('khoa.index') }}">Khoa</a>
+    <a href="{{ route('khoa.index') }}">Đăng ký học phần</a>
     |
-    <a href="{{ route('nganh-hoc.index') }}">Chuyên ngành</a>
+    <a href="{{ route('lop-hoc.index') }}">Điểm số</a>
     |
-    <a href="{{ route('lop-hoc.index') }}">Lớp học</a>
+    <a href="{{ route('khoa-hoc.index') }}">Học phí</a>
     |
-    <a href="{{ route('khoa-hoc.index') }}">Khóa học</a>
-    |
-    <a href="{{ route('hoc-ky.index') }}">Học kỳ</a>
-    |
-    <a href="{{ route('mon-hoc.index') }}">Môn học</a>
-    |
-    <a href="{{ route('giang-vien.index') }}">Giảng viên</a>
-    |
-    <a href="{{ route('sinh-vien.index') }}">Sinh viên</a>
-    |
-    <a href="">Tin tức</a>
-    |
-    <a href="">Quản trị viên</a>
+    <a href="">Sinh viên</a>
     |
     <a href="">Đăng xuất</a>
     |

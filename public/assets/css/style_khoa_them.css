@@ -8,3 +8,11 @@
 .container {
     width: 72%;
 }
+
+.btn-a {
+    text-decoration: none;
+}
+
+.btn-a:hover {
+    color: rgb(0, 47, 255);
+}

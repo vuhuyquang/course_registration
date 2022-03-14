@@ -38,12 +38,11 @@ class HocKyController extends Controller
     {
         $request->validate([
             'ma_hoc_ky' => 'required|unique:hockys,ma_hoc_ky|max:20',
-            'mo_ta' => 'required|unique:hockys,mo_ta|max:50'
+            'mo_ta' => 'unique:hockys,mo_ta|max:50'
         ], [
             'ma_hoc_ky.required' => 'Dữ liệu nhập vào không được để trống',
             'ma_hoc_ky.unique' => 'Dữ liệu nhập vào không được trùng lặp',
             'ma_hoc_ky.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'mo_ta.required' => 'Dữ liệu nhập vào không được để trống',
             'mo_ta.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
             'mo_ta.unique' => 'Dữ liệu nhập vào không được trùng lặp'
         ]);

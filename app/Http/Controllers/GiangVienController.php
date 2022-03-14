@@ -38,8 +38,7 @@ class GiangVienController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
+    {  
         $request->validate([
             'ma_giang_vien' => 'required|unique:giangviens,ma_giang_vien|max:20',
             'ho_ten' => 'required|max:50',

@@ -2,6 +2,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style_back.css') }}">
 @include('layouts.header')
 <div class="heading">THÊM MỚI SINH VIÊN</div>
 <div class="container mt-5">
@@ -10,17 +11,23 @@
         <span aria-hidden="true">{{ session('thongbao') }}</span>
     </div>
     @endif
+    <span>
+        <a class="btn-a" href="{{ route('sinh-vien.index') }}"><img style="height: 20px;" src="{{ asset('images/left-arrow.png') }}" alt="Quay lại"> Quay lại</a>
+    </span>
     <div class="card">
         <div class="card-heading">THÊM MỚI SINH VIÊN</div>
         <div class="card-body">
-            <form action="{{ route('giang-vien.store') }}" method="POST">
+            <form action="{{ route('sinh-vien.store') }}" method="POST">
                 @csrf
+                <div class="form-group">
+                    <label for="">Mật khẩu của tài khoản là ngày/tháng/năm sinh của sinh viên. (VD: 01/01/2021)</label>
+                </div>
                 <div class="mb-3">
-                    <label for="ma_giang_vien" class="form-label">Mã sinh viên <label style="color: red;"
-                            for="ma_giang_vien">*</label></label>
-                    <input type="text" class="form-control" id="ma_giang_vien" name="ma_giang_vien" placeholder="Nhập mã giảng viên"
+                    <label for="ma_sinh_vien" class="form-label">Mã sinh viên <label style="color: red;"
+                            for="ma_sinh_vien">*</label></label>
+                    <input type="text" class="form-control" id="ma_sinh_vien" name="ma_sinh_vien" placeholder="Nhập mã sinh viên"
                         required autocomplete="off">
-                    @error('ma_giang_vien')
+                    @error('ma_sinh_vien')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>
@@ -43,15 +50,6 @@
                         @endforeach
                     </select>
                     @error('khoa_id')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="mat_khau" class="form-label">Mật khẩu <label style="color: red;"
-                            for="mat_khau">*</label></label>
-                    <input type="password" class="form-control" id="mat_khau" name="mat_khau" placeholder="Nhập mật khẩu"
-                        required autocomplete="off">
-                    @error('mat_khau')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>

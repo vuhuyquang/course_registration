@@ -16,8 +16,8 @@ class LopHoc extends Model
         return $this->hasOne(KhoaHoc::class, 'id', 'khoa_hoc_id');
     }
 
-    public function khoas()
+    public function nganhhocs()
     {
-        return $this->hasOne(Khoa::class, 'id', 'khoa_id');
+        return $this->hasOne(Khoa::class, 'id', 'nganh_id');
     }
 }

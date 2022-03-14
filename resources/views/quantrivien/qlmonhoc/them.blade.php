@@ -2,6 +2,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style_back.css') }}">
 @include('layouts.header')
 <div class="heading">THÊM MỚI MÔN HỌC</div>
 <div class="container mt-5">
@@ -10,6 +11,9 @@
         <span aria-hidden="true">{{ session('thongbao') }}</span>
     </div>
     @endif
+    <span>
+        <a class="btn-a" href="{{ route('mon-hoc.index') }}"><img style="height: 20px;" src="{{ asset('images/left-arrow.png') }}" alt="Quay lại"> Quay lại</a>
+    </span>
     <div class="card">
         <div class="card-heading">THÊM MỚI MÔN HỌC</div>
         <div class="card-body">
@@ -45,7 +49,7 @@
                 <div class="mb-3">
                     <label for="hoc_phi" class="form-label">Học phí <label style="color: red;"
                             for="hoc_phi">*</label></label>
-                    <input type="number" class="form-control" id="hoc_phi" name="hoc_phi" placeholder="Nhập số tín chỉ"
+                    <input type="number" class="form-control" id="hoc_phi" name="hoc_phi" placeholder="Nhập học phí"
                         required autocomplete="off">
                     @error('hoc_phi')
                         <span class="form-text">{{ $message }}.</span>

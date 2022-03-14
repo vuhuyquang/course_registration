@@ -7,6 +7,7 @@ use App\Http\Controllers\GiangVienController;
 use App\Http\Controllers\HocKyController;
 use App\Http\Controllers\KhoaController;
 use App\Http\Controllers\KhoaHocController;
+use App\Http\Controllers\NganhHocController;
 use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\MonHocController;
 use App\Http\Controllers\QuanTriVienController;
@@ -37,6 +38,16 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::post('/sua/{id}', [KhoaController::class, 'update'])->name('khoa.update');
         Route::get('/xoa/{id}', [KhoaController::class, 'destroy'])->name('khoa.destroy');
         Route::get('/danh-sach-lop/{id}', [KhoaController::class, 'classlist'])->name('khoa.classlist');
+    });
+
+    Route::prefix('nganh-hoc')->group(function () {
+        Route::get('/', [NganhHocController::class, 'index'])->name('nganh-hoc.index');
+        Route::get('/them', [NganhHocController::class, 'create'])->name('nganh-hoc.create');
+        Route::post('/them', [NganhHocController::class, 'store'])->name('nganh-hoc.store');
+        Route::get('/sua/{id}', [NganhHocController::class, 'edit'])->name('nganh-hoc.edit');
+        Route::post('/sua/{id}', [NganhHocController::class, 'update'])->name('nganh-hoc.update');
+        Route::get('/xoa/{id}', [NganhHocController::class, 'destroy'])->name('nganh-hoc.destroy');
+        Route::get('/danh-sach-mon-hoc/{id}', [NganhHocController::class, 'classlist'])->name('nganh-hoc.classsubjects');
     });
 
         Route::prefix('giang-vien')->group(function () {
@@ -89,11 +100,11 @@ Route::prefix('quan-tri-vien')->group(function () {
 
     Route::prefix('sinh-vien')->group(function () {
         Route::get('/', [SinhVienController::class, 'index'])->name('sinh-vien.index');
-        Route::get('them', [SinhVienController::class, 'create'])->name('sinh-vien.create');
-        Route::post('them', [SinhVienController::class, 'store'])->name('sinh-vien.store');
-        Route::get('sua', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
-        Route::post('sua', [SinhVienController::class, 'update'])->name('sinh-vien.update');
-        Route::get('xoa', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
+        Route::get('/them', [SinhVienController::class, 'create'])->name('sinh-vien.create');
+        Route::post('/them', [SinhVienController::class, 'store'])->name('sinh-vien.store');
+        Route::get('/sua', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
+        Route::post('/sua', [SinhVienController::class, 'update'])->name('sinh-vien.update');
+        Route::get('/xoa', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
     });
 });
 
@@ -102,5 +113,9 @@ Route::prefix('giang-vien')->group(function () {
 });
 
 Route::prefix('sinh-vien')->group(function () {
-    
+    Route::get('/', [AuthController::class, 'home3'])->name('sinh-vien.home');
+
+    Route::get('/', function ($id) {
+        
+    });
 });
