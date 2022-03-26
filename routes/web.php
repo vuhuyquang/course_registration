@@ -24,7 +24,7 @@ use App\Http\Controllers\TinTucController;
 */
 
 Route::get('/', function () {
-    return view('');
+    return view('layouts.site');
 });
 
 Route::prefix('quan-tri-vien')->group(function () {

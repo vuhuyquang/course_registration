@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MonHoc;
 use App\Models\Khoa;
+use App\Models\NganhHoc;
 use Illuminate\Http\Request;
 
 class MonHocController extends Controller
@@ -26,8 +27,8 @@ class MonHocController extends Controller
      */
     public function create()
     {
-        $khoas = Khoa::all();
-        return view('quantrivien.qlmonhoc.them', compact('khoas'));
+        $nganhhocs = NganhHoc::all();
+        return view('quantrivien.qlmonhoc.them', compact('nganhhocs'));
     }
 
     /**
@@ -42,7 +43,7 @@ class MonHocController extends Controller
             'ma_mon_hoc' => 'required|unique:monhocs,ma_mon_hoc|max:20',
             'ten_mon_hoc' => 'required|unique:monhocs,ten_mon_hoc|max:80',
             'so_tin_chi' => 'required|numeric',
-            'khoa_id' => 'required|numeric'
+            'nganh_id' => 'required|numeric'
         ], [
             'ma_mon_hoc.required' => 'Dữ liệu nhập vào không được để trống',
             'ma_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -52,13 +53,13 @@ class MonHocController extends Controller
             'ten_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
             'so_tin_chi.required' => 'Dữ liệu nhập vào không được để trống',
             'so_tin_chi.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
-            'khoa_id.required' => 'Dữ liệu nhập vào không được để trống',
-            'khoa_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
+            'nganh_id.required' => 'Dữ liệu nhập vào không được để trống',
+            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
         ]);
 
         MonHoc::insert([
             'ma_mon_hoc' => $request->ma_mon_hoc,
-            'khoa_id' => $request->khoa_id,
+            'nganh_id' => $request->nganh_id,
             'ten_mon_hoc' => $request->ten_mon_hoc,
             'so_tin_chi' => $request->so_tin_chi,
             'hoc_phi' => $request->hoc_phi

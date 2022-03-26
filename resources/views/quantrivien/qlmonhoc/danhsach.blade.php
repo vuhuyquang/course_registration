@@ -35,7 +35,7 @@
         <th>Tên môn học</th>
         <th>Số tín chỉ</th>
         <th>Học phí</th>
-        <th>Tên khoa</th>
+        <th>Ngành học</th>
         <th>Sửa</th>
         <th>Xóa</th>
     </tr>
@@ -46,7 +46,7 @@
             <td>{{ $monhoc->ten_mon_hoc }}</td>
             <td>{{ $monhoc->so_tin_chi }}</td>
             <td>{{ $monhoc->hoc_phi }}</td>
-            <td>{{ $monhoc->khoas->ten_khoa }}</td>
+            <td>{{ $monhoc->nganhhocs->ten_nganh }}</td>
             <td><a href="{{ route('mon-hoc.edit', ['id' => $monhoc->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
             <td><a href="{{ route('mon-hoc.destroy', ['id' => $monhoc->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
                         src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>

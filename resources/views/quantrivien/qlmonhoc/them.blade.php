@@ -56,15 +56,15 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="khoa_id" class="form-label">Khoa <label style="color: red;"
-                            for="khoa_id">*</label></label>
-                    <select class="form-control" name="khoa_id" id="gioi_tinh">
-                        <option value="" selected="" disabled="">--- Chọn khoa ---</option>
-                        @foreach ($khoas as $khoa)
-                            <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
+                    <label for="nganh_id" class="form-label">Ngành <label style="color: red;"
+                            for="nganh_id">*</label></label>
+                    <select class="form-control" name="nganh_id" id="gioi_tinh">
+                        <option value="" selected="" disabled="">--- Chọn ngành học ---</option>
+                        @foreach ($nganhhocs as $nganhhoc)
+                            <option value="{{ $nganhhoc->id }}">{{ $nganhhoc->ten_nganh }}</option>
                         @endforeach
                     </select>
-                    @error('khoa_id')
+                    @error('nganh_id')
                         <span class="form-text">{{ $message }}.</span>
                     @enderror
                 </div>

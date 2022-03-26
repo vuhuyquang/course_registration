@@ -92,9 +92,32 @@ class NganhHocController extends Controller
      * @param  \App\Models\NganhHoc  $nganhHoc
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, NganhHoc $nganhHoc)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'ma_nganh' => 'required|max:20|unique:nganhhocs,ma_nganh,'.$id,
+            'ten_nganh' => 'required|max:50|unique:nganhhocs,ten_nganh,'.$id,
+            'khoa_id' => 'required|numeric'
+        ], [
+            'ma_nganh.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_nganh.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
+            'ma_nganh.unique' => 'Dữ liệu nhập vào không được trùng lặp',
+            'ten_nganh.required' => 'Dữ liệu nhập vào không được để trống',
+            'ten_nganh.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
+            'ten_nganh.unique' => 'Dữ liệu nhập vào không được trùng lặp',
+            'khoa_id.required' => 'Dữ liệu nhập vào không được để trống',
+            'khoa_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
+        ]);
+
+        $nganhhoc = NganhHoc::findOrFail($id);
+        $nganhhoc->ma_nganh = $request->ma_nganh;
+        $nganhhoc->ten_nganh = $request->ten_nganh;
+        $nganhhoc->khoa_id = $request->khoa_id;
+        if ($nganhhoc->save()) {
+            return redirect()->back()->with('thongbao', 'Thêm mới thành công');
+        } else {
+            return redirect()->back()->with('thongbao', 'Thêm mới thất bại');
+        } 
     }
 
     /**
@@ -103,8 +126,13 @@ class NganhHocController extends Controller
      * @param  \App\Models\NganhHoc  $nganhHoc
      * @return \Illuminate\Http\Response
      */
-    public function destroy(NganhHoc $nganhHoc)
+    public function destroy($id)
     {
-        //
+        $nganhhoc = NganhHoc::findOrFail($id);
+        if ($nganhhoc->delete()) {
+            return redirect()->back()->with('thongbao', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('thongbao', 'Xóa thất bại');
+        }   
     }
 }
