@@ -1,51 +1,41 @@
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa.css') }}">
-<style>
-    .img-icon {
-        height: 22px;
-        width: 18px;
-    }
+@extends('layouts.site')
 
-    .alert-success {
-		color: #0f5132;
-		background-color: #d1e7dd;
-		border-color: #badbcc;
-	}
-	.alert {
-		position: relative;
-		padding: 1rem 1rem;
-		margin-bottom: 1rem;
-		border: 1px solid transparent;
-		border-radius: 0.25rem;
-	}
-</style>
-@include('layouts.header')
-<div class="heading">DANH SÁCH KHOA</div>
-{{-- <div class="container">
-@if (session('thongbao'))
-<div class="alert alert-success">
-    <span aria-hidden="true">{{ session('thongbao') }}</span>
+@section('main')
+<div class="col">
+    <form action="" class="form-inline">
+        <div class="form-group">
+            <input class="form-control" name="key" placeholder="Nhập tên khoa" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
 </div>
-@endif
-</div> --}}
-<a href="{{ route('khoa.create') }}" class="js-add btn-them">Thêm mới</a>
-<table>
+<hr>
+<table style="text-align: center" class="table table-hover">
     <tr>
         <th>STT</th>
         <th>Mã khoa</th>
         <th>Tên khoa</th>
-        <th>Danh sách lớp</th>
-        <th>Sửa</th>
-        <th>Xóa</th>
+        <th>Ngày tạo</th>
+        <th>Hành động</th>
     </tr>
     @foreach ($khoas as $key => $khoa)
         <tr>
             <td>{{ $key + 1 }}</td>
             <td>{{ $khoa->ma_khoa }}</td>
             <td>{{ $khoa->ten_khoa }}</td>
-            <td><a href="{{ route('khoa.classlist', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/detail.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('khoa.destroy', ['id' => $khoa->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
-                        src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
+            <td>{{ date('d/m/Y H:i:s', strtotime($khoa->created_at)) }}</td>
+            <td>
+                <a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}" class="btn btn-sm btn-success">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ route('khoa.destroy', ['id' => $khoa->id]) }}" class="btn btn-sm btn-danger btndelete"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
         </tr>
     @endforeach
 </table>
+@endsection

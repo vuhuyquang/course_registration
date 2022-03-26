@@ -1,51 +1,42 @@
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa.css') }}">
-<style>
-    .img-icon {
-        height: 22px;
-        width: 18px;
-    }
+@extends('layouts.site')
 
-    .alert-success {
-		color: #0f5132;
-		background-color: #d1e7dd;
-		border-color: #badbcc;
-	}
-	.alert {
-		position: relative;
-		padding: 1rem 1rem;
-		margin-bottom: 1rem;
-		border: 1px solid transparent;
-		border-radius: 0.25rem;
-	}
-</style>
-@include('layouts.header')
-<div class="heading">DANH SÁCH LỚP HỌC</div>
-{{-- <div class="container">
-@if (session('thongbao'))
-<div class="alert alert-success">
-    <span aria-hidden="true">{{ session('thongbao') }}</span>
+@section('main')
+<div class="col">
+    <form action="" class="form-inline">
+        <div class="form-group">
+            <input class="form-control" name="key" placeholder="Nhập tên khoa" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
 </div>
-@endif
-</div> --}}
-<a href="{{ route('lop-hoc.create') }}" class="js-add btn-them">Thêm mới</a>
-<table>
+<hr>
+<table style="text-align: center" class="table table-hover">
     <tr>
         <th>STT</th>
         <th>Mã lớp</th>
-        <th>Khoa</th>
+        <th>Mã ngành</th>
         <th>Khóa học</th>
-        <th>Sửa</th>
-        <th>Xóa</th>
+        <th>Hành động</th>
     </tr>
     @foreach ($lophocs as $key => $lophoc)
         <tr>
             <td>{{ $key + 1 }}</td>
             <td>{{ $lophoc->ma_lop }}</td>
-            <td>{{ $lophoc->khoas->ten_khoa }}</td>
+            <td>{{ $lophoc->nganhhocs->id }}</td>
             <td>{{ $lophoc->khoahocs->ma_khoa_hoc }}</td>
-            <td><a href="{{ route('lop-hoc.edit', ['id' => $lophoc->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('lop-hoc.destroy', ['id' => $lophoc->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
-                        src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
+            <td>
+                <a href="{{ route('lop-hoc.edit', ['id' => $lophoc->id]) }}" class="btn btn-sm btn-success">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ route('lop-hoc.destroy', ['id' => $lophoc->id]) }}" class="btn btn-sm btn-danger btndelete"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
         </tr>
     @endforeach
 </table>
+@endsection
+

@@ -1,42 +1,25 @@
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa.css') }}">
-<style>
-    .img-icon {
-        height: 22px;
-        width: 18px;
-    }
+@extends('layouts.site')
 
-    .alert-success {
-		color: #0f5132;
-		background-color: #d1e7dd;
-		border-color: #badbcc;
-	}
-	.alert {
-		position: relative;
-		padding: 1rem 1rem;
-		margin-bottom: 1rem;
-		border: 1px solid transparent;
-		border-radius: 0.25rem;
-	}
-</style>
-@include('layouts.header')
-<div class="heading">DANH SÁCH GIẢNG VIÊN</div>
-{{-- <div class="container">
-@if (session('thongbao'))
-<div class="alert alert-success">
-    <span aria-hidden="true">{{ session('thongbao') }}</span>
+@section('main')
+<div class="col">
+    <form action="" class="form-inline">
+        <div class="form-group">
+            <input class="form-control" name="key" placeholder="Nhập tên giảng viên" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
 </div>
-@endif
-</div> --}}
-<a href="{{ route('giang-vien.create') }}" class="js-add btn-them">Thêm mới</a>
-<table>
+<hr>
+<table style="text-align: center" class="table table-hover">
     <tr>
         <th>STT</th>
         <th>Mã giảng viên</th>
         <th>Họ tên</th>
         <th>Đơn vị</th>
-        <th>Xem chi tiết</th>
-        <th>Sửa</th>
-        <th>Xóa</th>
+        <th>Ngày tạo</th>
+        <th>Hành động</th>
     </tr>
     @foreach ($giangviens as $key => $giangvien)
         <tr>
@@ -44,10 +27,20 @@
             <td>{{ $giangvien->ma_giang_vien }}</td>
             <td>{{ $giangvien->ho_ten }}</td>
             <td>{{ $giangvien->khoas->ten_khoa }}</td>
-            <td><a href=""><img class="img-icon" src="{{ asset('images/detail.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('giang-vien.destroy', ['id' => $giangvien->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
-                        src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
+            <td>{{ date('d/m/Y H:i:s', strtotime($giangvien->created_at)) }}</td>
+            <td>
+                <a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-warning">
+                    <i style="color: white;" class="fas fa-eye"></i>
+                </a>
+                <a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-success">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ route('giang-vien.destroy', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-danger btndelete"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
         </tr>
     @endforeach
 </table>
+@endsection

@@ -15,4 +15,9 @@ class NganhHoc extends Model
     {
         return $this->hasMany(MonHoc::class, 'nganh_id', 'id');
     }
+
+    public function khoas()
+    {
+        return $this->hasOne(Khoa::class, 'id', 'khoa_id');
+    }
 }

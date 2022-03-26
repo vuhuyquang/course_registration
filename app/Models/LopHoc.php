@@ -18,6 +18,6 @@ class LopHoc extends Model
 
     public function nganhhocs()
     {
-        return $this->hasOne(Khoa::class, 'id', 'nganh_id');
+        return $this->hasOne(NganhHoc::class, 'id', 'nganh_id');
     }
 }
