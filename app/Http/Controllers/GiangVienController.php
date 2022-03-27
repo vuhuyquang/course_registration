@@ -189,7 +189,10 @@ class GiangVienController extends Controller
     public function destroy($id)
     {
         $giangvien = GiangVien::findOrFail($id);
-        $giangvien->delete();
-        return redirect()->back()->with('thongbao', 'Xóa thành công');
+        if ($giangvien->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }   
     }
 }

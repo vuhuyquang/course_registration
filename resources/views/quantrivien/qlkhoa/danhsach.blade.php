@@ -25,7 +25,7 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $khoa->ma_khoa }}</td>
             <td>{{ $khoa->ten_khoa }}</td>
-            <td>{{ date('d/m/Y H:i:s', strtotime($khoa->created_at)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($khoa->created_at)) }}</td>
             <td>
                 <a href="{{ route('khoa.edit', ['id' => $khoa->id]) }}" class="btn btn-sm btn-success">
                     <i class="fas fa-edit"></i>

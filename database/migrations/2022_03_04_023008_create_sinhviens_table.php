@@ -21,6 +21,7 @@ class CreateSinhviensTable extends Migration
             $table->string('gioi_tinh');
             $table->integer('khoa_hoc_id');
             $table->integer('lop_hoc_id');
+            $table->integer('nganh_hoc_id');
             $table->string('mat_khau', 50);
             $table->string('que_quan', 80);
             $table->string('email', 50)->unique();

@@ -41,19 +41,22 @@ class KhoaController extends Controller
             'ma_khoa' => 'required|unique:khoas,ma_khoa|max:20',
             'ten_khoa' => 'required|unique:khoas,ten_khoa|max:50'
         ], [
-            'ma_khoa.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_khoa.required' => 'Trường dữ liệu không được để trống',
             'ma_khoa.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_khoa.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'ten_khoa.required' => 'Dữ liệu nhập vào không được để trống',
-            'ten_khoa.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
-            'ten_khoa.unique' => 'Dữ liệu nhập vào không được trùng lặp'
+            'ma_khoa.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'ten_khoa.required' => 'Trường dữ liệu không được để trống',
+            'ten_khoa.max' => 'Dữ liệu nhập vào có tối đa 50 ký tự',
+            'ten_khoa.unique' => 'Trường dữ liệu không được trùng lặp'
         ]);
 
         $khoa = new Khoa;
         $khoa->ma_khoa = $request->ma_khoa;
         $khoa->ten_khoa = $request->ten_khoa;
-        $khoa->save();
-        return redirect()->back()->with('thongbao', 'Thêm mới thành công');
+        if ($khoa->save()) {
+            return redirect()->back()->with('success', 'Thêm thành công');
+        } else {
+            return redirect()->back()->with('error', 'Thêm thất bại');
+        }
     }
 
     /**
@@ -117,7 +120,10 @@ class KhoaController extends Controller
     public function destroy($id)
     {
         $khoa = Khoa::findOrFail($id);
-        $khoa->delete();
-        return redirect()->back()->with('thongbao', 'Xóa thành công');
+        if ($khoa->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }
     }
 }

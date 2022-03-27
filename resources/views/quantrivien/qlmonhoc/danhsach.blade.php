@@ -1,43 +1,29 @@
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa.css') }}">
-<style>
-    .img-icon {
-        height: 22px;
-        width: 18px;
-    }
+@extends('layouts.site')
 
-    .alert-success {
-		color: #0f5132;
-		background-color: #d1e7dd;
-		border-color: #badbcc;
-	}
-	.alert {
-		position: relative;
-		padding: 1rem 1rem;
-		margin-bottom: 1rem;
-		border: 1px solid transparent;
-		border-radius: 0.25rem;
-	}
-</style>
-@include('layouts.header')
-<div class="heading">DANH SÁCH MÔN HỌC</div>
-{{-- <div class="container">
-@if (session('thongbao'))
-<div class="alert alert-success">
-    <span aria-hidden="true">{{ session('thongbao') }}</span>
+@section('main')
+<div class="col">
+    <form action="" class="form-inline">
+        <div class="form-group">
+            <input class="form-control" name="key" placeholder="Nhập tên môn học" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
 </div>
-@endif
-</div> --}}
-<a href="{{ route('mon-hoc.create') }}" class="js-add btn-them">Thêm mới</a>
-<table>
+<hr>
+<table style="text-align: center" class="table table-hover">
     <tr>
-        <th>STT</th>
-        <th>Mã môn học</th>
-        <th>Tên môn học</th>
-        <th>Số tín chỉ</th>
-        <th>Học phí</th>
-        <th>Ngành học</th>
-        <th>Sửa</th>
-        <th>Xóa</th>
+        <tr>
+            <th>STT</th>
+            <th>Mã môn học</th>
+            <th>Tên môn học</th>
+            <th>Số tín chỉ</th>
+            <th>Học phí</th>
+            <th>Ngành học</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
     </tr>
     @foreach ($monhocs as $key => $monhoc)
         <tr>
@@ -47,9 +33,18 @@
             <td>{{ $monhoc->so_tin_chi }}</td>
             <td>{{ $monhoc->hoc_phi }}</td>
             <td>{{ $monhoc->nganhhocs->ten_nganh }}</td>
-            <td><a href="{{ route('mon-hoc.edit', ['id' => $monhoc->id]) }}"><img class="img-icon" src="{{ asset('images/edit.png') }}" alt="Sửa"></a></td>
-            <td><a href="{{ route('mon-hoc.destroy', ['id' => $monhoc->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><img class="img-icon"
-                        src="{{ asset('images/delete.png') }}" alt="Xóa"></a></td>
+            <td>{{ date('d/m/Y', strtotime($monhoc->created_at)) }}</td>
+            <td>
+                <a href="{{ route('mon-hoc.edit', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-success">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{{ route('mon-hoc.destroy', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-danger btndelete"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
         </tr>
     @endforeach
 </table>
+@endsection
+

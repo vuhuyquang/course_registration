@@ -32,8 +32,8 @@ class GiangVien extends Model
         return $this->hasMany(DiemSo::class, 'giang_vien_id', 'id');
     }
 
-    public function khoas()
+    public function nganhhocs()
     {
-        return $this->hasOne(Khoa::class, 'id', 'khoa_id');
+        return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
     }
 }

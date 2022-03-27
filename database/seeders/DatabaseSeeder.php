@@ -14,5 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // User::factory(10)->create();
+        $this->call(HocKySeeder::class);
+        $this->call(KhoaHocSeeder::class);
+        $this->call(KhoaSeeder::class);
+        $this->call(MonHocSeeder::class);
+        $this->call(NganhHocSeeder::class);
+        $this->call(LopHocSeeder::class);
     }
 }

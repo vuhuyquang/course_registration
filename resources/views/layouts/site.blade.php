@@ -119,7 +119,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('nganh-hoc.index') }}" class="nav-link">
+                                    <a href="{{ route('nganh-hoc.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -142,7 +142,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('khoa-hoc.index') }}" class="nav-link">
+                                    <a href="{{ route('khoa-hoc.store') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -165,7 +165,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('lop-hoc.index') }}" class="nav-link">
+                                    <a href="{{ route('lop-hoc.store') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>

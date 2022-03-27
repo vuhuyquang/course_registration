@@ -119,8 +119,13 @@ class SinhVienController extends Controller
      * @param  \App\Models\SinhVien  $sinhVien
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SinhVien $sinhVien)
+    public function destroy($id)
     {
-        //
+        $sinhvien = SinhVien::findOrFail($id);
+        if ($sinhvien->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }   
     }
 }

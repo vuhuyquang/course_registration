@@ -102,9 +102,9 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/', [SinhVienController::class, 'index'])->name('sinh-vien.index');
         Route::get('/them', [SinhVienController::class, 'create'])->name('sinh-vien.create');
         Route::post('/them', [SinhVienController::class, 'store'])->name('sinh-vien.store');
-        Route::get('/sua', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
-        Route::post('/sua', [SinhVienController::class, 'update'])->name('sinh-vien.update');
-        Route::get('/xoa', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
+        Route::get('/sua/{id}', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
+        Route::post('/sua/{id}', [SinhVienController::class, 'update'])->name('sinh-vien.update');
+        Route::get('/xoa/{id}', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
     });
 });
 

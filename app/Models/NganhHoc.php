@@ -20,4 +20,14 @@ class NganhHoc extends Model
     {
         return $this->hasOne(Khoa::class, 'id', 'khoa_id');
     }
+
+    public function sinhviens()
+    {
+        return $this->hasMany(SinhVien::class, 'nganh_hoc_id'. 'id');
+    }
+
+    public function giangviens()
+    {
+        return $this->hasMany(SinhVien::class, 'nganh_hoc_id'. 'id');
+    }
 }

@@ -137,7 +137,10 @@ class MonHocController extends Controller
     public function destroy($id)
     {
         $monhoc = MonHoc::findOrFail($id);
-        $monhoc->delete();
-        return redirect()->back()->with('thongbao', 'Xóa thành công');
+        if ($monhoc->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }
     }
 }

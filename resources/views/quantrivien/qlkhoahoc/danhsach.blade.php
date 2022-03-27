@@ -4,7 +4,7 @@
     <div class="col">
         <form action="" class="form-inline">
             <div class="form-group">
-                <input class="form-control" name="key" placeholder="Nhập tên ngành" autocomplete="off">
+                <input class="form-control" name="key" placeholder="Nhập tên khóa học" autocomplete="off">
             </div>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-search"></i>
@@ -31,7 +31,7 @@
                         {{ $khoahoc->mo_ta }}
                     @endif
                 </td>
-                <td>{{ date('d/m/Y H:i:s', strtotime($khoahoc->created_at)) }}</td>
+                <td>{{ date('d/m/Y', strtotime($khoahoc->created_at)) }}</td>
                 <td>
                     <a href="{{ route('khoa-hoc.edit', ['id' => $khoahoc->id]) }}" class="btn btn-sm btn-success">
                         <i class="fas fa-edit"></i>

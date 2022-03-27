@@ -17,7 +17,7 @@
         <th>STT</th>
         <th>Mã giảng viên</th>
         <th>Họ tên</th>
-        <th>Đơn vị</th>
+        <th>Ngành</th>
         <th>Ngày tạo</th>
         <th>Hành động</th>
     </tr>
@@ -26,7 +26,7 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $giangvien->ma_giang_vien }}</td>
             <td>{{ $giangvien->ho_ten }}</td>
-            <td>{{ $giangvien->khoas->ten_khoa }}</td>
+            <td>{{ $giangvien->nganhhocs->ten_nganh }}</td>
             <td>{{ date('d/m/Y H:i:s', strtotime($giangvien->created_at)) }}</td>
             <td>
                 <a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-warning">

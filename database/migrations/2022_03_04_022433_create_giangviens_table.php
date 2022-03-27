@@ -18,7 +18,7 @@ class CreateGiangviensTable extends Migration
             $table->string('ma_giang_vien', 20)->unique();
             $table->string('ho_ten', 50);
             $table->string('trinh_do');
-            $table->integer('khoa_id');
+            $table->integer('nganh_hoc_id');
             $table->string('mat_khau', 255);
             $table->date('ngay_sinh');
             $table->string('gioi_tinh');    // Nam, nữ, khác

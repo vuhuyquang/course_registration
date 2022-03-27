@@ -16,6 +16,7 @@ class SinhVien extends Model
         'gioi_tinh',
         'khoa_hoc_id',
         'lop_hoc_id',
+        'nganh_hoc_id',
         'mat_khau',
         'que_quan',
         'email ',
@@ -31,5 +32,10 @@ class SinhVien extends Model
     public function lophocs()
     {
         return $this->hasOne(LopHoc::class, 'id', 'lop_hoc_id');
+    }
+
+    public function nganhhocs()
+    {
+        return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
     }
 }
