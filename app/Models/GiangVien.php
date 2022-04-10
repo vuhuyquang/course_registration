@@ -13,12 +13,14 @@ class GiangVien extends Model
         'ma_giang_vien',
         'ho_ten',
         'trinh_do',
-        'khoa_id',
-        'mat_khau',
+        'nganh_hoc_id',
+        'email',
+        'password',
         'ngay_sinh',
         'gioi_tinh',
         'que_quan',
         'so_dien_thoai',
+        'avatar',
         'quyen'
     ];
 
@@ -35,5 +37,10 @@ class GiangVien extends Model
     public function nganhhocs()
     {
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
+    }
+
+    public function thongtins()
+    {
+        return $this->hasOne(ThongTin::class, 'id', 'thong_tin_id');
     }
 }

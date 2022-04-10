@@ -24,7 +24,7 @@ use App\Http\Controllers\TinTucController;
 */
 
 Route::get('/', function () {
-    return view('layouts.site');
+    return view('dangnhap');
 });
 
 Route::prefix('quan-tri-vien')->group(function () {
@@ -57,6 +57,8 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/sua/{id}', [GiangVienController::class, 'edit'])->name('giang-vien.edit');
         Route::post('/sua/{id}', [GiangVienController::class, 'update'])->name('giang-vien.update');
         Route::get('/xoa/{id}', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
+        Route::get('/dat-lai-mat-khau/{id}', [GiangVienController::class, 'resetPassword'])->name('giang-vien.resetPassword');
+        Route::get('/ho-so-ca-nhan/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
     });
 
     Route::prefix('hoc-ky')->group(function () {
@@ -105,6 +107,8 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/sua/{id}', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
         Route::post('/sua/{id}', [SinhVienController::class, 'update'])->name('sinh-vien.update');
         Route::get('/xoa/{id}', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
+        Route::get('/dat-lai-mat-khau/{id}', [SinhVienController::class, 'resetPassword'])->name('sinh-vien.resetPassword');
+        Route::get('/ho-so-ca-nhan/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
     });
 });
 

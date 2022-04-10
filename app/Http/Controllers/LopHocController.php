@@ -84,10 +84,10 @@ class LopHocController extends Controller
      */
     public function edit($id)
     {
-        $khoas = Khoa::all();
+        $nganhhocs = NganhHoc::all();
         $khoahocs = KhoaHoc::all();
         $lophoc = LopHoc::findOrFail($id);
-        return view('quantrivien.qllophoc.sua', compact('lophoc', 'khoas', 'khoahocs'));
+        return view('quantrivien.qllophoc.sua', compact('lophoc', 'nganhhocs', 'khoahocs'));
     }
 
     /**
@@ -102,23 +102,26 @@ class LopHocController extends Controller
         $lophoc = LopHoc::findOrFail($id);
         $request->validate([
             'ma_lop' => 'required|max:20|unique:lophocs,ma_lop,'.$id,
-            'khoa_id' => 'required|integer',
+            'nganh_id' => 'required|integer',
             'khoa_hoc_id' => 'required|integer'
         ], [
-            'ma_lop.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_lop.required' => 'Trường dữ liệu không được để trống',
             'ma_lop.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_lop.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'khoa_id.required' => 'Dữ liệu nhập vào không được để trống',
-            'khoa_id.integer' => 'Dữ liệu nhập vào phải là dạng số',
-            'khoa_hoc_id.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_lop.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'nganh_id.required' => 'Trường dữ liệu không được để trống',
+            'nganh_id.integer' => 'Dữ liệu nhập vào phải là dạng số',
+            'khoa_hoc_id.required' => 'Trường dữ liệu không được để trống',
             'khoa_hoc_id.integer' => 'Dữ liệu nhập vào phải là dạng số'
         ]);
 
         $lophoc->ma_lop = $request->ma_lop;
-        $lophoc->khoa_id = $request->khoa_id;
+        $lophoc->nganh_id = $request->nganh_id;
         $lophoc->khoa_hoc_id = $request->khoa_hoc_id;
-        $lophoc->save();
-        return redirect()->back()->with('thongbao', 'Cập nhật thành công');
+        if ($lophoc->save()) {
+            return redirect()->back()->with('success', 'Cập nhật thành công');
+        } else {
+            return redirect()->back()->with('error', 'Cập nhật thất bại');
+        }
     }
 
     /**

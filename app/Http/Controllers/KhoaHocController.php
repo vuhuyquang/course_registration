@@ -95,17 +95,19 @@ class KhoaHocController extends Controller
             'ma_khoa_hoc' => 'required|max:20|unique:khoahocs,ma_khoa_hoc,'.$id,
             'mo_ta' => 'max:50|unique:khoahocs,mo_ta,'.$id
         ], [
-            'ma_khoa_hoc.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_khoa_hoc.required' => 'Trường dữ liệu không được để trống',
             'ma_khoa_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_khoa_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'mo_ta.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
-            'mo_ta.unique' => 'Dữ liệu nhập vào không được trùng lặp'
+            'ma_khoa_hoc.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'mo_ta.max' => 'Dữ liệu nhập vào có tối đa 50 ký tự',
         ]);
 
         $khoahoc->ma_khoa_hoc = $request->ma_khoa_hoc;
         $khoahoc->mo_ta = $request->mo_ta;
-        $khoahoc->save();
-        return redirect()->back()->with('thongbao', 'Cập nhật thông tin thành công');
+        if ($khoahoc->save()) {
+            return redirect()->back()->with('success', 'Cập nhật thành công');
+        } else {
+            return redirect()->back()->with('error', 'Cập nhật thất bại');
+        }
     }
 
     /**

@@ -41,6 +41,21 @@ return [
             'provider' => 'users',
         ],
 
+        'quantriviens' => [
+            'driver' => 'session',
+            'provider' => 'quantriviens',
+        ],
+
+        'giangviens' => [
+            'driver' => 'session',
+            'provider' => 'giangviens',
+        ],
+
+        'sinhviens' => [
+            'driver' => 'session',
+            'provider' => 'sinhviens',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -71,6 +86,21 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'quantriviens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\QuanTriVien::class,
+        ],
+
+        'giangviens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\GiangVien::class,
+        ],
+
+        'sinhviens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SinhVien::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -96,6 +126,27 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'quantriviens' => [
+            'provider' => 'quantriviens',
+            'table' => 'quantriviens_password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'giangviens' => [
+            'provider' => 'giangviens',
+            'table' => 'giangviens_password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'sinhviens' => [
+            'provider' => 'sinhviens',
+            'table' => 'sinhviens_password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

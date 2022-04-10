@@ -12,14 +12,15 @@ class SinhVien extends Model
     protected $fillable = [
         'ma_sinh_vien',
         'ho_ten',
-        'ngay_sinh',
-        'gioi_tinh',
         'khoa_hoc_id',
         'lop_hoc_id',
         'nganh_hoc_id',
-        'mat_khau',
-        'que_quan',
         'email ',
+        'password',
+        'ngay_sinh',
+        'gioi_tinh',
+        'que_quan',
+        'so_dien_thoai',
         'avatar',
         'quyen'
     ];
@@ -37,5 +38,10 @@ class SinhVien extends Model
     public function nganhhocs()
     {
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
+    }
+
+    public function thongtins()
+    {
+        return $this->hasOne(ThongTin::class, 'id', 'thong_tin_id');
     }
 }

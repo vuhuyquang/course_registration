@@ -97,18 +97,21 @@ class KhoaController extends Controller
             'ma_khoa' => 'required|max:20|unique:khoas,ma_khoa,'.$id,
             'ten_khoa' => 'required|max:50|unique:khoas,ten_khoa,'.$id,
         ], [
-            'ma_khoa.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_khoa.required' => 'Trường dữ liệu không được để trống',
             'ma_khoa.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_khoa.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'ten_khoa.required' => 'Dữ liệu nhập vào không được để trống',
-            'ten_khoa.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ten_khoa.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự'
+            'ma_khoa.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'ten_khoa.required' => 'Trường dữ liệu không được để trống',
+            'ten_khoa.max' => 'Dữ liệu nhập vào có tối đa 50 ký tự',
+            'ten_khoa.unique' => 'Trường dữ liệu không được trùng lặp'
         ]);
 
         $khoa->ma_khoa = $request->ma_khoa;
         $khoa->ten_khoa = $request->ten_khoa;
-        $khoa->save();
-        return redirect()->back()->with('thongbao', 'Cập nhật thông tin thành công');
+        if ($khoa->save()) {
+            return redirect()->back()->with('success', 'Cập nhật thành công');
+        } else {
+            return redirect()->back()->with('error', 'Cập nhật thất bại');
+        }
     }
 
     /**

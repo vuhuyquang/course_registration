@@ -1,2 +1,2 @@
-@include('layouts.header')
-@include('layouts.tintuc')
+{{-- @include('layouts.header')
+@include('layouts.tintuc') --}}

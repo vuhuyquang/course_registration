@@ -19,12 +19,13 @@ class CreateGiangviensTable extends Migration
             $table->string('ho_ten', 50);
             $table->string('trinh_do');
             $table->integer('nganh_hoc_id');
-            $table->string('mat_khau', 255);
-            $table->date('ngay_sinh');
-            $table->string('gioi_tinh');    // Nam, nữ, khác
-            $table->string('que_quan', 80);
             $table->string('email', 50)->unique();
-            $table->string('so_dien_thoai', 30)->nullable()->default('Chưa có thông tin')->unique();
+            $table->string('password', 255);
+            $table->date('ngay_sinh');
+            $table->string('gioi_tinh');
+            $table->string('que_quan', 80);
+            $table->string('so_dien_thoai', 30)->nullable()->unique();
+            $table->text('avatar');
             $table->string('quyen')->default('teacher');
             $table->timestamps();
         });

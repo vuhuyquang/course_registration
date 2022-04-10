@@ -20,6 +20,7 @@
             <th>Khóa học</th>
             <th>Lớp học</th>
             <th>Ngành học</th>
+            <th>Email</th>
             <th>Hành động</th>
         </tr>
         @foreach ($sinhviens as $key => $sinhvien)
@@ -30,9 +31,13 @@
                 <td>{{ $sinhvien->khoahocs->ma_khoa_hoc }}</td>
                 <td>{{ $sinhvien->lophocs->ma_lop }}</td>
                 <td>{{ $sinhvien->nganhhocs->ten_nganh }}</td>
+                <td>{{ $sinhvien->email }}</td>
                 <td>
-                    <a href="{{ route('sinh-vien.edit', ['id' => $sinhvien->id]) }}" class="btn btn-sm btn-warning">
+                    <a href="{{ route('sinh-vien.profile', ['id' => $sinhvien->id]) }}" class="btn btn-sm btn-info">
                         <i style="color: white;" class="fas fa-eye"></i>
+                    </a>
+                    <a href="{{ route('sinh-vien.resetPassword', ['id' => $sinhvien->id]) }}" class="btn btn-sm btn-warning">
+                        <i style="color: white;" class="fas fa-key"></i>
                     </a>
                     <a href="{{ route('sinh-vien.edit', ['id' => $sinhvien->id]) }}" class="btn btn-sm btn-success">
                         <i class="fas fa-edit"></i>

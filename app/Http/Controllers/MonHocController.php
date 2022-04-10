@@ -45,26 +45,35 @@ class MonHocController extends Controller
             'so_tin_chi' => 'required|numeric',
             'nganh_id' => 'required|numeric'
         ], [
-            'ma_mon_hoc.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_mon_hoc.required' => 'Trường dữ liệu không được để trống',
             'ma_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_mon_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'ten_mon_hoc.required' => 'Dữ liệu nhập vào không được để trống',
-            'ten_mon_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
+            'ma_mon_hoc.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'ten_mon_hoc.required' => 'Trường dữ liệu không được để trống',
+            'ten_mon_hoc.max' => 'Dữ liệu nhập vào có tối đa 50 ký tự',
             'ten_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'so_tin_chi.required' => 'Dữ liệu nhập vào không được để trống',
+            'so_tin_chi.required' => 'Trường dữ liệu không được để trống',
             'so_tin_chi.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
-            'nganh_id.required' => 'Dữ liệu nhập vào không được để trống',
+            'nganh_id.required' => 'Trường dữ liệu không được để trống',
             'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
         ]);
-
-        MonHoc::insert([
-            'ma_mon_hoc' => $request->ma_mon_hoc,
-            'nganh_id' => $request->nganh_id,
-            'ten_mon_hoc' => $request->ten_mon_hoc,
-            'so_tin_chi' => $request->so_tin_chi,
-            'hoc_phi' => $request->hoc_phi
-        ]);
-        return redirect()->back()->with('thongbao', 'Thêm mới thành công');
+        $monhoc = new MonHoc;
+        $monhoc->ma_mon_hoc = $request->ma_mon_hoc;
+        $monhoc->nganh_id = $request->nganh_id;
+        $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
+        $monhoc->so_tin_chi = $request->so_tin_chi;
+        $monhoc->hoc_phi = $request->hoc_phi;
+        // MonHoc::insert([
+        //     'ma_mon_hoc' => $request->ma_mon_hoc,
+        //     'nganh_id' => $request->nganh_id,
+        //     'ten_mon_hoc' => $request->ten_mon_hoc,
+        //     'so_tin_chi' => $request->so_tin_chi,
+        //     'hoc_phi' => $request->hoc_phi
+        // ]);
+        if ($monhoc->save()) {
+            return redirect()->back()->with('success', 'Thêm thành công');
+        } else {
+            return redirect()->back()->with('error', 'Thêm thất bại');
+        }
     }
 
     /**
@@ -86,9 +95,9 @@ class MonHocController extends Controller
      */
     public function edit($id)
     {
-        $khoas = Khoa::all();
+        $nganhhocs = NganhHoc::all();
         $monhoc = MonHoc::find($id);
-        return view('quantrivien.qlmonhoc.sua', compact('monhoc', 'khoas'));
+        return view('quantrivien.qlmonhoc.sua', compact('monhoc', 'nganhhocs'));
     }
 
     /**
@@ -104,28 +113,31 @@ class MonHocController extends Controller
             'ma_mon_hoc' => 'required|max:20|unique:monhocs,ma_mon_hoc,'.$id,
             'ten_mon_hoc' => 'required|max:80|unique:monhocs,ten_mon_hoc,'.$id,
             'so_tin_chi' => 'required|numeric',
-            'khoa_id' => 'required|numeric'
+            'nganh_id' => 'required|numeric'
         ], [
-            'ma_mon_hoc.required' => 'Dữ liệu nhập vào không được để trống',
+            'ma_mon_hoc.required' => 'Trường dữ liệu không được để trống',
             'ma_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'ma_mon_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 20 ký tự',
-            'ten_mon_hoc.required' => 'Dữ liệu nhập vào không được để trống',
-            'ten_mon_hoc.max' => 'Dữ liệu nhập vào phải nhỏ hơn 50 ký tự',
+            'ma_mon_hoc.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
+            'ten_mon_hoc.required' => 'Trường dữ liệu không được để trống',
+            'ten_mon_hoc.max' => 'Dữ liệu nhập vào có tối đa 50 ký tự',
             'ten_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
-            'so_tin_chi.required' => 'Dữ liệu nhập vào không được để trống',
+            'so_tin_chi.required' => 'Trường dữ liệu không được để trống',
             'so_tin_chi.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
-            'khoa_id.required' => 'Dữ liệu nhập vào không được để trống',
-            'khoa_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
+            'nganh_id.required' => 'Trường dữ liệu không được để trống',
+            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
         ]);
 
         $monhoc = MonHoc::findOrFail($id);
         $monhoc->ma_mon_hoc = $request->ma_mon_hoc;
-        $monhoc->khoa_id = $request->khoa_id;
+        $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
         $monhoc->hoc_phi = $request->hoc_phi;
-        $monhoc->save();
-        return redirect()->back()->with('thongbao', 'Cập nhật thành công');
+        if ($monhoc->save()) {
+            return redirect()->back()->with('success', 'Cập nhật thành công');
+        } else {
+            return redirect()->back()->with('error', 'Cập nhật thất bại');
+        }
     }
 
     /**

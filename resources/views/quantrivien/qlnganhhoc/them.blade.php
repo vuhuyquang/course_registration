@@ -18,7 +18,7 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="khoa_id">Tên ngành <label style="color: red" for="khoa_id">*</label></label>
+            <label for="khoa_id">Tên khoa <label style="color: red" for="khoa_id">*</label></label>
             <select id="khoa_id" class="form-control" name="khoa_id" id="gioi_tinh">
                 <option value="" selected="" disabled="">--- Chọn khoa ---</option>
                 @foreach ($khoas as $khoa)

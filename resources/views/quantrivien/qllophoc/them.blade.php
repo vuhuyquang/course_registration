@@ -13,7 +13,7 @@
         <div class="form-group">
             <label for="nganh_id">Ngành <label style="color: red" for="ma_lop_hoc">*</label></label>
             <select id="nganh_id" class="form-control" name="nganh_id" id="gioi_tinh">
-                <option value="" selected="" disabled="">--- Chọn khoa ---</option>
+                <option value="" selected="" disabled="">--- Chọn ngành ---</option>
                 @foreach ($nganhhocs as $nganhhoc)
                     <option value="{{ $nganhhoc->id }}">{{ $nganhhoc->ten_nganh }}</option>
                 @endforeach

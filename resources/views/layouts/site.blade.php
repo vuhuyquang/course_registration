@@ -188,7 +188,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('mon-hoc.index') }}" class="nav-link">
+                                    <a href="{{ route('mon-hoc.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -211,7 +211,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('sinh-vien.index') }}" class="nav-link">
+                                    <a href="{{ route('sinh-vien.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -234,7 +234,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('giang-vien.index') }}" class="nav-link">
+                                    <a href="{{ route('giang-vien.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
