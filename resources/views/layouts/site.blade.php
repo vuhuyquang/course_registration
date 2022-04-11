@@ -88,7 +88,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-building"></i>
                                 <p>
                                     Khoa
                                     <i class="fas fa-angle-left right"></i>
@@ -111,7 +111,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-book-reader"></i>
                                 <p>
                                     Ngành học
                                     <i class="fas fa-angle-left right"></i>
@@ -134,7 +134,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
                                     Khóa học
                                     <i class="fas fa-angle-left right"></i>
@@ -180,7 +180,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-book-open"></i>
                                 <p>
                                     Môn học
                                     <i class="fas fa-angle-left right"></i>
@@ -203,7 +203,30 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-calendar"></i>
+                                <p>
+                                    Học kỳ
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('hoc-ky.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm mới</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('hoc-ky.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user-graduate"></i>
                                 <p>
                                     Sinh viên
                                     <i class="fas fa-angle-left right"></i>
@@ -226,7 +249,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-chalkboard-teacher"></i>
                                 <p>
                                     Giảng viên
                                     <i class="fas fa-angle-left right"></i>
@@ -249,7 +272,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-newspaper"></i>
                                 <p>
                                     Tin tức
                                     <i class="fas fa-angle-left right"></i>
@@ -299,6 +322,12 @@
                                         <div class="alert alert-success">
                                             <button type="button" class="close" data-dismiss="alert"></button>
                                             {{ Session::get('success') }}
+                                        </div>
+                                    @endif
+                                    @if (Session::has('warning'))
+                                        <div class="alert alert-warning">
+                                            <button type="button" class="close" data-dismiss="alert"></button>
+                                            {{ Session::get('warning') }}
                                         </div>
                                     @endif
                                     @yield('main')

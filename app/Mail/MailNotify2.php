@@ -31,6 +31,10 @@ class MailNotify2 extends Mailable
      */
     public function build()
     {
-        return $this->view('quantrivien.qlsinhvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản sinh viên')->with(['sinhvien' => $this->sinhvien, 'password' => $this->password]);
+        if ($this->sinhvien->quyen == 'student') {
+            return $this->view('quantrivien.qlsinhvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản sinh viên')->with(['sinhvien' => $this->sinhvien, 'password' => $this->password]);
+        } elseif ($this->sinhvien->quyen == 'teacher') {
+            return $this->view('quantrivien.qlgiangvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản giảng viên')->with(['sinhvien' => $this->sinhvien, 'password' => $this->password]);
+        }
     }
 }

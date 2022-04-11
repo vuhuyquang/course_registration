@@ -13,7 +13,7 @@
                     <tr>
                         <td style="text-align:center;">
                           <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                            <img width="60" src="{{ url('ad123') }}/dist/img/logo-utt-border.png" title="logo" alt="logo">
+                            <img width="60" src="http://utt.edu.vn/home/images/stories/logo-utt-border.png" title="logo" alt="logo">
                           </a>
                         </td>
                     </tr>
@@ -38,7 +38,7 @@
                                             Nhập tài khoản và mật khẩu sau đây để đăng nhập:<br>
                                         </p>
                                         <a href="javascript:void(0);"
-                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$sinhvien->ma_sinh_vien}}
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$sinhvien->email}}
                                         </a>
                                         <a href="javascript:void(0);"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$password}}

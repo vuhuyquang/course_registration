@@ -1,128 +1,102 @@
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa.css') }}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="{{ asset('assets/css/style_khoa_them.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/style_back.css') }}">
-@include('layouts.header')
-<div class="heading">CẬP NHẬT THÔNG TIN GIẢNG VIÊN</div>
-<div class="container mt-5">
-    @if (session('thongbao'))
-    <div class="alert alert-success">
-        <span aria-hidden="true">{{ session('thongbao') }}</span>
-    </div>
-    @endif
-    <span>
-        <a class="btn-a" href="{{ route('giang-vien.index') }}"><img style="height: 20px;" src="{{ asset('images/left-arrow.png') }}" alt="Quay lại"> Quay lại</a>
-    </span>
-    <div class="card">
-        <div class="card-heading">CẬP NHẬT THÔNG TIN GIẢNG VIÊN</div>
-        <div class="card-body">
-            <form action="{{ route('giang-vien.update', ['id' => $giangvien->id]) }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="ma_giang_vien" class="form-label">Mã giảng viên <label style="color: red;"
-                            for="ma_giang_vien">*</label></label>
-                    <input type="text" class="form-control" id="ma_giang_vien" value="{{ $giangvien->ma_giang_vien }}" name="ma_giang_vien" placeholder="Nhập mã giảng viên"
-                        required autocomplete="off">
-                    @error('ma_giang_vien')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="ho_ten" class="form-label">Họ tên <label style="color: red;"
-                            for="ho_ten">*</label></label>
-                    <input type="text" class="form-control" id="ho_ten" value="{{ $giangvien->ho_ten }}" name="ho_ten" placeholder="Nhập họ tên"
-                        required autocomplete="off">
-                    @error('ho_ten')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="trinh_do" class="form-label">Trình độ <label style="color: red;"
-                            for="trinh_do">*</label></label>
-                    <select class="form-control" name="trinh_do" id="trinh_do">
-                            <option value="{{ $giangvien->trinh_do }}" selected>{{ $giangvien->trinh_do }}</option>
-                            <option value="Cử nhân">Cử nhân</option>
-                            <option value="Kỹ sư">Kỹ sư</option>
-                            <option value="Thạc sĩ">Thạc sĩ</option>
-                            <option value="Tiến sĩ">Tiến sĩ</option>
-                    </select>
-                    @error('trinh_do')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="khoa_id" class="form-label">Khoa <label style="color: red;"
-                            for="khoa_id">*</label></label>
-                    <select class="form-control" name="khoa_id" id="khoa_id">
-                        <option value="" selected="" disabled="">--- Chọn khoa ---</option>
-                        @foreach ($khoas as $khoa)
-                            <option {{ $giangvien->khoa_id === $khoa->id ? 'selected' : '' }} value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
-                        @endforeach
-                    </select>
-                    @error('khoa_id')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="mat_khau" class="form-label">Mật khẩu <label style="color: red;"
-                            for="mat_khau">*</label></label>
-                    <input type="password" class="form-control" id="mat_khau" name="mat_khau" placeholder="Nhập mật khẩu"
-                        required autocomplete="off">
-                    @error('mat_khau')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="ngay_sinh" class="form-label">Ngày sinh <label style="color: red;"
-                        for="gioi_tinh">*</label></label>
-                    <input type="date" class="form-control" id="ngay_sinh" value="{{ $giangvien->ngay_sinh }}" name="ngay_sinh"
-                        required autocomplete="off">
-                    @error('ngay_sinh')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="gioi_tinh" class="form-label">Giới tính <label style="color: red;"
-                            for="gioi_tinh">*</label></label>
-                    <select class="form-control" name="gioi_tinh" id="gioi_tinh">
-                        <option value="{{ $giangvien->gioi_tinh }}" selected>{{ $giangvien->gioi_tinh }}</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                            <option value="Khác">Khác</option>
-                    </select>
-                    @error('gioi_tinh')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="que_quan" class="form-label">Quê quán <label style="color: red;"
-                        for="gioi_tinh">*</label></label>
-                    <input type="text" class="form-control" id="que_quan" value="{{ $giangvien->que_quan }}" name="que_quan" placeholder="Nhập quê quán"
-                        required autocomplete="off">
-                    @error('que_quan')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email <label style="color: red;"
-                        for="gioi_tinh">*</label></label>
-                    <input type="email" class="form-control" id="email" value="{{ $giangvien->email }}" name="email" placeholder="Nhập email"
-                        required autocomplete="off">
-                    @error('email')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="so_dien_thoai" class="form-label">Số điện thoại </label>
-                    <input type="text" class="form-control" id="so_dien_thoai" value="{{ $giangvien->so_dien_thoai }}" name="so_dien_thoai" placeholder="Nhập số điện thoại"
-                         autocomplete="off">
-                    @error('so_dien_thoai')
-                        <span class="form-text">{{ $message }}.</span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-primary">Thêm mới</button>
-            </form>
+@extends('layouts.site')
+@section('main')
+    <form action="{{ route('giang-vien.update', ['id' => $giangvien->id]) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="ma_giang_vien">Mã giảng viên <label style="color: red" for="ma_giang_vien">*</label></label>
+            <input id="ma_giang_vien" type="text" class="form-control" name="ma_giang_vien" value="{{ $giangvien->ma_giang_vien }}" placeholder="Nhập mã sinh viên"
+                autocomplete="off" required autofocus>
+            @error('ma_giang_vien')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
         </div>
-    </div>
-</div>
+        <div class="form-group">
+            <label for="ho_ten">Họ tên <label style="color: red" for="ho_ten">*</label></label>
+            <input id="ho_ten" type="text" class="form-control" name="ho_ten" value="{{ $giangvien->ho_ten }}" placeholder="Nhập họ tên" autocomplete="off"
+                required>
+            @error('ho_ten')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="trinh_do">Trình độ <label style="color: red" for="trinh_do">*</label></label>
+            <select id="trinh_do" class="form-control" name="trinh_do">
+                <option value="" selected="" disabled="">--- Chọn trình độ ---</option>
+                    <option {{ $giangvien->trinh_do == 'Tú tài' ? 'selected' : '' }} value="Tú tài">Tú tài</option>
+                    <option {{ $giangvien->trinh_do == 'Cử nhân' ? 'selected' : '' }} value="Cử nhân">Cử nhân</option>
+                    <option {{ $giangvien->trinh_do == 'Kỹ sư' ? 'selected' : '' }} value="Kỹ sư">Kỹ sư</option>
+                    <option {{ $giangvien->trinh_do == 'Thạc sĩ' ? 'selected' : '' }} value="Thạc sĩ">Thạc sĩ</option>
+                    <option {{ $giangvien->trinh_do == 'Tiến sĩ' ? 'selected' : '' }} value="Tiến sĩ">Tiến sĩ</option>
+                    <option {{ $giangvien->trinh_do == 'Giáo sư' ? 'selected' : '' }} value="Giáo sư">Giáo sư</option>
+            </select>
+            @error('trinh_do')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="nganh_hoc_id">Ngành <label style="color: red" for="nganh_hoc_id">*</label></label>
+            <select id="nganh_hoc_id" class="form-control" name="nganh_hoc_id" id="gioi_tinh">
+                <option value="" selected="" disabled="">--- Chọn ngành ---</option>
+                @foreach ($nganhhocs as $nganhhoc)
+                    <option {{ $giangvien->nganh_hoc_id == $nganhhoc->id ? 'selected' : '' }} value="{{ $nganhhoc->id }}">{{ $nganhhoc->ten_nganh }}</option>
+                @endforeach
+            </select>
+            @error('nganh_hoc_id')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="email">Email <label style="color: red" for="email">*</label></label>
+            <input id="email" type="email" class="form-control" name="email" value="{{ $giangvien->email }}" placeholder="Nhập tên khoa" autocomplete="off"
+                required>
+            @error('email')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="ngay_sinh">Ngày sinh <label style="color: red" for="ngay_sinh">*</label></label>
+            <input id="ngay_sinh" type="date" class="form-control" name="ngay_sinh" value="{{ $giangvien->ngay_sinh }}" placeholder="Nhập ngày sinh" autocomplete="off"
+                required>
+            @error('ngay_sinh')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="gioi_tinh">Giới tính <label style="color: red" for="gioi_tinh">*</label></label>
+            <select id="gioi_tinh" class="form-control" name="gioi_tinh" id="gioi_tinh">
+                <option value="" selected="" disabled="">--- Chọn giới tính ---</option>
+                <option {{ $giangvien->gioi_tinh == 'Nam' ? 'selected' : '' }} value="Nam">Nam</option>
+                <option {{ $giangvien->gioi_tinh == 'Nữ' ? 'selected' : '' }} value="Nữ">Nữ</option>
+                <option {{ $giangvien->gioi_tinh == 'Khác' ? 'selected' : '' }} value="Khác">Khác</option>
+            </select>
+            @error('gioi_tinh')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="que_quan">Quê quán <label style="color: red" for="que_quan">*</label></label>
+            <input id="que_quan" type="text" class="form-control" name="que_quan" value="{{ $giangvien->que_quan }}" placeholder="Nhập quê quán" autocomplete="off"
+                required>
+            @error('que_quan')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="so_dien_thoai">Số điện thoại <label style="color: red" for="so_dien_thoai">*</label></label>
+            <input id="so_dien_thoai" type="text" class="form-control" name="so_dien_thoai" value="{{ $giangvien->so_dien_thoai }}" placeholder="Nhập số điện thoại" autocomplete="off"
+                required>
+            @error('so_dien_thoai')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="avatar">Ảnh đại diện <label style="color: red" for="avatar">*</label></label>
+            <input id="avatar" type="file" class="form-control" name="avatar" placeholder="Nhập ảnh đại diện" autocomplete="off"
+                required>
+            @error('avatar')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+    </form>
+@stop()

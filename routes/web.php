@@ -68,8 +68,7 @@ Route::prefix('quan-tri-vien')->group(function () {
         Route::get('/sua/{id}', [HocKyController::class, 'edit'])->name('hoc-ky.edit');
         Route::post('/sua/{id}', [HocKyController::class, 'update'])->name('hoc-ky.update');
         Route::get('/xoa/{id}', [HocKyController::class, 'destroy'])->name('hoc-ky.destroy');
-        Route::get('/xet-trang-thai', [HocKyController::class, 'setstatus'])->name('hoc-ky.setstatus');
-        Route::post('/xet-trang-thai', [HocKyController::class, 'storesetstatus'])->name('hoc-ky.storesetstatus');
+        Route::get('/xet-trang-thai/{id}', [HocKyController::class, 'setStatus'])->name('hoc-ky.setStatus');
     });
 
     Route::prefix('khoa-hoc')->group(function () {

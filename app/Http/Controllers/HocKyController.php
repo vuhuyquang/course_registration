@@ -50,8 +50,11 @@ class HocKyController extends Controller
         $hocky = new HocKy;
         $hocky->ma_hoc_ky = $request->ma_hoc_ky;
         $hocky->mo_ta = $request->mo_ta;
-        $hocky->save();
-        return redirect()->back()->with('thongbao', 'Thêm mới thành công');
+        if ($hocky->save()) {
+            return redirect()->back()->with('success', 'Thêm thành công');
+        } else {
+            return redirect()->back()->with('error', 'Thêm thất bại');
+        }
     }
 
     /**
@@ -60,18 +63,19 @@ class HocKyController extends Controller
      * @param  \App\Models\HocKy  $hocKy
      * @return \Illuminate\Http\Response
      */
-    public function setstatus()
+    public function setStatus($id)
     {
-        $hockys = HocKy::all();
-        return view('quantrivien.qlhocky.xettrangthai', compact('hockys'));
-    }
-
-    public function storesetstatus(Request $request)
-    {
-        $hocky = HocKy::findOrFail($request->id);
-        $hocky->trang_thai = $request->trang_thai;
-        $hocky->save();
-        return redirect()->back()->with('thongbao', 'Xét trạng thái thành công');
+        $hocky = HocKy::findOrFail($id);
+        if ($hocky->trang_thai == 'Đóng đăng ký') {
+            $hocky->trang_thai = 'Mở đăng ký';
+        } elseif ($hocky->trang_thai == 'Mở đăng ký') {
+            $hocky->trang_thai = 'Đóng đăng ký';
+        }
+        if ($hocky->save()) {
+            return redirect()->back()->with('success', 'Xét trạng thái thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xét trạng thái thất bại');
+        }
     }
 
     /**
@@ -110,8 +114,11 @@ class HocKyController extends Controller
 
         $hocky->ma_hoc_ky = $request->ma_hoc_ky;
         $hocky->mo_ta = $request->mo_ta;
-        $hocky->save();
-        return redirect()->back()->with('thongbao', 'Cập nhật thành công');
+        if ($hocky->save()) {
+            return redirect()->back()->with('success', 'Cập nhật thành công');
+        } else {
+            return redirect()->back()->with('error', 'Cập nhật thất bại');
+        }
     }
 
     /**
@@ -123,7 +130,10 @@ class HocKyController extends Controller
     public function destroy($id)
     {
         $hocky = HocKy::findOrFail($id);
-        $hocky->delete();
-        return redirect()->back()->with('thongbao', 'Xóa thành công');
+        if ($hocky->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }
     }
 }

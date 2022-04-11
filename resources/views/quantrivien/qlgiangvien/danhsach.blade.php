@@ -36,7 +36,7 @@
                 <a href="{{ route('giang-vien.profile', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-info">
                     <i style="color: white;" class="fas fa-eye"></i>
                 </a>
-                <a href="" class="btn btn-sm btn-warning">
+                <a href="{{ route('giang-vien.resetPassword', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-warning">
                     <i style="color: white;" class="fas fa-key"></i>
                 </a>
                 <a href="{{ route('giang-vien.edit', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-success">

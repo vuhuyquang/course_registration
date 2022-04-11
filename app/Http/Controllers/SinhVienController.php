@@ -105,7 +105,7 @@ class SinhVienController extends Controller
             $sendAccount = new SendEmailSendAccount($sinhvien, $password);
             dispatch($sendAccount);
             $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-            return redirect()->back()->with('success', 'Thêm thành công');
+            return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
         } else {
             return redirect()->back()->with('error', 'Thêm thất bại');
         }   
