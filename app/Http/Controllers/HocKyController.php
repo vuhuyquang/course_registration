@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HocPhan;
 use App\Models\HocKy;
+use App\Models\MonHoc;
 use Illuminate\Http\Request;
+use DB;
 
 class HocKyController extends Controller
 {
@@ -65,11 +68,31 @@ class HocKyController extends Controller
      */
     public function setStatus($id)
     {
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
         $hocky = HocKy::findOrFail($id);
-        if ($hocky->trang_thai == 'Đóng đăng ký') {
-            $hocky->trang_thai = 'Mở đăng ký';
-        } elseif ($hocky->trang_thai == 'Mở đăng ký') {
-            $hocky->trang_thai = 'Đóng đăng ký';
+        if ($hocky->trang_thai == 'Đóng' && $sl == 0) {
+            //
+                $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
+                foreach ($monhocmodks as $key => $monhocmodk) {
+                    for ($i=1; $i <= 3 ; $i++) { 
+                        $hocphan = new HocPhan;
+                        $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc . '_' . $i;
+                        $hocphan->mon_hoc_id = $monhocmodk->id;
+                        $hocphan->save();
+                    }
+                }
+            //
+            $hocky->trang_thai = 'Mở';
+        } elseif ($hocky->trang_thai == 'Mở') {
+            $hocphan = DB::table('hocphans')->delete();
+            $hocky->trang_thai = 'Đóng';
+            $monhocs = MonHoc::where('duoc_phep', 'false')->get();
+            foreach ($monhocs as $key => $monhoc) {
+                $monhoc->duoc_phep = 'true';
+                $monhoc->save();
+            }
+        } else {
+            return redirect()->back()->with('error', 'Chỉ được mở 1 học kỳ duy nhất');
         }
         if ($hocky->save()) {
             return redirect()->back()->with('success', 'Xét trạng thái thành công');

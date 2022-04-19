@@ -15,16 +15,18 @@ class SendEmailSendAccount implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $sinhvien;
+    protected $hoten;
+    protected $taikhoan;
     protected $password;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($sinhvien, $password)
+    public function __construct($hoten, $taikhoan, $password)
     {
-        $this->sinhvien = $sinhvien;
+        $this->hoten = $hoten;
+        $this->taikhoan = $taikhoan;
         $this->password = $password;
     }
 
@@ -35,6 +37,6 @@ class SendEmailSendAccount implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->sinhvien->email)->send(new MailNotify($this->sinhvien, $this->password));
+        Mail::to($this->taikhoan->email)->send(new MailNotify($this->hoten, $this->taikhoan, $this->password));
     }
 }

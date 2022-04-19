@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\SinhVien;
 use App\Models\NganhHoc;
 use App\Models\KhoaHoc;
+use App\Models\HocPhan;
+use App\Models\SVDK;
 use App\Models\LopHoc;
+use App\Models\MonHoc;
+use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Jobs\SendEmailSendAccount;
 use App\Jobs\SendMailResetPassword;
 use Image;
 use File;
+use Auth;
 
 class SinhVienController extends Controller
 {
@@ -56,7 +61,7 @@ class SinhVienController extends Controller
             'ngay_sinh' => 'required|date|before:today',
             'gioi_tinh' => 'required|max:20',
             'que_quan' => 'required|max:80',
-            'email' => 'required|email|max:50|unique:sinhviens,email'
+            'email' => 'required|email|max:50|unique:taikhoans,email'
         ], [
             'ma_sinh_vien.required' => 'Trường dữ liệu không được để trống',
             'ma_sinh_vien.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -86,29 +91,45 @@ class SinhVienController extends Controller
             $data = $this->resizeimage($request);
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
-        } 
-        $sinhvien = new SinhVien;
-        $sinhvien->ma_sinh_vien = $request->ma_sinh_vien;
-        $sinhvien->ho_ten = $request->ho_ten;
-        $sinhvien->nganh_hoc_id = $request->nganh_hoc_id;
-        $sinhvien->khoa_hoc_id = $request->khoa_hoc_id;
-        $sinhvien->lop_hoc_id = $request->lop_hoc_id;
-        $password = $random = Str::random(10);
-        $sinhvien->password = bcrypt($password);
-        $sinhvien->ngay_sinh = $request->ngay_sinh;
-        $sinhvien->gioi_tinh = $request->gioi_tinh;
-        $sinhvien->que_quan = $request->que_quan;
-        $sinhvien->email = $request->email;
-        $sinhvien->avatar = $tenanh;
-        $sinhvien->so_dien_thoai = $request->so_dien_thoai;
-        if ($sinhvien->save()) {
-            $sendAccount = new SendEmailSendAccount($sinhvien, $password);
-            dispatch($sendAccount);
-            $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-            return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
+        } else {
+            $tenanh = 'avatar_default';
+        }
+
+        $taikhoan = new TaiKhoan;
+        $taikhoan->email = $request->email;
+        $password = Str::random(10);
+        $taikhoan->password = bcrypt($password);
+        $taikhoan->quyen = 1;
+        if ($taikhoan->save()) {
+            $sinhvien = new SinhVien;
+            $sinhvien->ma_sinh_vien = $request->ma_sinh_vien;
+            $sinhvien->ho_ten = $request->ho_ten;
+            $sinhvien->nganh_hoc_id = $request->nganh_hoc_id;
+            $sinhvien->khoa_hoc_id = $request->khoa_hoc_id;
+            $sinhvien->lop_hoc_id = $request->lop_hoc_id;
+            $sinhvien->ngay_sinh = $request->ngay_sinh;
+            $sinhvien->gioi_tinh = $request->gioi_tinh;
+            $sinhvien->que_quan = $request->que_quan;
+            $sinhvien->avatar = $tenanh;
+            $sinhvien->so_dien_thoai = $request->so_dien_thoai;
+            $sinhvien->tai_khoan_id = $taikhoan->id;
+            if ($sinhvien->save()) {
+                if ($request->has('avatar')) {
+                    $hinhanh_resize->save(public_path('uploads/' . $tenanh));
+                } 
+                if (dispatch(new SendEmailSendAccount($sinhvien->ho_ten, $taikhoan, $password))) {
+                    return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
+                } else {
+                    return redirect()->back()->with('success', 'Thêm thành công. Đã có lỗi khi gửi mail');
+                }
+                
+            } else {
+                return redirect()->back()->with('error', 'Thêm thất bại');
+            }  
         } else {
             return redirect()->back()->with('error', 'Thêm thất bại');
-        }   
+        }
+        
     }
 
     public function resizeimage($request)
@@ -158,6 +179,8 @@ class SinhVienController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $sinhvien = SinhVien::findOrFail($id);
+        $newid = $sinhvien->taikhoans->id;
         $request->validate([
             'ma_sinh_vien' => 'required|max:20|unique:sinhviens,ma_sinh_vien,'.$id,
             'ho_ten' => 'required|max:50',
@@ -167,7 +190,7 @@ class SinhVienController extends Controller
             'ngay_sinh' => 'required|date|before:today',
             'gioi_tinh' => 'required|max:20',
             'que_quan' => 'required|max:80',
-            'email' => 'required|email|max:50|unique:sinhviens,email,'.$id
+            'email' => 'required|email|max:50|unique:taikhoans,email,'.$newid,
         ], [
             'ma_sinh_vien.required' => 'Trường dữ liệu không được để trống',
             'ma_sinh_vien.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -197,23 +220,32 @@ class SinhVienController extends Controller
             $data = $this->resizeimage($request);
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
+        } else {
+            $tenanh = 'avatar_default';
         }
 
         $sinhvien = SinhVien::findOrFail($id);
-        $sinhvien->ma_sinh_vien = $request->ma_sinh_vien;
-        $sinhvien->ho_ten = $request->ho_ten;
-        $sinhvien->nganh_hoc_id = $request->nganh_hoc_id;
-        $sinhvien->khoa_hoc_id = $request->khoa_hoc_id;
-        $sinhvien->lop_hoc_id = $request->lop_hoc_id;
-        $sinhvien->ngay_sinh = $request->ngay_sinh;
-        $sinhvien->gioi_tinh = $request->gioi_tinh;
-        $sinhvien->que_quan = $request->que_quan;
-        $sinhvien->email = $request->email;
-        $sinhvien->avatar = $tenanh;
-        $sinhvien->so_dien_thoai = $request->so_dien_thoai;
-        if ($sinhvien->save()) {
-            $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-            return redirect()->back()->with('success', 'Cập nhật thành công');
+        $taikhoan = TaiKhoan::findOrFail($sinhvien->tai_khoan_id);
+        $taikhoan->email = $request->email;
+        if ($taikhoan->save()) {
+            $sinhvien->ma_sinh_vien = $request->ma_sinh_vien;
+            $sinhvien->ho_ten = $request->ho_ten;
+            $sinhvien->nganh_hoc_id = $request->nganh_hoc_id;
+            $sinhvien->khoa_hoc_id = $request->khoa_hoc_id;
+            $sinhvien->lop_hoc_id = $request->lop_hoc_id;
+            $sinhvien->ngay_sinh = $request->ngay_sinh;
+            $sinhvien->gioi_tinh = $request->gioi_tinh;
+            $sinhvien->que_quan = $request->que_quan;
+            $sinhvien->avatar = $tenanh;
+            $sinhvien->so_dien_thoai = $request->so_dien_thoai;
+            if ($sinhvien->save()) {
+                if ($request->has('avatar')) {
+                    $hinhanh_resize->save(public_path('uploads/' . $tenanh));
+                } 
+                return redirect()->back()->with('success', 'Cập nhật thành công');
+            } else {
+                return redirect()->back()->with('error', 'Cập nhật thất bại');
+            }
         } else {
             return redirect()->back()->with('error', 'Cập nhật thất bại');
         }
@@ -229,7 +261,8 @@ class SinhVienController extends Controller
     {
         $sinhvien = SinhVien::findOrFail($id);
         $duongdan = public_path('uploads/' . $sinhvien->avatar);
-        if ($sinhvien->delete()) {
+        $taikhoan = TaiKhoan::findOrFail($sinhvien->tai_khoan_id);
+        if ($sinhvien->delete() && $taikhoan->delete()) {
             if (File::exists($duongdan)) {
                 unlink($duongdan);
             }
@@ -242,12 +275,11 @@ class SinhVienController extends Controller
     public function resetPassword($id)
     {
         $sinhvien = SinhVien::findOrFail($id);
+        $taikhoan = TaiKhoan::findOrFail($sinhvien->tai_khoan_id);
         $password = $random = Str::random(10);
-        $sinhvien->password = bcrypt($password);
-
-        if ($sinhvien->save()) {
-            $resetPassword = new SendMailResetPassword($sinhvien, $password);
-            dispatch($resetPassword);
+        $taikhoan->password = bcrypt($password);
+        if ($taikhoan->save()) {
+            dispatch(new SendMailResetPassword($sinhvien->ho_ten, $taikhoan, $password));
             return redirect()->back()->with('success', 'Đã gửi mail đặt lại mật khẩu');
         } else {
             return redirect()->back()->with('error', 'Đặt lại mật khẩu thất bại');
@@ -258,5 +290,56 @@ class SinhVienController extends Controller
     {
         $sinhvien = SinhVien::findOrFail($id);
         return view('quantrivien.qlsinhvien.hosocanhan', compact('sinhvien'));
+    }
+
+    public function lookup()
+    {
+        $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->get();
+        return view('sinhvien.lophocmodk', compact('monhocs'));
+    }
+
+    public function lookupid($id)
+    {
+        $hocphans = HocPhan::where('mon_hoc_id', $id)->get();
+        return view('sinhvien.danhsachhocphan', compact('hocphans'));
+    }
+
+    public function register()
+    {
+        $svdks = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
+        return view('sinhvien.dangkymonhoc', compact('svdks'));
+    }
+
+    public function registerStore(Request $request)
+    {
+        $request->validate([
+            'ma_hoc_phan' => 'required',
+        ], [
+            'ma_hoc_phan.required' => 'Trường dữ liệu không được để trống',
+        ]);
+        
+        $hocphans = HocPhan::where('ma_hoc_phan', $request->ma_hoc_phan)->get();
+        foreach ($hocphans as $key => $hocphan) {
+            $hocphanid = $hocphan->id;
+        }
+        $sinhviens = SinhVien::where('tai_khoan_id', Auth::user()->id)->get();
+        foreach ($sinhviens as $key => $sinhvien) {
+            $sinhvienid = $sinhvien->id;
+            $sinhviennganhid = $sinhvien->nganh_hoc_id;
+        }
+        if ($hocphan) {
+            $svdk = new SVDK;
+            $svdk->hoc_phan_id = $hocphanid;
+            $svdk->sinh_vien_id = $sinhvienid;
+            $svdk->nganh_id = $sinhviennganhid;
+            $svdk->thoi_gian_dk = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
+            if ($svdk->save()) {
+                return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+            } else {
+                return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+        }
     }
 }

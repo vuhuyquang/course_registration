@@ -7,7 +7,7 @@
         </div>
         <div class="form-group">
             <label for="ma_hoc_ky">Mã học kỳ <label style="color: red" for="ma_hoc_ky">*</label></label>
-            <input id="ma_hoc_ky" type="text" class="form-control" name="ma_hoc_ky" placeholder="Nhập mã học kỳ"
+            <input id="ma_hoc_ky" type="text" class="form-control form-control-sm" name="ma_hoc_ky" placeholder="Nhập mã học kỳ"
                 autocomplete="off" required autofocus>
             @error('ma_hoc_ky')
                 <small class="help-block">{{ $message }}</small>
@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="mo_ta">Mô tả <label style="color: red" for="mo_ta">*</label></label>
-            <input id="mo_ta" type="text" class="form-control" name="mo_ta" placeholder="Nhập mô tả" autocomplete="off"
+            <input id="mo_ta" type="text" class="form-control form-control-sm" name="mo_ta" placeholder="Nhập mô tả" autocomplete="off"
                 required>
             @error('mo_ta')
                 <small class="help-block">{{ $message }}</small>

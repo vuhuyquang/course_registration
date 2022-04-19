@@ -43,7 +43,7 @@
                             <i class="fas fa-key"></i> Đổi mật khẩu
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">
+                        <a href="{{ route('getLogout') }}" class="dropdown-item">
                             <i class="fas fa-sign-out-alt"></i> Đăng xuất
                         </a>
                     </div>
@@ -58,7 +58,7 @@
             <a href="../../index3.html" class="brand-link">
                 <img src="{{ url('ad123') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE</span>
+                <span class="brand-text font-weight-light">Quản trị viên</span>
             </a>
 
             <!-- Sidebar -->
@@ -86,6 +86,7 @@
                                 </p>
                             </a>
                         </li>
+                        @if (Auth::user()->quyen == 3)
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-building"></i>
@@ -136,13 +137,13 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>
-                                    Khóa học
+                                    Niên khóa
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('khoa-hoc.store') }}" class="nav-link">
+                                    <a href="{{ route('khoa-hoc.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -165,7 +166,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('lop-hoc.store') }}" class="nav-link">
+                                    <a href="{{ route('lop-hoc.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
@@ -293,6 +294,26 @@
                                 </li>
                             </ul>
                         </li>
+                        @elseif (Auth::user()->quyen == 1)
+                        <li class="nav-item">
+                            <a href="{{ route('sinhvien.lookup') }}" class="nav-link">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>
+                                    Tra cứu môn học
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sinhvien.register') }}" class="nav-link">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>
+                                    Đăng ký học phần
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

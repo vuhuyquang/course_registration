@@ -20,14 +20,12 @@ class CreateSinhviensTable extends Migration
             $table->integer('khoa_hoc_id');
             $table->integer('lop_hoc_id');
             $table->integer('nganh_hoc_id');
-            $table->string('email', 50)->unique();
-            $table->string('password', 255);
             $table->date('ngay_sinh');
             $table->string('gioi_tinh');
             $table->string('que_quan', 80);
             $table->string('so_dien_thoai', 30)->nullable()->unique();
             $table->text('avatar')->default('avatar_default.png');
-            $table->string('quyen')->default('student');
+            $table->integer('tai_khoan_id');
             $table->timestamps();
         });
     }

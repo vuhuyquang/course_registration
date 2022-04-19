@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\MonHoc;
 use App\Models\Khoa;
 use App\Models\NganhHoc;
+use App\Models\HocKy;
 use Illuminate\Http\Request;
+use DB;
 
 class MonHocController extends Controller
 {
@@ -61,7 +63,6 @@ class MonHocController extends Controller
         $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
-        $monhoc->hoc_phi = $request->hoc_phi;
         // MonHoc::insert([
         //     'ma_mon_hoc' => $request->ma_mon_hoc,
         //     'nganh_id' => $request->nganh_id,
@@ -132,7 +133,6 @@ class MonHocController extends Controller
         $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
-        $monhoc->hoc_phi = $request->hoc_phi;
         if ($monhoc->save()) {
             return redirect()->back()->with('success', 'Cập nhật thành công');
         } else {
@@ -153,6 +153,32 @@ class MonHocController extends Controller
             return redirect()->back()->with('success', 'Xóa thành công');
         } else {
             return redirect()->back()->with('error', 'Xóa thất bại');
+        }
+    }
+
+    public function block($id)
+    {
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($sl == 0) {
+            $monhoc = MonHoc::findOrFail($id);
+            if ($monhoc->duoc_phep == 1) {
+                $monhoc->duoc_phep = 0;
+                if ($monhoc->save()) {
+                    return redirect()->back()->with('success', 'Môn học này sẽ không thể đăng ký');
+                } else {
+                    return redirect()->back()->with('error', 'Khóa môn học thất bại');
+                }  
+            } 
+            elseif ($monhoc->duoc_phep == 0) {
+                $monhoc->duoc_phep = 1;
+                if ($monhoc->save()) {
+                    return redirect()->back()->with('success', 'Môn học này sẽ có thể đăng ký');
+                } else {
+                    return redirect()->back()->with('error', 'Mở khóa môn học thất bại');
+                }  
+            }
+        } else {
+            return redirect()->back()->with('error', 'Không thể khóa môn học khi học kỳ đang mở');
         }
     }
 }

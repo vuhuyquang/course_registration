@@ -12,7 +12,7 @@
     </form>
 </div>
 <hr>
-<table style="text-align: center" class="table table-hover">
+<table style="text-align: center" class="table table-hover table-sm">
     <tr>
         <th>STT</th>
         <th>Mã học kỳ</th>
@@ -25,7 +25,13 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $hocky->ma_hoc_ky }}</td>
             <td>{{ $hocky->mo_ta }}</td>
-            <td>{{ $hocky->trang_thai }}</td>
+            <td>
+                @if ($hocky->trang_thai == 'Mở')
+                    <span class="badge badge-success">Mở</span>
+                @else
+                    <span class="badge badge-danger">Đóng</span>
+                @endif
+            </td>
             <td>
                 <a href="{{ route('hoc-ky.setStatus', ['id' => $hocky->id]) }}" class="btn btn-sm btn-warning">
                     <i style="color: white;" class="fas fa-power-off"></i>

@@ -65,11 +65,6 @@ class KhoaController extends Controller
      * @param  \App\Models\Khoa  $khoa
      * @return \Illuminate\Http\Response
      */
-    public function classlist($id)
-    {
-        $lophocs = LopHoc::where('khoa_id', '=', $id)->get();
-        return view('quantrivien.qlkhoa.danhsachlop', compact('lophocs'));
-    }
 
     /**
      * Show the form for editing the specified resource.

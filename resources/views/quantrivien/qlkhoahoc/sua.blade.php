@@ -3,8 +3,8 @@
     <form action="{{ route('khoa-hoc.update', ['id' => $khoahoc->id]) }}" method="POST">
         @csrf
         <div class="form-group">
-            <label for="ma_khoa_hoc">Mã khóa học <label style="color: red" for="ma_khoa_hoc">*</label></label>
-            <input type="text" class="form-control" id="ma_khoa_hoc" name="ma_khoa_hoc" value="{{ $khoahoc->ma_khoa_hoc }}" placeholder="Nhập mã ngành" autocomplete="off"
+            <label for="ma_khoa_hoc">Mã niên khóa <label style="color: red" for="ma_khoa_hoc">*</label></label>
+            <input type="text" class="form-control form-control-sm" id="ma_khoa_hoc" name="ma_khoa_hoc" value="{{ $khoahoc->ma_khoa_hoc }}" placeholder="Nhập mã niên khóa" autocomplete="off"
                 required>
             @error('ma_khoa_hoc')
                 <small class="help-block">{{ $message }}</small>
@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
             <label for="mo_ta">Mô tả</label>
-            <input type="text" class="form-control" id="mo_ta" name="mo_ta" value="{{ $khoahoc->mo_ta }}" placeholder="Nhập tên ngành" autocomplete="off">
+            <input type="text" class="form-control form-control-sm" id="mo_ta" name="mo_ta" value="{{ $khoahoc->mo_ta }}" placeholder="Nhập tên ngành" autocomplete="off">
             @error('mo_ta')
                 <small class="help-block">{{ $message }}</small>
             @enderror

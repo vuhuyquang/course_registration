@@ -4,7 +4,7 @@
         @csrf
         <div class="form-group">
             <label for="ma_khoa">Mã khoa <label style="color: red" for="ma_khoa">*</label></label>
-            <input id="ma_khoa" type="text" class="form-control" name="ma_khoa" placeholder="Nhập mã khoa"
+            <input id="ma_khoa" type="text" class="form-control form-control-sm" name="ma_khoa" placeholder="Nhập mã khoa"
                 autocomplete="off" required autofocus>
             @error('ma_khoa')
                 <small class="help-block">{{ $message }}</small>
@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
             <label for="ten_khoa">Tên khoa <label style="color: red" for="ten_khoa">*</label></label>
-            <input id="ten_khoa" type="text" class="form-control" name="ten_khoa" placeholder="Nhập tên khoa" autocomplete="off"
+            <input id="ten_khoa" type="text" class="form-control form-control-sm" name="ten_khoa" placeholder="Nhập tên khoa" autocomplete="off"
                 required>
             @error('ten_khoa')
                 <small class="help-block">{{ $message }}</small>

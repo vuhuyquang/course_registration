@@ -11,16 +11,18 @@ class MailNotify2 extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $sinhvien;
+    public $hoten;
+    public $taikhoan;
     public $password;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($sinhvien, $password)
+    public function __construct($hoten, $taikhoan, $password)
     {
-        $this->sinhvien = $sinhvien;
+        $this->hoten = $hoten;
+        $this->taikhoan = $taikhoan;
         $this->password = $password;
     }
 
@@ -31,10 +33,10 @@ class MailNotify2 extends Mailable
      */
     public function build()
     {
-        if ($this->sinhvien->quyen == 'student') {
-            return $this->view('quantrivien.qlsinhvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản sinh viên')->with(['sinhvien' => $this->sinhvien, 'password' => $this->password]);
-        } elseif ($this->sinhvien->quyen == 'teacher') {
-            return $this->view('quantrivien.qlgiangvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản giảng viên')->with(['sinhvien' => $this->sinhvien, 'password' => $this->password]);
+        if ($this->taikhoan->quyen == 1) {
+            return $this->view('quantrivien.qlsinhvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản sinh viên')->with(['hoten' => $this->hoten, 'password' => $this->password]);
+        } elseif ($this->taikhoan->quyen == 2) {
+            return $this->view('quantrivien.qlgiangvien.caplaimatkhau')->subject('Đặt lại mật khẩu tài khoản giảng viên')->with(['hoten' => $this->hoten, 'password' => $this->password]);
         }
     }
 }

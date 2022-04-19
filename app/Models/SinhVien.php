@@ -15,14 +15,12 @@ class SinhVien extends Model
         'khoa_hoc_id',
         'lop_hoc_id',
         'nganh_hoc_id',
-        'email ',
-        'password',
         'ngay_sinh',
         'gioi_tinh',
         'que_quan',
         'so_dien_thoai',
         'avatar',
-        'quyen'
+        'tai_khoan_id'
     ];
 
     public function khoahocs()
@@ -40,8 +38,8 @@ class SinhVien extends Model
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
     }
 
-    public function thongtins()
+    public function taikhoans()
     {
-        return $this->hasOne(ThongTin::class, 'id', 'thong_tin_id');
+        return $this->hasOne(TaiKhoan::class, 'id', 'tai_khoan_id');
     }
 }

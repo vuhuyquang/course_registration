@@ -14,14 +14,12 @@ class GiangVien extends Model
         'ho_ten',
         'trinh_do',
         'nganh_hoc_id',
-        'email',
-        'password',
         'ngay_sinh',
         'gioi_tinh',
         'que_quan',
         'so_dien_thoai',
         'avatar',
-        'quyen'
+        'tai_khoan_id'
     ];
 
     public function svdks()

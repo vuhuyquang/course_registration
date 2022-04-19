@@ -19,7 +19,7 @@ class CreateMonhocsTable extends Migration
             $table->integer('nganh_id');
             $table->string('ten_mon_hoc', 80);
             $table->integer('so_tin_chi');
-            $table->double('hoc_phi');
+            $table->string('duoc_phep')->default(1);   //1:đồng ý, 0:không đồng ý
             $table->timestamps();
         });
     }

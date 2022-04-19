@@ -12,7 +12,7 @@
         </form>
     </div>
     <hr>
-    <table style="text-align: center" class="table table-hover">
+    <table style="text-align: center" class="table table-hover table-sm">
         <tr>
             <th>STT</th>
             <th>Mã khóa học</th>

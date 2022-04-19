@@ -19,14 +19,12 @@ class CreateQuantriviensTable extends Migration
             $table->string('ho_ten');
             $table->string('trinh_do');
             $table->string('don_vi');
-            $table->string('email')->unique();
-            $table->string('password');
             $table->date('ngay_sinh');
             $table->string('gioi_tinh');
             $table->string('que_quan', 80);
             $table->string('so_dien_thoai', 30)->nullable()->unique();
             $table->text('avatar');
-            $table->string('quyen')->default('admin');
+            $table->integer('tai_khoan_id');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSvdksTable extends Migration
+class CreateTaikhoansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateSvdksTable extends Migration
      */
     public function up()
     {
-        Schema::create('svdks', function (Blueprint $table) {
+        Schema::create('taikhoans', function (Blueprint $table) {
             $table->id();
-            $table->string('hoc_phan_id');
-            $table->string('sinh_vien_id');
-            $table->string('giang_vien_id')->nullable();
-            $table->string('nganh_id');
-            $table->date('thoi_gian_dk');
+            $table->string('email', 60);
+            $table->string('password', 255);
+            $table->integer('quyen');   // 1:sv, 2:gv, 3:qtv
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateSvdksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('svdks');
+        Schema::dropIfExists('taikhoans');
     }
 }

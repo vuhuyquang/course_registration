@@ -13,7 +13,7 @@
                     <tr>
                         <td style="text-align:center;">
                           <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                            <img width="60" src="http://utt.edu.vn/home/images/stories/logo-utt-border.png" title="logo" alt="logo">
+                            <img width="200" src="https://utt.edu.vn/uploads/images/site/1461517779logo.png" title="logo" alt="logo">
                           </a>
                         </td>
                     </tr>
@@ -33,12 +33,12 @@
                                         <span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                                         <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
-                                            Xin chào {{ $sinhvien->ho_ten }},<br>
+                                            Xin chào {{ $hoten }},<br>
                                             Chúng tôi đã nhận được yêu cầu cấp tài khoản sinh viên của bạn.<br>
                                             Nhập tài khoản và mật khẩu sau đây để đăng nhập:<br>
                                         </p>
                                         <a href="javascript:void(0);"
-                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$sinhvien->email}}
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$taikhoan->email}}
                                         </a>
                                         <a href="javascript:void(0);"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">{{$password}}

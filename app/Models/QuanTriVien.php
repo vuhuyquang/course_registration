@@ -15,14 +15,12 @@ class QuanTriVien extends Model
         'ho_ten', 
         'trinh_do', 
         'don_vi', 
-        'email', 
-        'password', 
         'ngay_sinh',
         'gioi_tinh',
         'que_quan',
         'so_dien_thoai',
         'avatar',
-        'quyen'
+        'tai_khoan_id'
     ];
 
     protected $hidden = [

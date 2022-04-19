@@ -20,7 +20,6 @@ class MonHocSeeder extends Seeder
             'nganh_id' => '1',
             'ten_mon_hoc' => 'Nhập môn lập trình C',
             'so_tin_chi' => '3',
-            'hoc_phi' => '1170000',
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);

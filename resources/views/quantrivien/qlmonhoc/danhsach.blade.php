@@ -12,15 +12,15 @@
     </form>
 </div>
 <hr>
-<table style="text-align: center" class="table table-hover">
+<table style="text-align: center" class="table table-hover table-sm">
     <tr>
         <tr>
             <th>STT</th>
             <th>Mã môn học</th>
             <th>Tên môn học</th>
             <th>Số tín chỉ</th>
-            <th>Học phí</th>
             <th>Ngành học</th>
+            <th>Trạng thái</th>
             <th>Ngày tạo</th>
             <th>Hành động</th>
         </tr>
@@ -31,10 +31,19 @@
             <td>{{ $monhoc->ma_mon_hoc }}</td>
             <td>{{ $monhoc->ten_mon_hoc }}</td>
             <td>{{ $monhoc->so_tin_chi }}</td>
-            <td>{{ $monhoc->hoc_phi }}</td>
             <td>{{ $monhoc->nganhhocs->ten_nganh }}</td>
+            <td>
+                @if ($monhoc->duoc_phep == 1)
+                    <span class="badge badge-success">V</span>
+                @else
+                    <span class="badge badge-danger">X</span>
+                @endif
+            </td>
             <td>{{ date('d/m/Y', strtotime($monhoc->created_at)) }}</td>
             <td>
+                <a style="color: white;" href="{{ route('mon-hoc.block', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-warning">
+                    <i class="fas fa-ban"></i>
+                </a>
                 <a href="{{ route('mon-hoc.edit', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-success">
                     <i class="fas fa-edit"></i>
                 </a>

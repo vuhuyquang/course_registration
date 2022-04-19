@@ -17,7 +17,7 @@ class CreateHockysTable extends Migration
             $table->id();
             $table->string('ma_hoc_ky', 20)->unique();
             $table->string('mo_ta', 50)->nullable();
-            $table->string('trang_thai', 50)->default('Đóng đăng ký');   // Mở, đóng
+            $table->string('trang_thai', 50)->default('Đóng');   // Mở, đóng
             $table->timestamps();
         });
     }

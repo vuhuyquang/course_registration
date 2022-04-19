@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'account',
     ],
 
     /*
@@ -38,22 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        'quantriviens' => [
-            'driver' => 'session',
-            'provider' => 'quantriviens',
-        ],
-
-        'giangviens' => [
-            'driver' => 'session',
-            'provider' => 'giangviens',
-        ],
-
-        'sinhviens' => [
-            'driver' => 'session',
-            'provider' => 'sinhviens',
+            'provider' => 'account',
         ],
 
         'api' => [
@@ -86,25 +71,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'quantriviens' => [
+        'account' => [
             'driver' => 'eloquent',
-            'model' => App\Models\QuanTriVien::class,
+            'model' => App\Models\TaiKhoan::class,
         ],
-
-        'giangviens' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\GiangVien::class,
-        ],
-
-        'sinhviens' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\SinhVien::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -130,23 +100,9 @@ return [
             'throttle' => 60,
         ],
 
-        'quantriviens' => [
-            'provider' => 'quantriviens',
-            'table' => 'quantriviens_password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'giangviens' => [
-            'provider' => 'giangviens',
-            'table' => 'giangviens_password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'sinhviens' => [
-            'provider' => 'sinhviens',
-            'table' => 'sinhviens_password_resets',
+        'account' => [
+            'provider' => 'account',
+            'table' => 'account_password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

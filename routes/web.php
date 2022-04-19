@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaiKhoanController;
 use App\Http\Controllers\DiemSoController;
 use App\Http\Controllers\GiangVienController;
 use App\Http\Controllers\HocKyController;
@@ -23,102 +23,100 @@ use App\Http\Controllers\TinTucController;
 |
 */
 
-Route::get('/', function () {
-    return view('dangnhap');
-});
+Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
+Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
+Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
+Route::get('redirect', [TaiKhoanController::class, 'redirect'])->name('redirect');
 
-Route::prefix('quan-tri-vien')->group(function () {
-    Route::get('/', [AuthController::class, 'home'])->name('quan-tri-vien.home');
-
-    Route::prefix('khoa')->group(function () {
+Route::prefix('admin')->middleware('checkAdmin')->group(function () {
+    Route::prefix('department')->group(function () {
         Route::get('/', [KhoaController::class, 'index'])->name('khoa.index');
-        Route::get('/them', [KhoaController::class, 'create'])->name('khoa.create');
-        Route::post('/them', [KhoaController::class, 'store'])->name('khoa.store');
-        Route::get('/sua/{id}', [KhoaController::class, 'edit'])->name('khoa.edit');
-        Route::post('/sua/{id}', [KhoaController::class, 'update'])->name('khoa.update');
-        Route::get('/xoa/{id}', [KhoaController::class, 'destroy'])->name('khoa.destroy');
-        Route::get('/danh-sach-lop/{id}', [KhoaController::class, 'classlist'])->name('khoa.classlist');
+        Route::get('/create', [KhoaController::class, 'create'])->name('khoa.create');
+        Route::post('/store', [KhoaController::class, 'store'])->name('khoa.store');
+        Route::get('/edit/{id}', [KhoaController::class, 'edit'])->name('khoa.edit');
+        Route::post('/update/{id}', [KhoaController::class, 'update'])->name('khoa.update');
+        Route::get('/destroy/{id}', [KhoaController::class, 'destroy'])->name('khoa.destroy');
     });
 
-    Route::prefix('nganh-hoc')->group(function () {
+    Route::prefix('majors')->group(function () {
         Route::get('/', [NganhHocController::class, 'index'])->name('nganh-hoc.index');
-        Route::get('/them', [NganhHocController::class, 'create'])->name('nganh-hoc.create');
-        Route::post('/them', [NganhHocController::class, 'store'])->name('nganh-hoc.store');
-        Route::get('/sua/{id}', [NganhHocController::class, 'edit'])->name('nganh-hoc.edit');
-        Route::post('/sua/{id}', [NganhHocController::class, 'update'])->name('nganh-hoc.update');
-        Route::get('/xoa/{id}', [NganhHocController::class, 'destroy'])->name('nganh-hoc.destroy');
-        Route::get('/danh-sach-mon-hoc/{id}', [NganhHocController::class, 'classlist'])->name('nganh-hoc.classsubjects');
+        Route::get('/create', [NganhHocController::class, 'create'])->name('nganh-hoc.create');
+        Route::post('/store', [NganhHocController::class, 'store'])->name('nganh-hoc.store');
+        Route::get('/edit/{id}', [NganhHocController::class, 'edit'])->name('nganh-hoc.edit');
+        Route::post('/update/{id}', [NganhHocController::class, 'update'])->name('nganh-hoc.update');
+        Route::get('/destroy/{id}', [NganhHocController::class, 'destroy'])->name('nganh-hoc.destroy');
+        Route::get('/subjects-list/{id}', [NganhHocController::class, 'classlist'])->name('nganh-hoc.classsubjects');
     });
 
-        Route::prefix('giang-vien')->group(function () {
+        Route::prefix('teacher')->group(function () {
         Route::get('/', [GiangVienController::class, 'index'])->name('giang-vien.index');
-        Route::get('/them', [GiangVienController::class, 'create'])->name('giang-vien.create');
-        Route::post('/them', [GiangVienController::class, 'store'])->name('giang-vien.store');
-        Route::get('/sua/{id}', [GiangVienController::class, 'edit'])->name('giang-vien.edit');
-        Route::post('/sua/{id}', [GiangVienController::class, 'update'])->name('giang-vien.update');
-        Route::get('/xoa/{id}', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
-        Route::get('/dat-lai-mat-khau/{id}', [GiangVienController::class, 'resetPassword'])->name('giang-vien.resetPassword');
-        Route::get('/ho-so-ca-nhan/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
+        Route::get('/create', [GiangVienController::class, 'create'])->name('giang-vien.create');
+        Route::post('/store', [GiangVienController::class, 'store'])->name('giang-vien.store');
+        Route::get('/edit/{id}', [GiangVienController::class, 'edit'])->name('giang-vien.edit');
+        Route::post('/update/{id}', [GiangVienController::class, 'update'])->name('giang-vien.update');
+        Route::get('/destroy/{id}', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
+        Route::get('/reset-password/{id}', [GiangVienController::class, 'resetPassword'])->name('giang-vien.resetPassword');
+        Route::get('/profile/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
     });
 
-    Route::prefix('hoc-ky')->group(function () {
+    Route::prefix('semester')->group(function () {
         Route::get('/', [HocKyController::class, 'index'])->name('hoc-ky.index');
-        Route::get('/them', [HocKyController::class, 'create'])->name('hoc-ky.create');
-        Route::post('/them', [HocKyController::class, 'store'])->name('hoc-ky.store');
-        Route::get('/sua/{id}', [HocKyController::class, 'edit'])->name('hoc-ky.edit');
-        Route::post('/sua/{id}', [HocKyController::class, 'update'])->name('hoc-ky.update');
-        Route::get('/xoa/{id}', [HocKyController::class, 'destroy'])->name('hoc-ky.destroy');
-        Route::get('/xet-trang-thai/{id}', [HocKyController::class, 'setStatus'])->name('hoc-ky.setStatus');
+        Route::get('/create', [HocKyController::class, 'create'])->name('hoc-ky.create');
+        Route::post('/store', [HocKyController::class, 'store'])->name('hoc-ky.store');
+        Route::get('/edit/{id}', [HocKyController::class, 'edit'])->name('hoc-ky.edit');
+        Route::post('/update/{id}', [HocKyController::class, 'update'])->name('hoc-ky.update');
+        Route::get('/destroy/{id}', [HocKyController::class, 'destroy'])->name('hoc-ky.destroy');
+        Route::get('/set-status/{id}', [HocKyController::class, 'setStatus'])->name('hoc-ky.setStatus');
     });
 
-    Route::prefix('khoa-hoc')->group(function () {
+    Route::prefix('school-year')->group(function () {
         Route::get('/', [KhoaHocController::class, 'index'])->name('khoa-hoc.index');
-        Route::get('/them', [KhoaHocController::class, 'create'])->name('khoa-hoc.create');
-        Route::post('/them', [KhoaHocController::class, 'store'])->name('khoa-hoc.store');
-        Route::get('/sua/{id}', [KhoaHocController::class, 'edit'])->name('khoa-hoc.edit');
-        Route::post('/sua/{id}', [KhoaHocController::class, 'update'])->name('khoa-hoc.update');
-        Route::get('/xoa/{id}', [KhoaHocController::class, 'destroy'])->name('khoa-hoc.destroy');
-        Route::get('/danh-sach-lop/{id}', [KhoaHocController::class, 'classlist'])->name('khoa-hoc.classlist');
+        Route::get('/create', [KhoaHocController::class, 'create'])->name('khoa-hoc.create');
+        Route::post('/store', [KhoaHocController::class, 'store'])->name('khoa-hoc.store');
+        Route::get('/edit/{id}', [KhoaHocController::class, 'edit'])->name('khoa-hoc.edit');
+        Route::post('/update/{id}', [KhoaHocController::class, 'update'])->name('khoa-hoc.update');
+        Route::get('/destroy/{id}', [KhoaHocController::class, 'destroy'])->name('khoa-hoc.destroy');
+        Route::get('/class-list/{id}', [KhoaHocController::class, 'classlist'])->name('khoa-hoc.classlist');
     });
 
-    Route::prefix('lop-hoc')->group(function () {
+    Route::prefix('class')->group(function () {
         Route::get('/', [LopHocController::class, 'index'])->name('lop-hoc.index');
-        Route::get('/them', [LopHocController::class, 'create'])->name('lop-hoc.create');
-        Route::post('/them', [LopHocController::class, 'store'])->name('lop-hoc.store');
-        Route::get('/sua/{id}', [LopHocController::class, 'edit'])->name('lop-hoc.edit');
-        Route::post('/sua/{id}', [LopHocController::class, 'update'])->name('lop-hoc.update');
-        Route::get('/xoa/{id}', [LopHocController::class, 'destroy'])->name('lop-hoc.destroy');
+        Route::get('/create', [LopHocController::class, 'create'])->name('lop-hoc.create');
+        Route::post('/store', [LopHocController::class, 'store'])->name('lop-hoc.store');
+        Route::get('/edit/{id}', [LopHocController::class, 'edit'])->name('lop-hoc.edit');
+        Route::post('/update/{id}', [LopHocController::class, 'update'])->name('lop-hoc.update');
+        Route::get('/destroy/{id}', [LopHocController::class, 'destroy'])->name('lop-hoc.destroy');
     });
 
-    Route::prefix('mon-hoc')->group(function () {
+    Route::prefix('subjects')->group(function () {
         Route::get('/', [MonHocController::class, 'index'])->name('mon-hoc.index');
-        Route::get('/them', [MonHocController::class, 'create'])->name('mon-hoc.create');
-        Route::post('/them', [MonHocController::class, 'store'])->name('mon-hoc.store');
-        Route::get('/sua/{id}', [MonHocController::class, 'edit'])->name('mon-hoc.edit');
-        Route::post('/sua/{id}', [MonHocController::class, 'update'])->name('mon-hoc.update');
-        Route::get('/xoa/{id}', [MonHocController::class, 'destroy'])->name('mon-hoc.destroy');
+        Route::get('/create', [MonHocController::class, 'create'])->name('mon-hoc.create');
+        Route::post('/store', [MonHocController::class, 'store'])->name('mon-hoc.store');
+        Route::get('/edit/{id}', [MonHocController::class, 'edit'])->name('mon-hoc.edit');
+        Route::post('/update/{id}', [MonHocController::class, 'update'])->name('mon-hoc.update');
+        Route::get('/destroy/{id}', [MonHocController::class, 'destroy'])->name('mon-hoc.destroy');
+        Route::get('/block/{id}', [MonHocController::class, 'block'])->name('mon-hoc.block');
     });
 
-    Route::prefix('sinh-vien')->group(function () {
+    Route::prefix('student')->group(function () {
         Route::get('/', [SinhVienController::class, 'index'])->name('sinh-vien.index');
-        Route::get('/them', [SinhVienController::class, 'create'])->name('sinh-vien.create');
-        Route::post('/them', [SinhVienController::class, 'store'])->name('sinh-vien.store');
-        Route::get('/sua/{id}', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
-        Route::post('/sua/{id}', [SinhVienController::class, 'update'])->name('sinh-vien.update');
-        Route::get('/xoa/{id}', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
-        Route::get('/dat-lai-mat-khau/{id}', [SinhVienController::class, 'resetPassword'])->name('sinh-vien.resetPassword');
-        Route::get('/ho-so-ca-nhan/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
+        Route::get('/create', [SinhVienController::class, 'create'])->name('sinh-vien.create');
+        Route::post('/store', [SinhVienController::class, 'store'])->name('sinh-vien.store');
+        Route::get('/edit/{id}', [SinhVienController::class, 'edit'])->name('sinh-vien.edit');
+        Route::post('/update/{id}', [SinhVienController::class, 'update'])->name('sinh-vien.update');
+        Route::get('/destroy/{id}', [SinhVienController::class, 'destroy'])->name('sinh-vien.destroy');
+        Route::get('/reset-password/{id}', [SinhVienController::class, 'resetPassword'])->name('sinh-vien.resetPassword');
+        Route::get('/profile/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
     });
 });
 
-Route::prefix('giang-vien')->group(function () {
+Route::prefix('teacher')->middleware('checkTeacher')->group(function () {
     
 });
 
-Route::prefix('sinh-vien')->group(function () {
-    Route::get('/', [AuthController::class, 'home3'])->name('sinh-vien.home');
-
-    Route::get('/', function ($id) {
-        
-    });
+Route::prefix('student')->middleware('checkStudent')->group(function () {
+    Route::get('/subjects-lookup', [SinhVienController::class, 'lookup'])->name('sinhvien.lookup');
+    Route::get('/subjects-lookup/{id}', [SinhVienController::class, 'lookupid'])->name('sinhvien.lookup.id');
+    Route::get('/course-registration', [SinhVienController::class, 'register'])->name('sinhvien.register');
+    Route::post('/course-registration', [SinhVienController::class, 'registerStore'])->name('sinhvien.register.store');
 });

@@ -12,7 +12,7 @@
         </form>
     </div>
     <hr>
-    <table style="text-align: center" class="table table-hover">
+    <table style="text-align: center" class="table table-hover table-sm">
         <tr>
             <th>STT</th>
             <th>Mã sinh viên</th>
@@ -31,7 +31,7 @@
                 <td>{{ $sinhvien->khoahocs->ma_khoa_hoc }}</td>
                 <td>{{ $sinhvien->lophocs->ma_lop }}</td>
                 <td>{{ $sinhvien->nganhhocs->ten_nganh }}</td>
-                <td>{{ $sinhvien->email }}</td>
+                <td>{{ $sinhvien->taikhoans->email }}</td>
                 <td>
                     <a href="{{ route('sinh-vien.profile', ['id' => $sinhvien->id]) }}" class="btn btn-sm btn-info">
                         <i style="color: white;" class="fas fa-eye"></i>
