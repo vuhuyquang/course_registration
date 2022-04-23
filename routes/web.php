@@ -27,6 +27,10 @@ Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
 Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
 Route::get('redirect', [TaiKhoanController::class, 'redirect'])->name('redirect');
+Route::get('profile', [TaiKhoanController::class, 'profile'])->name('profile');
+Route::post('profile', [TaiKhoanController::class, 'postProfile'])->name('postProfile');
+Route::get('change-password', [TaiKhoanController::class, 'getChangePassword'])->name('getChangePassword');
+Route::post('change-password', [TaiKhoanController::class, 'postChangePassword'])->name('postChangePassword');
 
 Route::prefix('admin')->middleware('checkAdmin')->group(function () {
     Route::prefix('department')->group(function () {

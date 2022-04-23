@@ -92,7 +92,7 @@ class SinhVienController extends Controller
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
         } else {
-            $tenanh = 'avatar_default';
+            $tenanh = 'avatar_default.png';
         }
 
         $taikhoan = new TaiKhoan;

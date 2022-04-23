@@ -23,4 +23,9 @@ class TaiKhoan extends Authenticatable
     {
         return $this->hasOne(SinhVien::class, 'tai_khoan_id', 'id');
     }
+
+    public function quantriviens()
+    {
+        return $this->hasOne(QuanTriVien::class, 'tai_khoan_id', 'id');
+    }
 }

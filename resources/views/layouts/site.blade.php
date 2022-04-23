@@ -35,11 +35,11 @@
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header"></span>
                         <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">
+                        <a href="{{ route('profile') }}" class="dropdown-item">
                             <i class="fas fa-user-alt"></i> Hồ sơ cá nhân
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">
+                        <a href="{{ route('getChangePassword') }}" class="dropdown-item">
                             <i class="fas fa-key"></i> Đổi mật khẩu
                         </a>
                         <div class="dropdown-divider"></div>
@@ -58,7 +58,15 @@
             <a href="../../index3.html" class="brand-link">
                 <img src="{{ url('ad123') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Quản trị viên</span>
+                <span class="brand-text font-weight-light">
+                    @if (Auth::user()->quyen == 1)
+                        Sinh viên
+                    @elseif (Auth::user()->quyen == 2)
+                        Giảng viên
+                    @elseif (Auth::user()->quyen == 3)
+                        Quản trị viên
+                    @endif
+                </span>
             </a>
 
             <!-- Sidebar -->
@@ -69,7 +77,15 @@
                         <img src="{{ url('uploads') }}/avatar_default.png" alt="Avatar">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Vũ Huy Quang</a>
+                        <a href="#" class="d-block">
+                            @if (Auth::user()->quyen == 1)
+                            {{ Auth::user()->sinhviens->ho_ten }}
+                            @elseif (Auth::user()->quyen == 2)
+                                
+                            @elseif (Auth::user()->quyen == 3)
+                            {{ Auth::user()->quantriviens->ho_ten }}
+                            @endif
+                        </a>
                     </div>
                 </div>
 
