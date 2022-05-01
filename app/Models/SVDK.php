@@ -12,6 +12,7 @@ class SVDK extends Model
     protected $fillable = [
         'hoc_phan_id',
         'sinh_vien_id',
+        'mon_hoc_id',
         'giang_vien_id',
         'nganh_id',
         'thoi_gian_dk',
@@ -19,6 +20,16 @@ class SVDK extends Model
 
     public function hocphans()
     {
-        return $this->hasOne(TaiKhoan::class, 'id', 'tai_khoan_id');
+        return $this->hasOne(HocPhan::class, 'id', 'hoc_phan_id');
+    }
+
+    public function giangviens()
+    {
+        return $this->hasOne(GiangVien::class, 'id', 'giang_vien_id');
+    }
+
+    public function monhocs()
+    {
+        return $this->hasOne(MonHoc::class, 'id', 'mon_hoc_id');
     }
 }

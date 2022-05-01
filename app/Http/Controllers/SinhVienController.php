@@ -6,6 +6,7 @@ use App\Models\SinhVien;
 use App\Models\NganhHoc;
 use App\Models\KhoaHoc;
 use App\Models\HocPhan;
+use App\Models\HocKy;
 use App\Models\SVDK;
 use App\Models\LopHoc;
 use App\Models\MonHoc;
@@ -17,6 +18,7 @@ use App\Jobs\SendMailResetPassword;
 use Image;
 use File;
 use Auth;
+use DB;
 
 class SinhVienController extends Controller
 {
@@ -278,6 +280,7 @@ class SinhVienController extends Controller
         $taikhoan = TaiKhoan::findOrFail($sinhvien->tai_khoan_id);
         $password = $random = Str::random(10);
         $taikhoan->password = bcrypt($password);
+        $taikhoan->lan_dau_tien = 1;
         if ($taikhoan->save()) {
             dispatch(new SendMailResetPassword($sinhvien->ho_ten, $taikhoan, $password));
             return redirect()->back()->with('success', 'Đã gửi mail đặt lại mật khẩu');
@@ -295,7 +298,12 @@ class SinhVienController extends Controller
     public function lookup()
     {
         $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->get();
-        return view('sinhvien.lophocmodk', compact('monhocs'));
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($sl == 1) {
+            return view('sinhvien.lophocmodk', compact('monhocs'));
+        } else {
+            return view('sinhvien.lophocmodk');
+        }
     }
 
     public function lookupid($id)
@@ -307,7 +315,11 @@ class SinhVienController extends Controller
     public function register()
     {
         $svdks = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
-        return view('sinhvien.dangkymonhoc', compact('svdks'));
+        if (!empty($svdks)) {
+            return view('sinhvien.dangkymonhoc', compact('svdks'));
+        } else {
+            return view('sinhvien.dangkymonhoc');
+        }
     }
 
     public function registerStore(Request $request)
@@ -318,28 +330,60 @@ class SinhVienController extends Controller
             'ma_hoc_phan.required' => 'Trường dữ liệu không được để trống',
         ]);
         
-        $hocphans = HocPhan::where('ma_hoc_phan', $request->ma_hoc_phan)->get();
-        foreach ($hocphans as $key => $hocphan) {
-            $hocphanid = $hocphan->id;
+        $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
+        foreach ($hockymos as $key => $hockymo) {
+            $hockymo = $hockymo->ma_hoc_ky;
         }
-        $sinhviens = SinhVien::where('tai_khoan_id', Auth::user()->id)->get();
-        foreach ($sinhviens as $key => $sinhvien) {
-            $sinhvienid = $sinhvien->id;
-            $sinhviennganhid = $sinhvien->nganh_hoc_id;
-        }
-        if ($hocphan) {
-            $svdk = new SVDK;
-            $svdk->hoc_phan_id = $hocphanid;
-            $svdk->sinh_vien_id = $sinhvienid;
-            $svdk->nganh_id = $sinhviennganhid;
-            $svdk->thoi_gian_dk = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
-            if ($svdk->save()) {
-                return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($sl == 1) {
+            // Lấy ra hoc_phan_id, mon_hoc_id và tăng sl đk thêm 1
+            $hocphans = HocPhan::where('ma_hoc_phan', $request->ma_hoc_phan)->get()->toArray();
+            if (!empty($hocphans)) {
+                foreach ($hocphans as $key => $hocphan) {
+                    $hocphanid = $hocphan['id'];
+                    $monhocid = $hocphan['mon_hoc_id'];
+                    $sotinchi = $hocphan['so_tin_chi'];
+                    $hp = HocPhan::findOrFail($hocphanid);
+                    $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                }
+
+                // Lấy ra sinh_vien_id và ngành học của sv
+                $sinhviens = SinhVien::where('tai_khoan_id', Auth::user()->id)->get();
+                foreach ($sinhviens as $key => $sinhvien) {
+                    $sinhvienid = $sinhvien->id;
+                    $sinhviennganhid = $sinhvien->nganh_hoc_id;
+                }
+
+                // Kiểm tra học phần, môn học nhập vào đã đc đk chưa
+                $monhocdadk = SVDK::where('mon_hoc_id', $monhocid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                $hocphandadk = SVDK::where('hoc_phan_id', $hocphanid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                if ($monhocdadk == 0 && $hocphandadk == 0) {
+                    // tạo 1 đối tượng đăng ký
+                    if ($hocphan) {
+                        $svdk = new SVDK;
+                        $svdk->hoc_phan_id = $hocphanid;
+                        $svdk->sinh_vien_id = $sinhvienid;
+                        $svdk->mon_hoc_id = $monhocid;
+                        $svdk->so_tin_chi = $sotinchi;
+                        $svdk->nganh_id = $sinhviennganhid;
+                        $svdk->ma_hoc_ky = $hockymo;
+                        if ($svdk->save()) {
+                            $hp->save();
+                            return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                        } else {
+                            return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
+                }
             } else {
-                return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                return redirect()->back()->with('error', 'Không tìm thấy học phần này');
             }
         } else {
-            return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+            return redirect()->back()->with('error', 'Chưa mở đăng ký học phần');
         }
     }
 }

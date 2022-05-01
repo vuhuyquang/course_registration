@@ -43,14 +43,24 @@ class TaiKhoanController extends Controller
 
     public function redirect()
     {
-        if (Auth::user()->quyen == 1) {
-            return redirect()->route('sinhvien.lookup');
-        } elseif (Auth::user()->quyen == 2) {
-            // return redirect()->route('sinhvien.lookup');
-        } elseif (Auth::user()->quyen == 3) {
-            return redirect()->route('sinh-vien.index');
+        if (Auth::user()->lan_dau_tien == 1) {
+            $taikhoan = TaiKhoan::findOrFail(Auth::user()->id);
+            $taikhoan->lan_dau_tien = 0;
+            if ($taikhoan->save()) {
+                return redirect()->route('getChangePassword')->with('warning', 'Sau khi reset mật khẩu, hãy đổi lại mật khẩu để đảm bảo an toàn');   
+            } else {
+                return redirect()->route('getLogin');
+            }
         } else {
-            return redirect()->route('getLogin');
+            if (Auth::user()->quyen == 1) {
+                return redirect()->route('sinhvien.lookup');
+            } elseif (Auth::user()->quyen == 2) {
+                // return redirect()->route('sinhvien.lookup');
+            } elseif (Auth::user()->quyen == 3) {
+                return redirect()->route('sinh-vien.index');
+            } else {
+                return redirect()->route('getLogin');
+            }
         }  
     }
 

@@ -78,11 +78,17 @@ class HocKyController extends Controller
                         $hocphan = new HocPhan;
                         $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc . '_' . $i;
                         $hocphan->mon_hoc_id = $monhocmodk->id;
+                        $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;
                         $hocphan->save();
                     }
                 }
             //
             $hocky->trang_thai = 'Mở';
+            if ($hocky->save()) {
+                return redirect()->back()->with('success', 'Mở đăng ký học kỳ thành công');
+            } else {
+                return redirect()->back()->with('error', 'Mở đăng ký học kỳ thất bại');
+            }
         } elseif ($hocky->trang_thai == 'Mở') {
             $hocphan = DB::table('hocphans')->delete();
             $hocky->trang_thai = 'Đóng';
@@ -91,13 +97,13 @@ class HocKyController extends Controller
                 $monhoc->duoc_phep = 'true';
                 $monhoc->save();
             }
+            if ($hocky->save()) {
+                return redirect()->back()->with('success', 'Đóng đăng ký học kỳ thành công');
+            } else {
+                return redirect()->back()->with('error', 'Đóng đăng ký học kỳ thất bại');
+            }
         } else {
             return redirect()->back()->with('error', 'Chỉ được mở 1 học kỳ duy nhất');
-        }
-        if ($hocky->save()) {
-            return redirect()->back()->with('success', 'Xét trạng thái thành công');
-        } else {
-            return redirect()->back()->with('error', 'Xét trạng thái thất bại');
         }
     }
 

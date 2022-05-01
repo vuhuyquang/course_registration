@@ -17,6 +17,7 @@ class CreateTaikhoansTable extends Migration
             $table->id();
             $table->string('email', 60);
             $table->string('password', 255);
+            $table->integer('lan_dau_tien')->default(0);
             $table->integer('quyen');   // 1:sv, 2:gv, 3:qtv
             $table->timestamps();
         });

@@ -17,11 +17,12 @@ class CreateHocphansTable extends Migration
             $table->id();
             $table->string('ma_hoc_phan');
             $table->integer('mon_hoc_id');
+            $table->integer('so_tin_chi');
             $table->string('thoi_gian')->nullable();
             $table->string('dia_diem')->nullable();
             $table->integer('giang_vien_id')->nullable();
             $table->integer('dk_toi_da')->default(60);
-            $table->integer('da_dang_ky')->nullable();
+            $table->integer('da_dang_ky')->default(0);
             $table->timestamps();
         });
     }

@@ -18,7 +18,15 @@ class TaiKhoanSeeder extends Seeder
             'id' => 1,
             'email' => 'vuhuyquang2k@gmail.com',
             'password' => bcrypt('123456'),
+            'lan_dau_tien' => 0,
             'quyen' => 3,
+        ]);
+        DB::table('taikhoans')->insert([
+            'id' => 2,
+            'email' => 'onechampalistarandannie@gmail.com',
+            'password' => bcrypt('123456'),
+            'lan_dau_tien' => 0,
+            'quyen' => 1,
         ]);
     }
 }

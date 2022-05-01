@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use DB;
 
-class SinhVienSeeder extends Seeder
+class QuanTriVienSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,19 +14,18 @@ class SinhVienSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sinhviens')->insert([
+        DB::table('quantriviens')->insert([
             'id' => 1,
-            'ma_sinh_vien' => '69DCTT20144',
-            'ho_ten' => 'Nguyễn Tiến Thuận',
-            'khoa_hoc_id' => 1,
-            'lop_hoc_id' => 1,
-            'nganh_hoc_id' => 1,
+            'ma_quan_tri_vien' => 'ADMIN0001',
+            'ho_ten' => 'Vũ Huy Quang',
+            'trinh_do' => 'Kỹ sư',
+            'don_vi' => 'Công nghệ thông tin',
             'ngay_sinh' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'gioi_tinh' => 'Nam',
             'que_quan' => 'TP Hải Dương, Hải Dương',
-            'so_dien_thoai ' => '0987654321',
+            'so_dien_thoai ' => '0344396798',
             'avatar' => 'avatar_default.png',
-            'tai_khoan_id' => 2,
+            'tai_khoan_id' => 1,
         ]);
     }
 }

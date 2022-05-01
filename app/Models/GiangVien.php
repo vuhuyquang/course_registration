@@ -37,8 +37,8 @@ class GiangVien extends Model
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_hoc_id');
     }
 
-    public function thongtins()
+    public function taikhoans()
     {
-        return $this->hasOne(ThongTin::class, 'id', 'thong_tin_id');
+        return $this->hasOne(TaiKhoan::class, 'id', 'tai_khoan_id');
     }
 }

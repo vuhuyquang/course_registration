@@ -24,4 +24,9 @@ class HocPhan extends Model
     {
         return $this->hasOne(MonHoc::class, 'id', 'mon_hoc_id');
     }
+
+    public function svdks()
+    {
+        return $this->hasMany(SVDK::class, 'hoc_phan_id', 'id');
+    }
 }

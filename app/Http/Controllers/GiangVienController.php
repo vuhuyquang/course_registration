@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GiangVien;
 use App\Models\NganhHoc;
+use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use DB;
 use Image;
@@ -64,7 +65,7 @@ class GiangVienController extends Controller
             'ngay_sinh' => 'required|date',
             'gioi_tinh' => 'required|max:20',
             'que_quan' => 'required|max:80',
-            'email' => 'required|email|max:50|unique:giangviens,email',
+            'email' => 'required|email|max:50|unique:taikhoans,email',
             'so_dien_thoai' => 'max:40'
         ], [
             'ma_giang_vien.required' => 'Dữ liệu nhập vào không được để trống',
@@ -89,32 +90,40 @@ class GiangVienController extends Controller
             'so_dien_thoai.required' => 'Dữ liệu nhập vào không được để trống',
             'so_dien_thoai.max' => 'Dữ liệu nhập vào có tối đa 20 ký tự',
         ]);
+
         if ($request->has('avatar')) {
             $data = $this->resizeimage($request);
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
         }
 
-        
-        $giangvien = new GiangVien;
-        $giangvien->ma_giang_vien = $request->ma_giang_vien;
-        $giangvien->ho_ten = $request->ho_ten;
-        $giangvien->trinh_do = $request->trinh_do;
-        $giangvien->nganh_hoc_id = $request->nganh_hoc_id;
-        $giangvien->ngay_sinh = $request->ngay_sinh;
-        $giangvien->gioi_tinh = $request->gioi_tinh;
-        $giangvien->que_quan = $request->que_quan;
-        $giangvien->email = $request->email;
-        $password = $random = Str::random(10);
-        $giangvien->password = bcrypt($password);
-        $giangvien->so_dien_thoai = $request->so_dien_thoai;
-        $giangvien->avatar = $tenanh;
+        $taikhoan = new TaiKhoan;
+        $taikhoan->email = $request->email;
+        $password = Str::random(10);
+        $taikhoan->password = bcrypt($password);
+        $taikhoan->quyen = 2;
+        if ($taikhoan->save()) {
+            $giangvien = new GiangVien;
+            $giangvien->ma_giang_vien = $request->ma_giang_vien;
+            $giangvien->ho_ten = $request->ho_ten;
+            $giangvien->trinh_do = $request->trinh_do;
+            $giangvien->nganh_hoc_id = $request->nganh_hoc_id;
+            $giangvien->ngay_sinh = $request->ngay_sinh;
+            $giangvien->gioi_tinh = $request->gioi_tinh;
+            $giangvien->que_quan = $request->que_quan;
+            $giangvien->so_dien_thoai = $request->so_dien_thoai;
+            $giangvien->avatar = $tenanh;
+            $giangvien->tai_khoan_id = $taikhoan->id;
 
-        if ($giangvien->save()) {
-            $sendAccount = new SendEmailSendAccount($giangvien, $password);
-            dispatch($sendAccount);
-            $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-            return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
+            if ($giangvien->save()) {
+                if (dispatch(new SendEmailSendAccount($giangvien->ho_ten, $taikhoan, $password))) {
+                    return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
+                } else {
+                    return redirect()->back()->with('success', 'Thêm thành công. Đã có lỗi khi gửi mail');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Thêm thất bại');
+            }
         } else {
             return redirect()->back()->with('error', 'Thêm thất bại');
         }

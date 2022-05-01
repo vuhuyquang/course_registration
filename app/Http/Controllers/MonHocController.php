@@ -63,17 +63,16 @@ class MonHocController extends Controller
         $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
-        // MonHoc::insert([
-        //     'ma_mon_hoc' => $request->ma_mon_hoc,
-        //     'nganh_id' => $request->nganh_id,
-        //     'ten_mon_hoc' => $request->ten_mon_hoc,
-        //     'so_tin_chi' => $request->so_tin_chi,
-        //     'hoc_phi' => $request->hoc_phi
-        // ]);
-        if ($monhoc->save()) {
-            return redirect()->back()->with('success', 'Thêm thành công');
+
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($sl == 0) {
+            if ($monhoc->save()) {
+                return redirect()->back()->with('success', 'Thêm thành công');
+            } else {
+                return redirect()->back()->with('error', 'Thêm thất bại');
+            }
         } else {
-            return redirect()->back()->with('error', 'Thêm thất bại');
+            return redirect()->back()->with('error', 'Không thể thêm môn học khi học kỳ đang mở');
         }
     }
 

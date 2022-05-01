@@ -15,11 +15,13 @@ class CreateSvdksTable extends Migration
     {
         Schema::create('svdks', function (Blueprint $table) {
             $table->id();
-            $table->string('hoc_phan_id');
-            $table->string('sinh_vien_id');
-            $table->string('giang_vien_id')->nullable();
+            $table->integer('hoc_phan_id');
+            $table->integer('sinh_vien_id');
+            $table->integer('mon_hoc_id');
+            $table->integer('so_tin_chi');
+            $table->integer('giang_vien_id')->nullable();
             $table->string('nganh_id');
-            $table->date('thoi_gian_dk');
+            $table->string('ma_hoc_ky', 20);
             $table->timestamps();
         });
     }
