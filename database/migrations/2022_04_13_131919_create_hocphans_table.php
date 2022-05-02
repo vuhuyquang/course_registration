@@ -15,6 +15,7 @@ class CreateHocphansTable extends Migration
     {
         Schema::create('hocphans', function (Blueprint $table) {
             $table->id();
+            $table->string('ma_lop');
             $table->string('ma_hoc_phan');
             $table->integer('mon_hoc_id');
             $table->integer('so_tin_chi');
@@ -23,6 +24,7 @@ class CreateHocphansTable extends Migration
             $table->integer('giang_vien_id')->nullable();
             $table->integer('dk_toi_da')->default(60);
             $table->integer('da_dang_ky')->default(0);
+            $table->string('ma_hoc_ky', 20);
             $table->timestamps();
         });
     }

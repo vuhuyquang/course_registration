@@ -5,7 +5,7 @@
         <form action="{{ route('sinhvien.register') }}" class="form-inline" method="POST">
             @csrf
             <div class="form-group">
-                <input class="form-control" name="ma_hoc_phan" placeholder="Nhập mã học phần" autocomplete="off">
+                <input class="form-control" name="ma_lop" placeholder="Nhập mã lớp" autocomplete="off">
             </div>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-plus-circle"></i>
@@ -19,8 +19,9 @@
             <th>STT</th>
             <th>Mã học phần</th>
             <th>Môn học</th>
+            <th>Thời gian</th>
+            <th>Địa điểm</th>
             <th>Giảng viên</th>
-            <th>Thời gian đăng ký</th>
         </tr>
         </tr>
         @if (isset($svdks))
@@ -30,13 +31,26 @@
                     <td>{{ $svdk->hocphans->ma_hoc_phan }}</td>
                     <td>{{ $svdk->monhocs->ten_mon_hoc }}</td>
                     <td>
-                        @if ($svdk->giang_vien_id != null)
-                            {{ $svdk->giangviens->ho_ten }}
+                        @if ($svdk->hocphans->thoi_gian != null)
+                            {{ $svdk->hocphans->thoi_gian }}
                         @else
                             <i>Chưa có thông tin</i>
                         @endif
                     </td>
-                    <td>{{ $svdk->created_at }}</td>
+                    <td>
+                        @if ($svdk->hocphans->dia_diem != null)
+                            {{ $svdk->hocphans->dia_diem }}
+                        @else
+                            <i>Chưa có thông tin</i>
+                        @endif
+                    </td>
+                    <td>
+                        {{-- @if ($svdk->giangviens->ho_ten != null)
+                            {{ $svdk->giangviens->ho_ten }}
+                        @else
+                            <i>Chưa có thông tin</i>
+                        @endif --}}
+                    </td>
                 </tr>
             @endforeach
         @endif

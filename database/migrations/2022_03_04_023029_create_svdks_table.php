@@ -19,7 +19,6 @@ class CreateSvdksTable extends Migration
             $table->integer('sinh_vien_id');
             $table->integer('mon_hoc_id');
             $table->integer('so_tin_chi');
-            $table->integer('giang_vien_id')->nullable();
             $table->string('nganh_id');
             $table->string('ma_hoc_ky', 20);
             $table->timestamps();

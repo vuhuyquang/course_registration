@@ -6,6 +6,7 @@
     <tr>
         <tr>
             <th>STT</th>
+            <th>Mã lớp</th>
             <th>Mã học phần</th>
             <th>Tên môn học</th>
             <th>Thời gian</th>
@@ -18,6 +19,7 @@
     @foreach ($hocphans as $key => $hocphan)
         <tr>
             <td>{{ $key + 1 }}</td>
+            <td>{{ $hocphan->ma_lop }}</td>
             <td>{{ $hocphan->ma_hoc_phan }}</td>
             <td>{{ $hocphan->monhocs->ten_mon_hoc }}</td>
             <td>
@@ -42,13 +44,7 @@
                 @endif
             </td>
             <td>{{ $hocphan->dk_toi_da }}</td>
-            <td>
-                @if ($hocphan->da_dang_ky == null)
-                    <i>Chưa có thông tin</i>
-                @else
-                    {{ $hocphan->da_dang_ky }}
-                @endif
-            </td>
+            <td>{{ $hocphan->da_dang_ky }}</td>
         </tr>
     @endforeach
 </table>

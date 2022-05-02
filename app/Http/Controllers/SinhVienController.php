@@ -325,9 +325,9 @@ class SinhVienController extends Controller
     public function registerStore(Request $request)
     {
         $request->validate([
-            'ma_hoc_phan' => 'required',
+            'ma_lop' => 'required',
         ], [
-            'ma_hoc_phan.required' => 'Trường dữ liệu không được để trống',
+            'ma_lop.required' => 'Trường dữ liệu không được để trống',
         ]);
         
         $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
@@ -337,7 +337,7 @@ class SinhVienController extends Controller
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
         if ($sl == 1) {
             // Lấy ra hoc_phan_id, mon_hoc_id và tăng sl đk thêm 1
-            $hocphans = HocPhan::where('ma_hoc_phan', $request->ma_hoc_phan)->get()->toArray();
+            $hocphans = HocPhan::where('ma_lop', $request->ma_lop)->get()->toArray();
             if (!empty($hocphans)) {
                 foreach ($hocphans as $key => $hocphan) {
                     $hocphanid = $hocphan['id'];
@@ -354,33 +354,39 @@ class SinhVienController extends Controller
                     $sinhviennganhid = $sinhvien->nganh_hoc_id;
                 }
 
-                // Kiểm tra học phần, môn học nhập vào đã đc đk chưa
-                $monhocdadk = SVDK::where('mon_hoc_id', $monhocid)->where('sinh_vien_id', $sinhvienid)->get()->count();
-                $hocphandadk = SVDK::where('hoc_phan_id', $hocphanid)->where('sinh_vien_id', $sinhvienid)->get()->count();
-                if ($monhocdadk == 0 && $hocphandadk == 0) {
-                    // tạo 1 đối tượng đăng ký
-                    if ($hocphan) {
-                        $svdk = new SVDK;
-                        $svdk->hoc_phan_id = $hocphanid;
-                        $svdk->sinh_vien_id = $sinhvienid;
-                        $svdk->mon_hoc_id = $monhocid;
-                        $svdk->so_tin_chi = $sotinchi;
-                        $svdk->nganh_id = $sinhviennganhid;
-                        $svdk->ma_hoc_ky = $hockymo;
-                        if ($svdk->save()) {
-                            $hp->save();
-                            return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                $tongstc = SVDK::where('sinh_vien_id', $sinhvienid)->sum('so_tin_chi');
+
+                if ($tongstc + $sotinchi <= 25) {
+                    // Kiểm tra học phần, môn học nhập vào đã đc đk chưa
+                    $monhocdadk = SVDK::where('mon_hoc_id', $monhocid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                    $hocphandadk = SVDK::where('hoc_phan_id', $hocphanid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                    if ($monhocdadk == 0 && $hocphandadk == 0) {
+                        // tạo 1 đối tượng đăng ký
+                        if ($hocphan) {
+                            $svdk = new SVDK;
+                            $svdk->hoc_phan_id = $hocphanid;
+                            $svdk->sinh_vien_id = $sinhvienid;
+                            $svdk->mon_hoc_id = $monhocid;
+                            $svdk->so_tin_chi = $sotinchi;
+                            $svdk->nganh_id = $sinhviennganhid;
+                            $svdk->ma_hoc_ky = $hockymo;
+                            if ($svdk->save()) {
+                                $hp->save();
+                                return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                            } else {
+                                return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                            }
                         } else {
-                            return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                            return redirect()->back()->with('error', 'Không tìm thấy học phần này');
                         }
                     } else {
-                        return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+                        return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
                     }
                 } else {
-                    return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
+                    return redirect()->back()->with('error', 'Mỗi học kỳ chỉ được đăng ký tối đa 25 tín chỉ');
                 }
             } else {
-                return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+                return redirect()->back()->with('error', 'Không tìm thấy mã lớp này');
             }
         } else {
             return redirect()->back()->with('error', 'Chưa mở đăng ký học phần');

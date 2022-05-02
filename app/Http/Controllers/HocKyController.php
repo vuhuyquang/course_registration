@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HocPhan;
 use App\Models\HocKy;
 use App\Models\MonHoc;
+use App\Models\SVDK;
 use Illuminate\Http\Request;
 use DB;
 
@@ -76,9 +77,11 @@ class HocKyController extends Controller
                 foreach ($monhocmodks as $key => $monhocmodk) {
                     for ($i=1; $i <= 3 ; $i++) { 
                         $hocphan = new HocPhan;
-                        $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc . '_' . $i;
+                        $hocphan->ma_lop = $monhocmodk->ma_mon_hoc . '_' . $i;
+                        $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc;
                         $hocphan->mon_hoc_id = $monhocmodk->id;
                         $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;
+                        $hocphan->ma_hoc_ky = $hocky->ma_hoc_ky;
                         $hocphan->save();
                     }
                 }
@@ -90,7 +93,12 @@ class HocKyController extends Controller
                 return redirect()->back()->with('error', 'Mở đăng ký học kỳ thất bại');
             }
         } elseif ($hocky->trang_thai == 'Mở') {
-            $hocphan = DB::table('hocphans')->delete();
+            // $hocphan = DB::table('hocphans')->delete();
+            $hocphans = DB::table('hocphans')->where('da_dang_ky', '<', 20)->orWhere('da_dang_ky', '>', 60)->get()->toArray();
+            foreach ($hocphans as $key => $hocphan) {
+                $svdkbihuy = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
+            }
+            $hocphan = DB::table('hocphans')->where('da_dang_ky', '<', 20)->orWhere('da_dang_ky', '>', 60)->delete();
             $hocky->trang_thai = 'Đóng';
             $monhocs = MonHoc::where('duoc_phep', 'false')->get();
             foreach ($monhocs as $key => $monhoc) {
