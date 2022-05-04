@@ -20,4 +20,11 @@ class LopHoc extends Model
     {
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_id');
     }
+
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+    		return $query->where('ma_lop', $key);
+    	}
+    }
 }

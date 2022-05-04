@@ -30,7 +30,7 @@
             <td>{{ $giangvien->ho_ten }}</td>
             <td>{{ $giangvien->nganhhocs->ten_nganh }}</td>
             <td>{{ $giangvien->trinh_do }}</td>
-            <td>{{ $giangvien->email }}</td>
+            <td>{{ $giangvien->taikhoans->email }}</td>
             <td>{{ $giangvien->so_dien_thoai }}</td>
             <td>
                 <a href="{{ route('giang-vien.profile', ['id' => $giangvien->id]) }}" class="btn btn-sm btn-info">

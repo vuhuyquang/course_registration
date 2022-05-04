@@ -19,6 +19,8 @@ use Image;
 use File;
 use Auth;
 use DB;
+use App\Exports\SinhVienExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SinhVienController extends Controller
 {
@@ -29,7 +31,7 @@ class SinhVienController extends Controller
      */
     public function index()
     {
-        $sinhviens = SinhVien::all();
+        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens'));
     }
 
@@ -101,6 +103,7 @@ class SinhVienController extends Controller
         $taikhoan->email = $request->email;
         $password = Str::random(10);
         $taikhoan->password = bcrypt($password);
+        $taikhoan->lan_dau_tien = 0;
         $taikhoan->quyen = 1;
         if ($taikhoan->save()) {
             $sinhvien = new SinhVien;
@@ -343,6 +346,8 @@ class SinhVienController extends Controller
                     $hocphanid = $hocphan['id'];
                     $monhocid = $hocphan['mon_hoc_id'];
                     $sotinchi = $hocphan['so_tin_chi'];
+                    $monhoc = MonHoc::findOrFail($hocphan['mon_hoc_id']);
+                    $monhocnganhid = $monhoc->nganh_id;
                     $hp = HocPhan::findOrFail($hocphanid);
                     $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
                 }
@@ -356,34 +361,38 @@ class SinhVienController extends Controller
 
                 $tongstc = SVDK::where('sinh_vien_id', $sinhvienid)->sum('so_tin_chi');
 
-                if ($tongstc + $sotinchi <= 25) {
-                    // Kiểm tra học phần, môn học nhập vào đã đc đk chưa
-                    $monhocdadk = SVDK::where('mon_hoc_id', $monhocid)->where('sinh_vien_id', $sinhvienid)->get()->count();
-                    $hocphandadk = SVDK::where('hoc_phan_id', $hocphanid)->where('sinh_vien_id', $sinhvienid)->get()->count();
-                    if ($monhocdadk == 0 && $hocphandadk == 0) {
-                        // tạo 1 đối tượng đăng ký
-                        if ($hocphan) {
-                            $svdk = new SVDK;
-                            $svdk->hoc_phan_id = $hocphanid;
-                            $svdk->sinh_vien_id = $sinhvienid;
-                            $svdk->mon_hoc_id = $monhocid;
-                            $svdk->so_tin_chi = $sotinchi;
-                            $svdk->nganh_id = $sinhviennganhid;
-                            $svdk->ma_hoc_ky = $hockymo;
-                            if ($svdk->save()) {
-                                $hp->save();
-                                return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                if ($monhocnganhid == $sinhviennganhid) {
+                    if ($tongstc + $sotinchi <= 25) {
+                        // Kiểm tra học phần, môn học nhập vào đã đc đk chưa
+                        $monhocdadk = SVDK::where('mon_hoc_id', $monhocid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                        $hocphandadk = SVDK::where('hoc_phan_id', $hocphanid)->where('sinh_vien_id', $sinhvienid)->get()->count();
+                        if ($monhocdadk == 0 && $hocphandadk == 0) {
+                            // tạo 1 đối tượng đăng ký
+                            if ($hocphan) {
+                                $svdk = new SVDK;
+                                $svdk->hoc_phan_id = $hocphanid;
+                                $svdk->sinh_vien_id = $sinhvienid;
+                                $svdk->mon_hoc_id = $monhocid;
+                                $svdk->so_tin_chi = $sotinchi;
+                                $svdk->nganh_id = $sinhviennganhid;
+                                $svdk->ma_hoc_ky = $hockymo;
+                                if ($svdk->save()) {
+                                    $hp->save();
+                                    return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                                } else {
+                                    return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                                }
                             } else {
-                                return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                                return redirect()->back()->with('error', 'Không tìm thấy học phần này');
                             }
                         } else {
-                            return redirect()->back()->with('error', 'Không tìm thấy học phần này');
+                            return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
                         }
                     } else {
-                        return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
+                        return redirect()->back()->with('error', 'Mỗi học kỳ chỉ được đăng ký tối đa 25 tín chỉ');
                     }
                 } else {
-                    return redirect()->back()->with('error', 'Mỗi học kỳ chỉ được đăng ký tối đa 25 tín chỉ');
+                    return redirect()->back()->with('error', 'Ngành học của bạn không thể đăng ký môn học này');
                 }
             } else {
                 return redirect()->back()->with('error', 'Không tìm thấy mã lớp này');
@@ -391,5 +400,10 @@ class SinhVienController extends Controller
         } else {
             return redirect()->back()->with('error', 'Chưa mở đăng ký học phần');
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new SinhVienExport, 'Students.xlsx');
     }
 }

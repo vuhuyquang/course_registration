@@ -4,7 +4,7 @@
 <div class="col">
     <form action="" class="form-inline">
         <div class="form-group">
-            <input class="form-control" name="key" placeholder="Nhập tên lớp học" autocomplete="off">
+            <input class="form-control" name="key" placeholder="Nhập mã lớp học" autocomplete="off">
         </div>
         <button type="submit" class="btn btn-primary">
             <i class="fas fa-search"></i>
@@ -27,7 +27,7 @@
             <td>{{ $lophoc->ma_lop }}</td>
             <td>{{ $lophoc->nganhhocs->ten_nganh }}</td>
             <td>{{ $lophoc->khoahocs->ma_khoa_hoc }}</td>
-            <td>{{ date('d/m/Y', strtotime($lophoc->created_at)) }}</td>
+            <td>{{ date('H:i:s d/m/Y', strtotime($lophoc->created_at)) }}</td>
             <td>
                 <a href="{{ route('lop-hoc.edit', ['id' => $lophoc->id]) }}" class="btn btn-sm btn-success">
                     <i class="fas fa-edit"></i>
@@ -40,5 +40,7 @@
         </tr>
     @endforeach
 </table>
+<hr>
+{{ $lophocs->links() }}
 @endsection
 

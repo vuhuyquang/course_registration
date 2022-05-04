@@ -31,7 +31,7 @@
                         {{ $khoahoc->mo_ta }}
                     @endif
                 </td>
-                <td>{{ date('d/m/Y', strtotime($khoahoc->created_at)) }}</td>
+                <td>{{ date('H:i:s d/m/Y', strtotime($khoahoc->created_at)) }}</td>
                 <td>
                     <a href="{{ route('khoa-hoc.edit', ['id' => $khoahoc->id]) }}" class="btn btn-sm btn-success">
                         <i class="fas fa-edit"></i>
@@ -44,4 +44,6 @@
             </tr>
         @endforeach
     </table>
+    <hr>
+    {{ $khoahocs->links() }}
 @endsection

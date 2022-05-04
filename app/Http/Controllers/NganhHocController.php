@@ -15,7 +15,7 @@ class NganhHocController extends Controller
      */
     public function index()
     {
-        $nganhhocs = NganhHoc::all();
+        $nganhhocs = NganhHoc::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlnganhhoc.danhsach', compact('nganhhocs'));
     }
 

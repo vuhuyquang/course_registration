@@ -18,7 +18,7 @@ class MonHocController extends Controller
      */
     public function index()
     {
-        $monhocs = MonHoc::all();
+        $monhocs = MonHoc::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlmonhoc.danhsach', compact('monhocs'));
     }
 
@@ -43,7 +43,7 @@ class MonHocController extends Controller
     {
         $request->validate([
             'ma_mon_hoc' => 'required|unique:monhocs,ma_mon_hoc|max:20',
-            'ten_mon_hoc' => 'required|unique:monhocs,ten_mon_hoc|max:80',
+            'ten_mon_hoc' => 'required|max:80',
             'so_tin_chi' => 'required|numeric',
             'nganh_id' => 'required|numeric'
         ], [
@@ -111,7 +111,7 @@ class MonHocController extends Controller
     {
         $request->validate([
             'ma_mon_hoc' => 'required|max:20|unique:monhocs,ma_mon_hoc,'.$id,
-            'ten_mon_hoc' => 'required|max:80|unique:monhocs,ten_mon_hoc,'.$id,
+            'ten_mon_hoc' => 'required|max:80',
             'so_tin_chi' => 'required|numeric',
             'nganh_id' => 'required|numeric'
         ], [

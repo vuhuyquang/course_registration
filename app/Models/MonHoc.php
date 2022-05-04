@@ -15,4 +15,11 @@ class MonHoc extends Model
     {
         return $this->hasOne(NganhHoc::class, 'id', 'nganh_id');
     }
+
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+    		return $query->where('ma_mon_hoc', $key)->orWhere('ten_mon_hoc', $key);
+    	}
+    }
 }

@@ -18,7 +18,7 @@ class HocKyController extends Controller
      */
     public function index()
     {
-        $hockys = HocKy::all();
+        $hockys = HocKy::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlhocky.danhsach', compact('hockys'));
     }
 

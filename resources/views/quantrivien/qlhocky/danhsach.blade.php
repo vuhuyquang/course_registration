@@ -18,6 +18,7 @@
         <th>Mã học kỳ</th>
         <th>Mô tả</th>
         <th>Trạng thái</th>
+        <th>Ngày tạo</th>
         <th>Hành động</th>
     </tr>
     @foreach ($hockys as $key => $hocky)
@@ -32,6 +33,7 @@
                     <span class="badge badge-danger">Đóng</span>
                 @endif
             </td>
+            <td>{{ date('H:i:s d/m/Y', strtotime($hocky->created_at)) }}</td>
             <td>
                 <a href="{{ route('hoc-ky.setStatus', ['id' => $hocky->id]) }}" class="btn btn-sm btn-warning">
                     <i style="color: white;" class="fas fa-power-off"></i>
@@ -47,4 +49,6 @@
         </tr>
     @endforeach
 </table>
+<hr>
+{{ $hockys->links() }}
 @endsection

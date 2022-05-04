@@ -16,7 +16,7 @@ class LopHocController extends Controller
      */
     public function index()
     {
-        $lophocs = LopHoc::all();
+        $lophocs = LopHoc::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qllophoc.danhsach', compact('lophocs'));
     }
 

@@ -1,6 +1,7 @@
 @extends('layouts.site')
 
 @section('main')
+    <div class="row">
     <div class="col">
         <form action="" class="form-inline">
             <div class="form-group">
@@ -11,11 +12,16 @@
             </button>
         </form>
     </div>
+    <div class="col">
+        <a class="btn-export" href="{{ route('sinh-vien.export') }}">Xuất excel</a>
+    </div>
+</div>
     <hr>
     <table style="text-align: center" class="table table-hover table-sm">
         <tr>
             <th>STT</th>
             <th>Mã sinh viên</th>
+            <th>Ảnh</th>
             <th>Họ tên</th>
             <th>Khóa học</th>
             <th>Lớp học</th>
@@ -27,6 +33,7 @@
             <tr>
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $sinhvien->ma_sinh_vien }}</td>
+                <td><img style="height: 78px;" src="{{ url('uploads') }}/{{ $sinhvien->avatar }}"></td>
                 <td>{{ $sinhvien->ho_ten }}</td>
                 <td>{{ $sinhvien->khoahocs->ma_khoa_hoc }}</td>
                 <td>{{ $sinhvien->lophocs->ma_lop }}</td>
@@ -50,4 +57,24 @@
             </tr>
         @endforeach
     </table>
+    <hr>
+{{ $sinhviens->links() }}
+@endsection
+
+@section('css')
+    <style>
+        .btn-export {
+            background-color: gray;
+            border-color: #23923d;
+            color: white;
+            padding: 8px 4px;
+            border-radius: 5px;
+            float: right;
+        }
+
+        .btn-export:hover {
+            color: white;
+            background-color: rgb(148, 148, 148);
+        }
+    </style>
 @endsection

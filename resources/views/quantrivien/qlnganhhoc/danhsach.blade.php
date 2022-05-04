@@ -27,7 +27,7 @@
                 <td>{{ $nganhhoc->ma_nganh }}</td>
                 <td>{{ $nganhhoc->ten_nganh }}</td>
                 <td>{{ $nganhhoc->khoas->ten_khoa }}</td>
-                <td>{{ date('d/m/Y', strtotime($nganhhoc->created_at)) }}</td>
+                <td>{{ date('H:i:s d/m/Y', strtotime($nganhhoc->created_at)) }}</td>
                 <td>
                     <a href="{{ route('nganh-hoc.edit', ['id' => $nganhhoc->id]) }}" class="btn btn-sm btn-success">
                         <i class="fas fa-edit"></i>
@@ -40,4 +40,6 @@
             </tr>
         @endforeach
     </table>
+    <hr>
+    {{ $nganhhocs->links() }}
 @endsection

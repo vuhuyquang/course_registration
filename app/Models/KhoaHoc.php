@@ -16,4 +16,10 @@ class KhoaHoc extends Model
         return $this->hasMany(LopHoc::class, 'khoa_hoc_id', 'id');
     }
 
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+    		return $query->where('ma_khoa_hoc', $key);
+    	}
+    }
 }

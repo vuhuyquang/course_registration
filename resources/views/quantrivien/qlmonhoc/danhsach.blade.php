@@ -39,7 +39,7 @@
                     <span class="badge badge-danger">X</span>
                 @endif
             </td>
-            <td>{{ date('d/m/Y', strtotime($monhoc->created_at)) }}</td>
+            <td>{{ date('H:i:s d/m/Y', strtotime($monhoc->created_at)) }}</td>
             <td>
                 <a style="color: white;" href="{{ route('mon-hoc.block', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-warning">
                     <i class="fas fa-ban"></i>
@@ -55,5 +55,7 @@
         </tr>
     @endforeach
 </table>
+<hr>
+{{ $monhocs->links() }}
 @endsection
 

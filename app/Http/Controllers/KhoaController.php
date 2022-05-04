@@ -15,7 +15,7 @@ class KhoaController extends Controller
      */
     public function index()
     {
-        $khoas = Khoa::all();
+        $khoas = Khoa::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlkhoa.danhsach', compact('khoas'));
     }
 

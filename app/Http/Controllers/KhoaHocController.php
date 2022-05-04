@@ -15,7 +15,7 @@ class KhoaHocController extends Controller
      */
     public function index()
     {
-        $khoahocs = KhoaHoc::all();
+        $khoahocs = KhoaHoc::orderBy('id', 'ASC')->search()->paginate(10);    
         return view('quantrivien.qlkhoahoc.danhsach', compact('khoahocs'));
     }
 
