@@ -300,12 +300,16 @@ class SinhVienController extends Controller
 
     public function lookup()
     {
-        $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->get();
+        $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->search()->paginate(15);
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
         if ($sl == 1) {
-            return view('sinhvien.lophocmodk', compact('monhocs'));
+            if (empty($monhocs)) {
+                return view('sinhvien.lophocmodk', compact('monhocs'));
+            } else {
+                return view('sinhvien.lophocmodk', compact('monhocs'))->with('error', 'Không tìm thấy môn học này');
+            }
         } else {
-            return view('sinhvien.lophocmodk');
+            return view('sinhvien.lophocmodk')->with('error', 'Chưa mở đăng ký học phần');
         }
     }
 

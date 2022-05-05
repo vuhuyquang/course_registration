@@ -11,6 +11,7 @@
         <th>Giới tính</th>
         <th>Quê quán</th>
         <th>Số điện thoại</th>
+        <th>Quyền</th>
     </tr>
     @foreach ($sinhviens as $key => $sinhvien)
         <tr>
@@ -25,6 +26,15 @@
             <td>{{ $sinhvien->gioi_tinh }}</td>
             <td>{{ $sinhvien->que_quan }}</td>
             <td>{{ $sinhvien->so_dien_thoai }}</td>
+            <td>
+                @if ($sinhvien->taikhoans->quyen == 1)
+                    Sinh viên
+                @elseif ($sinhvien->taikhoans->quyen == 2)
+                    Giảng viên
+                @elseif ($sinhvien->taikhoans->quyen == 3) 
+                    Quản trị viên
+                @endif
+            </td>
         </tr>
     @endforeach
 </table>

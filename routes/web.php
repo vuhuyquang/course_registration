@@ -61,6 +61,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/destroy/{id}', [GiangVienController::class, 'destroy'])->name('giang-vien.destroy');
         Route::get('/reset-password/{id}', [GiangVienController::class, 'resetPassword'])->name('giang-vien.resetPassword');
         Route::get('/profile/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
+        Route::get('/export', [GiangVienController::class, 'export'])->name('giang-vien.export');
     });
 
     Route::prefix('semester')->group(function () {

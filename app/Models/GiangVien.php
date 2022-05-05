@@ -41,4 +41,11 @@ class GiangVien extends Model
     {
         return $this->hasOne(TaiKhoan::class, 'id', 'tai_khoan_id');
     }
+
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+    		return $query->where('ma_giang_vien', $key)->orWhere('ho_ten', $key)->orWhere('que_quan', $key)->orWhere('so_dien_thoai', $key);
+    	}
+    }
 }

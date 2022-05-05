@@ -12,6 +12,8 @@ use File;
 use Illuminate\Support\Str;
 use App\Jobs\SendEmailSendAccount;
 use App\Jobs\SendMailResetPassword;
+use App\Exports\GiangVienExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GiangVienController extends Controller
 {
@@ -22,7 +24,7 @@ class GiangVienController extends Controller
      */
     public function index()
     {
-        $giangviens = GiangVien::all();
+        $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate(10);
         return view('quantrivien.qlgiangvien.danhsach', compact('giangviens'));
     }
 
@@ -256,5 +258,10 @@ class GiangVienController extends Controller
         } else {
             return redirect()->back()->with('error', 'Đặt lại mật khẩu thất bại');
         }   
+    }
+
+    public function export()
+    {
+        return Excel::download(new GiangVienExport, 'Teachers.xlsx');
     }
 }
