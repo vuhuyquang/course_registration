@@ -8,6 +8,7 @@ use App\Models\MonHoc;
 use App\Models\SVDK;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Str;
 
 class HocKyController extends Controller
 {
@@ -77,7 +78,7 @@ class HocKyController extends Controller
                 foreach ($monhocmodks as $key => $monhocmodk) {
                     for ($i=1; $i <= 3 ; $i++) { 
                         $hocphan = new HocPhan;
-                        $hocphan->ma_lop = $monhocmodk->ma_mon_hoc . '_' . $i;
+                        $hocphan->ma_lop = Str::upper(substr(md5($monhocmodk->ma_mon_hoc . Str::upper(Str::random(8)) . time()), 0, 10));
                         $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc;
                         $hocphan->mon_hoc_id = $monhocmodk->id;
                         $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;

@@ -10,6 +10,7 @@ use App\Http\Controllers\KhoaHocController;
 use App\Http\Controllers\NganhHocController;
 use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\MonHocController;
+use App\Http\Controllers\HocPhanController;
 use App\Http\Controllers\QuanTriVienController;
 use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\SVDKController;
@@ -64,7 +65,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/export', [GiangVienController::class, 'export'])->name('giang-vien.export');
     });
 
-    Route::prefix('semester')->group(function () {
+    Route::prefix('term')->group(function () {
         Route::get('/', [HocKyController::class, 'index'])->name('hoc-ky.index');
         Route::get('/create', [HocKyController::class, 'create'])->name('hoc-ky.create');
         Route::post('/store', [HocKyController::class, 'store'])->name('hoc-ky.store');
@@ -114,6 +115,17 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/profile/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
         Route::get('/export', [SinhVienController::class, 'export'])->name('sinh-vien.export');
     });
+
+    Route::prefix('module')->group(function () {
+        Route::get('/', [HocPhanController::class, 'index'])->name('hoc-phan.index');
+        Route::get('/create', [HocPhanController::class, 'create'])->name('hoc-phan.create');
+        Route::post('/store', [HocPhanController::class, 'store'])->name('hoc-phan.store');
+        Route::get('/edit/{id}', [HocPhanController::class, 'edit'])->name('hoc-phan.edit');
+        Route::post('/update/{id}', [HocPhanController::class, 'update'])->name('hoc-phan.update');
+        Route::get('/destroy/{id}', [HocPhanController::class, 'destroy'])->name('hoc-phan.destroy');
+        Route::get('/show/{id}', [HocPhanController::class, 'show'])->name('hoc-phan.show');
+        Route::get('/export', [HocPhanController::class, 'export'])->name('hoc-phan.export');
+    });
 });
 
 Route::prefix('teacher')->middleware('checkTeacher')->group(function () {
@@ -125,4 +137,5 @@ Route::prefix('student')->middleware('checkStudent')->group(function () {
     Route::get('/subjects-lookup/{id}', [SinhVienController::class, 'lookupid'])->name('sinhvien.lookup.id');
     Route::get('/course-registration', [SinhVienController::class, 'register'])->name('sinhvien.register');
     Route::post('/course-registration', [SinhVienController::class, 'registerStore'])->name('sinhvien.register.store');
+    Route::get('/cancel-registration/{id}', [SinhVienController::class, 'cancelRegister'])->name('sinhvien.cancelRegister');
 });

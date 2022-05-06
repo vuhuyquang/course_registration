@@ -29,4 +29,16 @@ class HocPhan extends Model
     {
         return $this->hasMany(SVDK::class, 'hoc_phan_id', 'id');
     }
+
+    public function giangviens()
+    {
+        return $this->hasOne(GiangVien::class, 'id', 'giang_vien_id');
+    }
+
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+    		return $query->where('ma_lop', $key)->orWhere('ma_hoc_phan', $key);
+    	}
+    }
 }

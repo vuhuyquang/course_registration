@@ -3,7 +3,7 @@
 @section('main')
 <div class="card">
     <div class="card-header" style="background-color: rgba(0,0,0,.03);">
-        <h5 class="card-title">Danh sách khoa</h5>
+        <h5 class="card-title">Danh sách môn học</h5>
         <div class="row float-right">
             <div class="col">
                 <form action="" class="form-inline">

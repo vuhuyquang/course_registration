@@ -301,12 +301,15 @@ class SinhVienController extends Controller
     public function lookup()
     {
         $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->search()->paginate(15);
+        $svdks = SVDK::join('hocphans', function ($join) {
+            $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
+        })->paginate(15);
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
         if ($sl == 1) {
             if (empty($monhocs)) {
-                return view('sinhvien.lophocmodk', compact('monhocs'));
+                return view('sinhvien.lophocmodk', compact('monhocs', 'svdks'));
             } else {
-                return view('sinhvien.lophocmodk', compact('monhocs'))->with('error', 'Không tìm thấy môn học này');
+                return view('sinhvien.lophocmodk', compact('monhocs', 'svdks'))->with('error', 'Không tìm thấy môn học này');
             }
         } else {
             return view('sinhvien.lophocmodk')->with('error', 'Chưa mở đăng ký học phần');
@@ -321,7 +324,10 @@ class SinhVienController extends Controller
 
     public function register()
     {
-        $svdks = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
+        // $svdks = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
+        $svdks = SVDK::join('hocphans', function ($join) {
+            $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
+        })->paginate(15);
         if (!empty($svdks)) {
             return view('sinhvien.dangkymonhoc', compact('svdks'));
         } else {
@@ -409,5 +415,18 @@ class SinhVienController extends Controller
     public function export()
     {
         return Excel::download(new SinhVienExport, 'Students.xlsx');
+    }
+
+    public function cancelRegister($id)
+    {
+        $svdk = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->where('hoc_phan_id', $id);
+        $hocphan = HocPhan::findOrFail($id);
+        $hocphan->da_dang_ky = $hocphan->da_dang_ky - 1;
+        if ($svdk->delete()) {
+            $hocphan->save();
+            return redirect()->back()->with('success', 'Huy đăng ký thành công');
+        } else {
+            return redirect()->back()->with('error', 'Huy đăng ký thất bại');
+        }
     }
 }

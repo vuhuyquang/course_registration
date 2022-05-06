@@ -32,4 +32,9 @@ class SVDK extends Model
     {
         return $this->hasOne(MonHoc::class, 'id', 'mon_hoc_id');
     }
+
+    public function sinhviens()
+    {
+        return $this->hasOne(SinhVien::class, 'id', 'sinh_vien_id');
+    }
 }
