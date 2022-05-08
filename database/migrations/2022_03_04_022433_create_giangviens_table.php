@@ -23,7 +23,7 @@ class CreateGiangviensTable extends Migration
             $table->string('gioi_tinh');
             $table->string('que_quan', 80);
             $table->string('so_dien_thoai', 30)->nullable()->unique();
-            $table->text('avatar');
+            $table->text('avatar')->default('avatar_default.png');
             $table->integer('tai_khoan_id');
             $table->timestamps();
         });

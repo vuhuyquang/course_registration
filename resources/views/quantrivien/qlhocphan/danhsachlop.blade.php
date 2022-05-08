@@ -4,7 +4,10 @@
 <div class="card">
     <div class="card-header" style="background-color: rgba(0,0,0,.03);">
         <h5 class="card-title">Danh sách lớp học</h5>
-        <div class="row float-right">
+        <div class="row">
+            <div class="col">
+                <a class="btn-export" href="{{ route('svdk.export', ['id' => $id]) }}">Xuất excel</a>
+            </div>
             <div class="col">
                 <form action="" class="form-inline">
                     <div class="form-group">
@@ -27,6 +30,7 @@
                 <th>Giới tính</th>
                 <th>Quê quán</th>
                 <th>Số điện thoại</th>
+                <th>Thời gian ĐK</th>
             </tr>
             @foreach ($svdks as $key => $svdk)
                 <tr>
@@ -37,9 +41,28 @@
                     <td>{{ $svdk->sinhviens->gioi_tinh }}</td>
                     <td>{{ $svdk->sinhviens->que_quan }}</td>
                     <td>{{ $svdk->sinhviens->so_dien_thoai }}</td>
+                    <td>{{ date('H:i:s d/m/Y', strtotime($svdk->created_at)) }}</td>
                 </tr>
             @endforeach
         </table>
     </div>
 </div>
+@endsection
+
+@section('css')
+    <style>
+        .btn-export {
+            background-color: gray;
+            border-color: #23923d;
+            color: white;
+            padding: 8px 4px;
+            border-radius: 5px;
+        }
+
+        .btn-export:hover {
+            color: white;
+            background-color: rgb(148, 148, 148);
+        }
+
+    </style>
 @endsection

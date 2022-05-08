@@ -8,6 +8,9 @@ use App\Models\GiangVien;
 use App\Models\HocKy;
 use App\Models\SVDK;
 use Illuminate\Http\Request;
+use App\Exports\SVDKExport;
+use Maatwebsite\Excel\Facades\Excel;
+use DB;
 
 class HocPhanController extends Controller
 {
@@ -18,7 +21,23 @@ class HocPhanController extends Controller
      */
     public function index()
     {
-        $hocphans = HocPhan::orderBy('id', 'ASC')->search()->paginate(15);
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        $sl2 = DB::table('hockys')->where('hien_tai', 1)->count();
+        if ($sl == 1) {
+            $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
+            foreach ($hockymos as $key => $hockymo) {
+                $hockymo = $hockymo->ma_hoc_ky;
+            }
+            $hocphans = HocPhan::where('ma_hoc_ky', $hockymo)->search()->paginate(15);   
+        } elseif ($sl2 == 1) {
+            $hockyhientais = DB::table('hockys')->where('hien_tai', 1)->get()->toArray();
+            foreach ($hockyhientais as $key => $hockyhientai) {
+                $hockyhientai = $hockyhientai->ma_hoc_ky;
+            }
+            $hocphans = HocPhan::where('ma_hoc_ky', $hockyhientai)->search()->paginate(15);
+        } else {
+            return view('quantrivien.qlhocphan.danhsach');
+        }
         return view('quantrivien.qlhocphan.danhsach', compact('hocphans'));
     }
 
@@ -95,8 +114,9 @@ class HocPhanController extends Controller
      */
     public function show($id)
     {
+        $id = $id;
         $svdks = SVDK::where('hoc_phan_id', $id)->get();
-        return view('quantrivien.qlhocphan.danhsachlop', compact('svdks'));
+        return view('quantrivien.qlhocphan.danhsachlop', compact('svdks', 'id'));
     }
 
     /**
@@ -176,5 +196,10 @@ class HocPhanController extends Controller
         } else {
             return redirect()->back()->with('error', 'Xóa thất bại');
         }
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new SVDKExport($request->id), 'ClassList.xlsx');
     }
 }

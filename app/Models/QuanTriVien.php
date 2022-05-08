@@ -22,8 +22,4 @@ class QuanTriVien extends Model
         'avatar',
         'tai_khoan_id'
     ];
-
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 }

@@ -24,6 +24,8 @@ class CreateDiemsosTable extends Migration
             $table->double('cuoi_ky');
             $table->double('diem_tong_ket');
             $table->string('diem_chu');
+            $table->integer('lan_hoc')->default(0);
+            $table->integer('lan_thi')->default(0);
             $table->timestamps();
         });
     }

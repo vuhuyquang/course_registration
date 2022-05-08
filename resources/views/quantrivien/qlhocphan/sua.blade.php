@@ -23,7 +23,9 @@
             <select id="mon_hoc_id" class="form-control form-control-sm" name="mon_hoc_id" id="gioi_tinh">
                 <option value="" selected="" disabled="">--- Chọn môn học ---</option>
                 @foreach ($monhocs as $monhoc)
+                    @if ($monhoc->id == $hocphan->mon_hoc_id)
                     <option {{ $monhoc->id == $hocphan->mon_hoc_id ? 'selected' : '' }} value="{{ $monhoc->id }}">{{ $monhoc->ten_mon_hoc }} / {{ $monhoc->nganhhocs->ten_nganh }}</option>
+                    @endif
                 @endforeach
             </select>
             @error('mon_hoc_id')
@@ -68,9 +70,11 @@
         <div class="form-group">
             <label for="ma_hoc_ky">Học kỳ <label style="color: red" for="ma_hoc_ky">*</label></label>
             <select id="ma_hoc_ky" class="form-control form-control-sm" name="ma_hoc_ky" id="gioi_tinh">
-                <option value="" selected="" disabled="">--- Chọn môn học ---</option>
+                <option value="" selected="" disabled="">--- Chọn học kỳ ---</option>
                 @foreach ($hockys as $hocky)
-                    <option {{ $hocky->ma_hoc_ky == $hocphan->ma_hoc_ky ? 'selected' : '' }} value="{{ $hocky->ma_hoc_ky }}">{{ $hocky->ma_hoc_ky }}</option>
+                @if ($hocky->ma_hoc_ky == $hocphan->ma_hoc_ky)
+                <option {{ $hocky->ma_hoc_ky == $hocphan->ma_hoc_ky ? 'selected' : '' }} value="{{ $hocky->ma_hoc_ky }}">{{ $hocky->ma_hoc_ky }}</option>
+                @endif
                 @endforeach
             </select>
             @error('ma_hoc_ky')

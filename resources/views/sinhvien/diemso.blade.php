@@ -22,31 +22,36 @@
             <tr>
             <tr>
                 <th>#</th>
-                <th>Mã môn học</th>
-                <th>Tên môn học</th>
-                <th>Số tín chỉ</th>
-                <th>Lớp học phần</th>
+                <th>Mã học phần</th>
+                <th>Tên học phần</th>
+                <th>STC</th>
+                <th>Giảng viên</th>
+                <th>Đánh giá</th>
+                <th>Chuyên cần</th>
+                <th>Giữa kỳ</th>
+                <th>Cuối kỳ</th>
+                <th>Tổng kết</th>
+                <th>Điểm chữ</th>
             </tr>
             </tr>
-            @if (!empty($monhocs))
-                @foreach ($monhocs as $key => $monhoc)
+            @if (isset($diemsos))
+                @foreach ($diemsos as $key => $diemso)
                     <tr>
                         <th>{{ $key + 1 }}</th>
-                        <td>{{ $monhoc->ma_mon_hoc }}</td>
-                        <td>{{ $monhoc->ten_mon_hoc }}</td>
-                        <td>{{ $monhoc->so_tin_chi }}</td>
-                        <td>
-                            <a href="{{ route('sinhvien.lookup.id', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-warning">
-                                <i style="color: white;" class="fas fa-ellipsis-h"></i>
-                            </a>
-                        </td>
+                        <td>{{ $diemso->monhocs->ma_mon_hoc }}</td>
+                        <td>{{ $diemso->monhocs->ten_mon_hoc }}</td>
+                        <td>{{ $diemso->monhocs->so_tin_chi }}</td>
+                        <td>{{ $diemso->giangviens->ho_ten }}</td>
+                        <td>{{ $diemso->danh_gia }}</td>
+                        <td>{{ $diemso->chuyen_can }}</td>
+                        <td>{{ $diemso->giua_ky }}</td>
+                        <td>{{ $diemso->cuoi_ky }}</td>
+                        <td>{{ $diemso->diem_tong_ket }}</td>
+                        <td>{{ $diemso->diem_chu }}</td>
                     </tr>
                 @endforeach
             @endif
         </table>
     </div>
 </div>
-@if (!empty($monhocs))
-{{ $monhocs->links() }}
-@endif
 @endsection

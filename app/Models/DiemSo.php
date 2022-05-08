@@ -25,4 +25,14 @@ class DiemSo extends Model
     {
         return $this->hasOne(SVDK::class, 'sinh_vien_id', 'id');
     }
+
+    public function monhocs()
+    {
+        return $this->hasOne(MonHoc::class, 'id', 'mon_hoc_id');
+    }
+
+    public function giangviens()
+    {
+        return $this->hasOne(GiangVien::class, 'id', 'giang_vien_id');
+    }
 }

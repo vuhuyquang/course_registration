@@ -3,7 +3,7 @@
 @section('main')
     <div class="card">
         <div style="background-color: rgba(0,0,0,.03);" class="card-header">
-            <h5 class="card-title">Danh sách nhân viên</h5>
+            <h5 class="card-title">Danh sách sinh viên</h5>
             <div class="row">
                 <div class="col">
                     <a class="btn-export" href="{{ route('sinh-vien.export') }}">Xuất excel</a>

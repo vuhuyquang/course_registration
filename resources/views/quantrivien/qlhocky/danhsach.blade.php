@@ -24,6 +24,7 @@
                     <th>Mã học kỳ</th>
                     <th>Mô tả</th>
                     <th>Trạng thái</th>
+                    <th>Hiện tại</th>
                     <th>Ngày tạo</th>
                     <th>Hành động</th>
                 </tr>
@@ -37,6 +38,13 @@
                                 <span class="badge badge-success">Mở</span>
                             @else
                                 <span class="badge badge-danger">Đóng</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($hocky->hien_tai == 1)
+                                <span class="badge badge-success">V</span>
+                            @else
+                                <span class="badge badge-danger">X</span>
                             @endif
                         </td>
                         <td>{{ date('H:i:s d/m/Y', strtotime($hocky->created_at)) }}</td>

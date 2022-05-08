@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\GiangVien;
 use App\Models\NganhHoc;
 use App\Models\TaiKhoan;
+use App\Models\HocPhan;
+use App\Models\DiemSo;
+use App\Models\SVDK;
+use App\Models\HocKy;
 use Illuminate\Http\Request;
 use DB;
 use Image;
 use File;
+use Auth;
 use Illuminate\Support\Str;
 use App\Jobs\SendEmailSendAccount;
 use App\Jobs\SendMailResetPassword;
@@ -263,5 +268,103 @@ class GiangVienController extends Controller
     public function export()
     {
         return Excel::download(new GiangVienExport, 'Teachers.xlsx');
+    }
+
+    public function classSubject()
+    {
+        $hkhientai = HocKy::where('hien_tai', 1)->get()->toArray();
+        if (empty($hkhientai)) {
+            return view('giangvien.danhsachhocphan');
+        } else {
+            foreach ($hkhientai as $key => $hkht) {
+                $hkht = $hkht['ma_hoc_ky'];
+            }
+            $hocphans = HocPhan::where('giang_vien_id', Auth::user()->giangviens->id)->search()->paginate(15);
+            return view('giangvien.danhsachhocphan', compact('hocphans', 'hkht'));   
+        }
+    }
+
+    public function mark($id)
+    {
+        $svdks = SVDK::where('hoc_phan_id', $id)->get();
+        return view('giangvien.chamdiem', compact('svdks'));
+    }
+
+    public function markStore(Request $request)
+    {
+        $request->validate([
+            'chuyen_can' => 'required|numeric',
+            'giua_ky' => 'required|numeric',
+            'cuoi_ky' => 'required|numeric',
+            'mon_hoc_id' => 'required|numeric',
+            'sinh_vien_id' => 'required|numeric',
+        ], [
+            'chuyen_can.required' => 'Trường dữ liệu không được để trống',
+            'chuyen_can.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'giua_ky.required' => 'Trường dữ liệu không được để trống',
+            'giua_ky.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'cuoi_ky.required' => 'Trường dữ liệu không được để trống',
+            'cuoi_ky.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'mon_hoc_id.required' => 'Trường dữ liệu không được để trống',
+            'mon_hoc_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'sinh_vien_id.required' => 'Trường dữ liệu không được để trống',
+            'sinh_vien_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+        ]);
+
+        $diemso = DiemSo::where('sinh_vien_id', $request->sinh_vien_id)->where('mon_hoc_id', $request->mon_hoc_id)->get();
+        if (empty($diemso->toArray())) {
+            $diemso = new DiemSo;
+            $diemso->mon_hoc_id = $request->mon_hoc_id;
+            $diemso->sinh_vien_id = $request->sinh_vien_id;
+            $diemso->giang_vien_id = Auth::user()->giangviens->id;
+            $diemso->chuyen_can = $request->chuyen_can;
+            $diemso->giua_ky = $request->giua_ky;
+            $diemso->cuoi_ky = $request->cuoi_ky;
+            $diemso->lan_hoc = 1;
+            $diemso->lan_thi = 1;
+            $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
+            $diemso->diem_tong_ket = $diemtongket;
+            if ($diemtongket >= 8.5) {
+                $diemchu = 'A';
+                $danhgia = 'Đạt';
+            } 
+            elseif ($diemtongket >= 8.0) {
+                $diemchu = 'B+';
+                $danhgia = 'Đạt';
+            } 
+            elseif ($diemtongket >= 7.0) {
+                $diemchu = 'B';
+                $danhgia = 'Đạt';
+            }
+            elseif ($diemtongket >= 6.5) {
+                $diemchu = 'C+';
+                $danhgia = 'Đạt';
+            }
+            elseif ($diemtongket >= 5.5) {
+                $diemchu = 'C';
+                $danhgia = 'Đạt';
+            }
+            elseif ($diemtongket >= 5.0) {
+                $diemchu = 'D+';
+                $danhgia = 'Đạt';
+            }
+            elseif ($diemtongket >= 4.0) {
+                $diemchu = 'D';
+                $danhgia = 'Đạt';
+            }
+            else {
+                $diemchu = 'F';
+                $danhgia = 'Thi lại';
+            }
+            $diemso->diem_chu = $diemchu;
+            $diemso->danh_gia = $danhgia;
+            if ($diemso->save()) {
+                return redirect()->back()->with('success', 'Lưu thành công');
+            } else {
+                return redirect()->back()->with('error', 'Lưu thất bại');
+            }   
+        } else {
+            return redirect()->back()->with('error', 'Đã nhập điểm cho sinh viên này rồi');
+        }
     }
 }

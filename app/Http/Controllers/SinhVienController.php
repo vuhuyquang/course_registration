@@ -8,6 +8,7 @@ use App\Models\KhoaHoc;
 use App\Models\HocPhan;
 use App\Models\HocKy;
 use App\Models\SVDK;
+use App\Models\DiemSo;
 use App\Models\LopHoc;
 use App\Models\MonHoc;
 use App\Models\TaiKhoan;
@@ -318,14 +319,17 @@ class SinhVienController extends Controller
 
     public function lookupid($id)
     {
-        $hocphans = HocPhan::where('mon_hoc_id', $id)->get();
+        $hockydangmo = HocKy::where('trang_thai', 'Mở')->get()->toArray();
+        foreach ($hockydangmo as $key => $hk) {
+            $hkmo = $hk['ma_hoc_ky'];
+        }
+        $hocphans = HocPhan::where('mon_hoc_id', $id)->where('ma_hoc_ky', $hkmo)->get();
         return view('sinhvien.danhsachhocphan', compact('hocphans'));
     }
 
     public function register()
     {
-        // $svdks = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
-        $svdks = SVDK::join('hocphans', function ($join) {
+        $svdks = SVDK::join('hocphans', function ($join){
             $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
         })->paginate(15);
         if (!empty($svdks)) {
@@ -428,5 +432,11 @@ class SinhVienController extends Controller
         } else {
             return redirect()->back()->with('error', 'Huy đăng ký thất bại');
         }
+    }
+
+    public function scores()
+    {
+        $diemsos = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
+        return view('sinhvien.diemso', compact('diemsos'));
     }
 }

@@ -23,7 +23,7 @@ use App\Http\Controllers\TinTucController;
 |--------------------------------------------------------------------------
 |
 */
-
+Route::get('', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
 Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
@@ -123,13 +123,15 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/edit/{id}', [HocPhanController::class, 'edit'])->name('hoc-phan.edit');
         Route::post('/update/{id}', [HocPhanController::class, 'update'])->name('hoc-phan.update');
         Route::get('/destroy/{id}', [HocPhanController::class, 'destroy'])->name('hoc-phan.destroy');
-        Route::get('/show/{id}', [HocPhanController::class, 'show'])->name('hoc-phan.show');
-        Route::get('/export', [HocPhanController::class, 'export'])->name('hoc-phan.export');
+        Route::get('/class-list/{id}', [HocPhanController::class, 'show'])->name('hoc-phan.show');
+        Route::get('/export/{id}', [HocPhanController::class, 'export'])->name('svdk.export');
     });
 });
 
 Route::prefix('teacher')->middleware('checkTeacher')->group(function () {
-    
+    Route::get('/class-subjects', [GiangVienController::class, 'classSubject'])->name('giangvien.classSubjects');
+    Route::get('/mark/{id}', [GiangVienController::class, 'mark'])->name('giangvien.mark');
+    Route::post('/mark', [GiangVienController::class, 'markStore'])->name('giangvien.markStore');
 });
 
 Route::prefix('student')->middleware('checkStudent')->group(function () {
@@ -138,4 +140,5 @@ Route::prefix('student')->middleware('checkStudent')->group(function () {
     Route::get('/course-registration', [SinhVienController::class, 'register'])->name('sinhvien.register');
     Route::post('/course-registration', [SinhVienController::class, 'registerStore'])->name('sinhvien.register.store');
     Route::get('/cancel-registration/{id}', [SinhVienController::class, 'cancelRegister'])->name('sinhvien.cancelRegister');
+    Route::get('/scores', [SinhVienController::class, 'scores'])->name('sinhvien.scores');
 });

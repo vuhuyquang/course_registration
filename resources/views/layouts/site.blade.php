@@ -81,7 +81,7 @@
                             @if (Auth::user()->quyen == 1)
                             {{ Auth::user()->sinhviens->ho_ten }}
                             @elseif (Auth::user()->quyen == 2)
-                                
+                            {{ Auth::user()->giangviens->ho_ten }}
                             @elseif (Auth::user()->quyen == 3)
                             {{ Auth::user()->quantriviens->ho_ten }}
                             @endif
@@ -336,7 +336,7 @@
                         @elseif (Auth::user()->quyen == 1)
                         <li class="nav-item">
                             <a href="{{ route('sinhvien.lookup') }}" class="nav-link">
-                                <i class="nav-icon fas fa-building"></i>
+                                <i class="nav-icon fas fa-book-open"></i>
                                 <p>
                                     Tra cứu môn học
                                     {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -345,9 +345,28 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('sinhvien.register') }}" class="nav-link">
-                                <i class="nav-icon fas fa-building"></i>
+                                <i class="nav-icon fas fa-award"></i>
                                 <p>
                                     Đăng ký học phần
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sinhvien.scores') }}" class="nav-link">
+                                <i class="nav-icon fas fa-sort-numeric-down"></i>
+                                <p>
+                                    Điểm số
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
+                        @elseif (Auth::user()->quyen == 2)
+                        <li class="nav-item">
+                            <a href="{{ route('giangvien.classSubjects') }}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Lớp giảng dạy
                                     {{-- <i class="fas fa-angle-left right"></i> --}}
                                 </p>
                             </a>

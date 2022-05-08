@@ -22,5 +22,13 @@ class HocKySeeder extends Seeder
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);
+        DB::table('hockys')->insert([
+            'id' => '2',
+            'ma_hoc_ky' => '2022_2023_1',
+            'mo_ta' => 'Học kỳ 1 năm học 2022 - 2023',
+            'trang_thai' => 'Đóng',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
     }
 }

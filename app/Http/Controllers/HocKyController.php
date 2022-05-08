@@ -88,19 +88,27 @@ class HocKyController extends Controller
                 }
             //
             $hocky->trang_thai = 'Mở';
+            $hocky->hien_tai = 0;
+
             if ($hocky->save()) {
+                $hockys = HocKy::where('hien_tai', 1)->get();
+                foreach ($hockys as $key => $hocky) {
+                    $hocky->hien_tai = 0;
+                    $hocky->save();
+                }
                 return redirect()->back()->with('success', 'Mở đăng ký học kỳ thành công');
             } else {
                 return redirect()->back()->with('error', 'Mở đăng ký học kỳ thất bại');
             }
         } elseif ($hocky->trang_thai == 'Mở') {
             // $hocphan = DB::table('hocphans')->delete();
-            $hocphans = DB::table('hocphans')->where('da_dang_ky', '<', 20)->orWhere('da_dang_ky', '>', 60)->get()->toArray();
+            $hocphans = DB::table('hocphans')->where('da_dang_ky', '<', 1)->orWhere('da_dang_ky', '>', 60)->get()->toArray();
             foreach ($hocphans as $key => $hocphan) {
                 $svdkbihuy = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
             }
-            $hocphan = DB::table('hocphans')->where('da_dang_ky', '<', 20)->orWhere('da_dang_ky', '>', 60)->delete();
+            $hocphan = DB::table('hocphans')->where('da_dang_ky', '<', 1)->orWhere('da_dang_ky', '>', 60)->delete();
             $hocky->trang_thai = 'Đóng';
+            $hocky->hien_tai = 1;
             $monhocs = MonHoc::where('duoc_phep', 'false')->get();
             foreach ($monhocs as $key => $monhoc) {
                 $monhoc->duoc_phep = 'true';
