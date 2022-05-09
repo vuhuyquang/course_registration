@@ -114,6 +114,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/reset-password/{id}', [SinhVienController::class, 'resetPassword'])->name('sinh-vien.resetPassword');
         Route::get('/profile/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
         Route::get('/export', [SinhVienController::class, 'export'])->name('sinh-vien.export');
+        Route::post('/import', [SinhVienController::class, 'import'])->name('sinh-vien.import');
     });
 
     Route::prefix('module')->group(function () {

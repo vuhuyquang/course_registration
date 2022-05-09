@@ -21,6 +21,7 @@ use File;
 use Auth;
 use DB;
 use App\Exports\SinhVienExport;
+use App\Imports\SinhVienImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SinhVienController extends Controller
@@ -469,5 +470,19 @@ class SinhVienController extends Controller
     {
         $diemsos = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
         return view('sinhvien.diemso', compact('diemsos'));
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|max:10000|mimes:xlsx,xls',
+        ], [
+            'file.required' => 'Trường dữ liệu không được để trống',
+            'file.max' => 'Dữ liệu nhập vào có tối đa 10kb',
+            'file.mimes' => 'Dữ liệu nhập vào phải là file xlsx, xls',
+        ]);
+
+        Excel::import(new SinhVienImport, $request->file);
+        return back()->with('success', 'Nhập dữ liệu thành công');
     }
 }

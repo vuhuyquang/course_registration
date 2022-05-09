@@ -16,8 +16,8 @@ class CreateLophocsTable extends Migration
         Schema::create('lophocs', function (Blueprint $table) {
             $table->id();
             $table->string('ma_lop', 20)->unique();
-            $table->integer('nganh_id');
-            $table->integer('khoa_hoc_id');
+            $table->integer('nganh_id')->nullable();
+            $table->integer('khoa_hoc_id')->nullable();
             $table->timestamps();
         });
     }

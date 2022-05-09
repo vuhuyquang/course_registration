@@ -15,9 +15,9 @@ class CreateNganhhocsTable extends Migration
     {
         Schema::create('nganhhocs', function (Blueprint $table) {
             $table->id();
-            $table->string('ma_nganh', 20)->unique();
+            $table->string('ma_nganh', 20)->nullable()->unique();
             $table->string('ten_nganh', 70)->unique();
-            $table->integer('khoa_id');
+            $table->integer('khoa_id')->nullable();
             $table->timestamps();
         });
     }
