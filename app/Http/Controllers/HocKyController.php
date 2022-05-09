@@ -71,9 +71,20 @@ class HocKyController extends Controller
     public function setStatus($id)
     {
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        
         $hocky = HocKy::findOrFail($id);
+
         if ($hocky->trang_thai == 'Đóng' && $sl == 0) {
             //
+            $hkhts = DB::table('hockys')->where('hien_tai', 1)->get()->toArray();
+            foreach ($hkhts as $key => $hkht) {
+                $mahkht = $hkht->ma_hoc_ky;
+            }
+
+            if ($mahkht == $hocky->ma_hoc_ky) {
+                return redirect()->back()->with('error', 'Không thể mở đăng ký chính học kỳ hiện tại');
+            }
+
                 $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
                 foreach ($monhocmodks as $key => $monhocmodk) {
                     for ($i=1; $i <= 3 ; $i++) { 

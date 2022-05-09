@@ -310,61 +310,174 @@ class GiangVienController extends Controller
             'sinh_vien_id.required' => 'Trường dữ liệu không được để trống',
             'sinh_vien_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
         ]);
-
-        $diemso = DiemSo::where('sinh_vien_id', $request->sinh_vien_id)->where('mon_hoc_id', $request->mon_hoc_id)->get();
-        if (empty($diemso->toArray())) {
-            $diemso = new DiemSo;
-            $diemso->mon_hoc_id = $request->mon_hoc_id;
-            $diemso->sinh_vien_id = $request->sinh_vien_id;
-            $diemso->giang_vien_id = Auth::user()->giangviens->id;
-            $diemso->chuyen_can = $request->chuyen_can;
-            $diemso->giua_ky = $request->giua_ky;
-            $diemso->cuoi_ky = $request->cuoi_ky;
-            $diemso->lan_hoc = 1;
-            $diemso->lan_thi = 1;
-            $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
-            $diemso->diem_tong_ket = $diemtongket;
-            if ($diemtongket >= 8.5) {
-                $diemchu = 'A';
-                $danhgia = 'Đạt';
-            } 
-            elseif ($diemtongket >= 8.0) {
-                $diemchu = 'B+';
-                $danhgia = 'Đạt';
-            } 
-            elseif ($diemtongket >= 7.0) {
-                $diemchu = 'B';
-                $danhgia = 'Đạt';
-            }
-            elseif ($diemtongket >= 6.5) {
-                $diemchu = 'C+';
-                $danhgia = 'Đạt';
-            }
-            elseif ($diemtongket >= 5.5) {
-                $diemchu = 'C';
-                $danhgia = 'Đạt';
-            }
-            elseif ($diemtongket >= 5.0) {
-                $diemchu = 'D+';
-                $danhgia = 'Đạt';
-            }
-            elseif ($diemtongket >= 4.0) {
-                $diemchu = 'D';
-                $danhgia = 'Đạt';
-            }
-            else {
-                $diemchu = 'F';
-                $danhgia = 'Thi lại';
-            }
-            $diemso->diem_chu = $diemchu;
-            $diemso->danh_gia = $danhgia;
-            if ($diemso->save()) {
-                return redirect()->back()->with('success', 'Lưu thành công');
+        $cc = (double) $request->chuyen_can;
+        $gk = (double) $request->giua_ky;
+        $ck = (double) $request->cuoi_ky;
+        if ($cc >= 5 && $cc <= 10 && $gk >= 0 && $gk <= 10 && $ck >= 0 && $ck <= 10) {
+            $diemso = DiemSo::where('sinh_vien_id', $request->sinh_vien_id)->where('mon_hoc_id', $request->mon_hoc_id)->get();
+            
+            if (empty($diemso->toArray())) {
+                $diemso = new DiemSo;
+                $diemso->mon_hoc_id = $request->mon_hoc_id;
+                $diemso->sinh_vien_id = $request->sinh_vien_id;
+                $diemso->giang_vien_id = Auth::user()->giangviens->id;
+                $diemso->chuyen_can = $request->chuyen_can;
+                $diemso->giua_ky = $request->giua_ky;
+                $diemso->cuoi_ky = $request->cuoi_ky;
+                $diemso->lan_hoc = 1;
+                $diemso->lan_thi = 1;
+                $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
+                $diemso->diem_tong_ket = $diemtongket;
+                if ($diemtongket >= 8.5) {
+                    $diemchu = 'A';
+                    $danhgia = 'Đạt';
+                } 
+                elseif ($diemtongket >= 8.0) {
+                    $diemchu = 'B+';
+                    $danhgia = 'Đạt';
+                } 
+                elseif ($diemtongket >= 7.0) {
+                    $diemchu = 'B';
+                    $danhgia = 'Đạt';
+                }
+                elseif ($diemtongket >= 6.5) {
+                    $diemchu = 'C+';
+                    $danhgia = 'Đạt';
+                }
+                elseif ($diemtongket >= 5.5) {
+                    $diemchu = 'C';
+                    $danhgia = 'Đạt';
+                }
+                elseif ($diemtongket >= 5.0) {
+                    $diemchu = 'D+';
+                    $danhgia = 'Đạt';
+                }
+                elseif ($diemtongket >= 4.0) {
+                    $diemchu = 'D';
+                    $danhgia = 'Đạt';
+                }
+                else {
+                    $diemchu = 'F';
+                    $danhgia = 'Thi lại';
+                }
+                $diemso->diem_chu = $diemchu;
+                $diemso->danh_gia = $danhgia;
+                if ($diemso->save()) {
+                    return redirect()->back()->with('success', 'Lưu thành công');
+                } else {
+                    return redirect()->back()->with('error', 'Lưu thất bại');
+                }   
             } else {
-                return redirect()->back()->with('error', 'Lưu thất bại');
-            }   
+                foreach ($diemso->toArray() as $key => $dstl) {
+                    $id = $dstl['id'];
+                    $danhgia = $dstl['danh_gia'];
+                    $lanthi = $dstl['lan_thi'];
+                    $lanhoc = $dstl['lan_hoc'];
+                }
+                if ($lanthi%2 == 1 &&  $danhgia = 'Thi lại') {
+                    $diemso = DiemSo::findOrFail($id);
+                    $diemso->lan_thi = $lanthi + 1;
+                    $diemso->chuyen_can = $request->chuyen_can;
+                    $diemso->giua_ky = $request->giua_ky;
+                    $diemso->cuoi_ky = $request->cuoi_ky;
+                    $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
+                    $diemso->diem_tong_ket = $diemtongket;
+                    if ($diemtongket >= 8.5) {
+                        $diemchu = 'A';
+                        $danhgia = 'Đạt';
+                    } 
+                    elseif ($diemtongket >= 8.0) {
+                        $diemchu = 'B+';
+                        $danhgia = 'Đạt';
+                    } 
+                    elseif ($diemtongket >= 7.0) {
+                        $diemchu = 'B';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 6.5) {
+                        $diemchu = 'C+';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 5.5) {
+                        $diemchu = 'C';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 5.0) {
+                        $diemchu = 'D+';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 4.0) {
+                        $diemchu = 'D';
+                        $danhgia = 'Đạt';
+                    }
+                    else {
+                        $diemchu = 'F';
+                        $danhgia = 'Học lại';
+                    }
+                    $diemso->diem_chu = $diemchu;
+                    $diemso->danh_gia = $danhgia;
+                    if ($diemso->save()) {
+                        return redirect()->back()->with('success', 'Lưu thành công');
+                    } else {
+                        return redirect()->back()->with('error', 'Lưu thất bại');
+                    }
+                } elseif ($danhgia == 'Học lại') {
+                    $diemso = DiemSo::findOrFail($id);
+                    $diemso->giang_vien_id = Auth::user()->giangviens->id;
+                    $diemso->chuyen_can = $request->chuyen_can;
+                    $diemso->giua_ky = $request->giua_ky;
+                    $diemso->cuoi_ky = $request->cuoi_ky;
+                    $diemso->lan_thi = $lanthi + 1;
+                    $diemso->lan_hoc = $lanhoc + 1;
+
+                    $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
+                    $diemso->diem_tong_ket = $diemtongket;
+                    if ($diemtongket >= 8.5) {
+                        $diemchu = 'A';
+                        $danhgia = 'Đạt';
+                    } 
+                    elseif ($diemtongket >= 8.0) {
+                        $diemchu = 'B+';
+                        $danhgia = 'Đạt';
+                    } 
+                    elseif ($diemtongket >= 7.0) {
+                        $diemchu = 'B';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 6.5) {
+                        $diemchu = 'C+';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 5.5) {
+                        $diemchu = 'C';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 5.0) {
+                        $diemchu = 'D+';
+                        $danhgia = 'Đạt';
+                    }
+                    elseif ($diemtongket >= 4.0) {
+                        $diemchu = 'D';
+                        $danhgia = 'Đạt';
+                    }
+                    else {
+                        $diemchu = 'F';
+                        $danhgia = 'Thi lại';
+                    }
+                    $diemso->diem_chu = $diemchu;
+                    $diemso->danh_gia = $danhgia;
+                    if ($diemso->save()) {
+                        return redirect()->back()->with('success', 'Lưu thành công');
+                    } else {
+                        return redirect()->back()->with('error', 'Lưu thất bại');
+                    }   
+                } else {
+                    return redirect()->back()->with('error', 'Đã nhập điểm cho sinh viên này rồi');   
+                }
+            }
         } else {
-            return redirect()->back()->with('error', 'Đã nhập điểm cho sinh viên này rồi');
+            return redirect()->back()->with('error', 'Điểm nhập vào không hợp lệ');
+
         }
     }
 }

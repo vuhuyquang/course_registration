@@ -26,6 +26,8 @@
                 <th>Tên học phần</th>
                 <th>STC</th>
                 <th>Giảng viên</th>
+                <th>Lần học</th>
+                <th>Lần thi</th>
                 <th>Đánh giá</th>
                 <th>Chuyên cần</th>
                 <th>Giữa kỳ</th>
@@ -42,6 +44,8 @@
                         <td>{{ $diemso->monhocs->ten_mon_hoc }}</td>
                         <td>{{ $diemso->monhocs->so_tin_chi }}</td>
                         <td>{{ $diemso->giangviens->ho_ten }}</td>
+                        <td>{{ $diemso->lan_hoc }}</td>
+                        <td>{{ $diemso->lan_thi }}</td>
                         <td>{{ $diemso->danh_gia }}</td>
                         <td>{{ $diemso->chuyen_can }}</td>
                         <td>{{ $diemso->giua_ky }}</td>

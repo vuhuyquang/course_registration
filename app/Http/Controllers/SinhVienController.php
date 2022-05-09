@@ -332,8 +332,12 @@ class SinhVienController extends Controller
         $svdks = SVDK::join('hocphans', function ($join){
             $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
         })->paginate(15);
+        $hkhts = HocKy::where('hien_tai', 1)->orWhere('trang_thai', 'Mở')->get()->toArray();
+        foreach ($hkhts as $key => $hkht) {
+            $hkht = $hkht['ma_hoc_ky'];
+        }
         if (!empty($svdks)) {
-            return view('sinhvien.dangkymonhoc', compact('svdks'));
+            return view('sinhvien.dangkymonhoc', compact('svdks', 'hkht'));
         } else {
             return view('sinhvien.dangkymonhoc');
         }
@@ -400,7 +404,24 @@ class SinhVienController extends Controller
                                 return redirect()->back()->with('error', 'Không tìm thấy học phần này');
                             }
                         } else {
-                            return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
+                            $diemsos = DB::table('diemsos')->where('sinh_vien_id', Auth::user()->sinhviens->id)->where('mon_hoc_id', $monhocid)->where('danh_gia', 'Học lại')->get()->toArray();
+                            if (!empty($diemsos)) {
+                                $svdk = new SVDK;
+                                $svdk->hoc_phan_id = $hocphanid;
+                                $svdk->sinh_vien_id = $sinhvienid;
+                                $svdk->mon_hoc_id = $monhocid;
+                                $svdk->so_tin_chi = $sotinchi;
+                                $svdk->nganh_id = $sinhviennganhid;
+                                $svdk->ma_hoc_ky = $hockymo;
+                                if ($svdk->save()) {
+                                    $hp->save();
+                                    return redirect()->back()->with('success', 'Đăng ký học phần thành công');
+                                } else {
+                                    return redirect()->back()->with('error', 'Đăng ký học phần thất bại');
+                                }
+                            } else {
+                                return redirect()->back()->with('error', 'Môn học / học phần này đã được đăng ký');
+                            }
                         }
                     } else {
                         return redirect()->back()->with('error', 'Mỗi học kỳ chỉ được đăng ký tối đa 25 tín chỉ');
@@ -426,11 +447,21 @@ class SinhVienController extends Controller
         $svdk = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->where('hoc_phan_id', $id);
         $hocphan = HocPhan::findOrFail($id);
         $hocphan->da_dang_ky = $hocphan->da_dang_ky - 1;
-        if ($svdk->delete()) {
-            $hocphan->save();
-            return redirect()->back()->with('success', 'Huy đăng ký thành công');
+
+        $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
+        foreach ($hockymos as $key => $hockymo) {
+            $hockymo = $hockymo->ma_hoc_ky;
+        }
+        $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($sl == 1) {
+            if ($svdk->delete()) {
+                $hocphan->save();
+                return redirect()->back()->with('success', 'Huy đăng ký thành công');
+            } else {
+                return redirect()->back()->with('error', 'Huy đăng ký thất bại');
+            }
         } else {
-            return redirect()->back()->with('error', 'Huy đăng ký thất bại');
+            return redirect()->back()->with('error', 'Đã hết thời hạn hủy đăng ký');
         }
     }
 

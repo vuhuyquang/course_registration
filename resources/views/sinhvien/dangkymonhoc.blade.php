@@ -29,10 +29,11 @@
                 <th>Địa điểm</th>
                 <th>Giảng viên</th>
                 <th>Học kỳ</th>
+                <th>Hiện tại</th>
                 <th>Hủy</th>
             </tr>
             </tr>
-            @if (isset($svdks))
+            @if (!empty($svdks))
                 @foreach ($svdks as $key => $svdk)
                     <tr>
                         <th>{{ $key + 1 }}</th>
@@ -61,10 +62,19 @@
                         </td>
                         <td>{{ $svdk->ma_hoc_ky }}</td>
                         <td>
+                            @if (!empty($hkht) && $svdk->ma_hoc_ky == $hkht)
+                                <span class="badge badge-success">V</span>
+                            @else
+                                <span class="badge badge-danger">X</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if (!empty($hkht) && $svdk->ma_hoc_ky == $hkht)
                             <a href="{{ route('sinhvien.cancelRegister', ['id' => $svdk->id]) }}" class="btn btn-sm btn-danger btndelete"
                                 onclick="return confirm('Bạn có chắc chắn muốn hủy đăng ký?')">
                                 <i class="fas fa-trash"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -72,5 +82,7 @@
         </table>
     </div>
 </div>
+@if (!empty($svdks))
 {{ $svdks->links() }}
+@endif
 @endsection

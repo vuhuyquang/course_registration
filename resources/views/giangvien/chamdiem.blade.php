@@ -2,6 +2,16 @@
 
 @section('main')
     <div class="card">
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert"></button>
+                    {{ $error }}
+                </div>
+            @endforeach
+        @endif
+    </div>
+    <div class="card">
         <div class="card-header" style="background-color: rgba(0,0,0,.03);">
             <h5 class="card-title">Tổng kết điểm</h5>
         </div>
@@ -29,7 +39,8 @@
                             <input type="hidden" name="mon_hoc_id" value="{{ $svdk->mon_hoc_id }}">
                             <input type="hidden" name="sinh_vien_id" value="{{ $svdk->sinh_vien_id }}">
                             <td>
-                                <button class="btn btn-sm btn-primary"><i style="color: white;" class="fas fa-plus-circle"></i></button>
+                                <button class="btn btn-sm btn-primary"><i style="color: white;"
+                                        class="fas fa-plus-circle"></i></button>
                             </td>
                         </form>
                     </tr>
