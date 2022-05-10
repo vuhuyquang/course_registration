@@ -31,10 +31,13 @@ class SinhVienController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate(10);
-        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens'));
+        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate($request->banghi);
+        $khoahocs = KhoaHoc::all();
+        $lophocs = LopHoc::all();
+        $nganhhocs = NganhHoc::all();
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
     }
 
     /**
@@ -48,6 +51,16 @@ class SinhVienController extends Controller
         $khoahocs = KhoaHoc::all();
         $lophocs = LopHoc::all();
         return view('quantrivien.qlsinhvien.them', compact('nganhhocs', 'khoahocs', 'lophocs'));
+    }
+
+    public function filters(Request $request)
+    {
+        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate(10);
+        $khoahocs = KhoaHoc::all();
+        $lophocs = LopHoc::all();
+        $nganhhocs = NganhHoc::all();
+        $sinhviens = SinhVien::query()->nienkhoa($request)->lophoc($request)->nganhhoc($request)->search()->paginate($request->banghi);
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
     }
 
     /**
@@ -228,7 +241,7 @@ class SinhVienController extends Controller
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
         } else {
-            $tenanh = 'avatar_default';
+            $tenanh = 'avatar_default.png';
         }
 
         $sinhvien = SinhVien::findOrFail($id);
@@ -337,7 +350,7 @@ class SinhVienController extends Controller
         foreach ($hkhts as $key => $hkht) {
             $hkht = $hkht['ma_hoc_ky'];
         }
-        if (!empty($svdks)) {
+        if (!empty($svdks) && !empty($hkht)) {
             return view('sinhvien.dangkymonhoc', compact('svdks', 'hkht'));
         } else {
             return view('sinhvien.dangkymonhoc');

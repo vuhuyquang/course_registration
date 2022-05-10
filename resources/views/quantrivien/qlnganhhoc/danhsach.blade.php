@@ -30,9 +30,21 @@
                 @foreach ($nganhhocs as $key => $nganhhoc)
                     <tr>
                         <th>{{ $key + 1 }}</th>
-                        <td>{{ $nganhhoc->ma_nganh }}</td>
+                        <td>
+                            @if (!empty($nganhhoc->ma_nganh))
+                                {{ $nganhhoc->ma_nganh }}
+                            @else
+                                <i>Chưa có thông tin</i>
+                            @endif
+                        </td>
                         <td>{{ $nganhhoc->ten_nganh }}</td>
-                        <td>{{ $nganhhoc->khoas->ten_khoa }}</td>
+                        <td>
+                            @if (!empty($nganhhoc->khoas->ten_khoa))
+                                {{ $nganhhoc->khoas->ten_khoa }}
+                            @else
+                                <i>Chưa có thông tin</i>
+                            @endif
+                        </td>
                         <td>{{ date('H:i:s d/m/Y', strtotime($nganhhoc->created_at)) }}</td>
                         <td>
                             <a href="{{ route('nganh-hoc.edit', ['id' => $nganhhoc->id]) }}" class="btn btn-sm btn-success">
@@ -48,5 +60,5 @@
             </table>
         </div>
     </div>
-    {{ $nganhhocs->links() }}
+    {{ $nganhhocs->appends(request()->only('key'))->links() }}
 @endsection

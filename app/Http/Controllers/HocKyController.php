@@ -81,7 +81,7 @@ class HocKyController extends Controller
                 $mahkht = $hkht->ma_hoc_ky;
             }
 
-            if ($mahkht == $hocky->ma_hoc_ky) {
+            if (!empty($mahkht) && $mahkht == $hocky->ma_hoc_ky) {
                 return redirect()->back()->with('error', 'Không thể mở đăng ký chính học kỳ hiện tại');
             }
 

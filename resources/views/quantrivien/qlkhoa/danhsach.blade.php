@@ -46,5 +46,5 @@
         </table>
     </div>
 </div>
-{{ $khoas->links() }}
+{{ $khoas->appends(request()->only('key'))->links() }}
 @endsection

@@ -87,6 +87,6 @@
         </div>
     </div>
     @if (!empty($hocphans))
-        {{ $hocphans->links() }}
+        {{ $hocphans->appends(request()->only('key'))->links() }}
     @endif
 @endsection

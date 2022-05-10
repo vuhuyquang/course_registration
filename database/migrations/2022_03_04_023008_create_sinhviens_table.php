@@ -20,7 +20,7 @@ class CreateSinhviensTable extends Migration
             $table->integer('khoa_hoc_id');
             $table->integer('lop_hoc_id');
             $table->integer('nganh_hoc_id');
-            $table->date('ngay_sinh');
+            $table->string('ngay_sinh')->nullable();
             $table->string('gioi_tinh');
             $table->string('que_quan', 80);
             $table->string('so_dien_thoai', 10)->nullable()->unique();

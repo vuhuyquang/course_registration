@@ -46,7 +46,28 @@ class SinhVien extends Model
     public function scopeSearch($query)
     {
         if ($key = request()->key) {
-    		return $query->where('ma_sinh_vien', $key)->orWhere('ho_ten', $key)->orWhere('que_quan', $key)->orWhere('so_dien_thoai', $key);
+    		return $query->where('ma_sinh_vien', $key)->orWhere('ho_ten', 'LIKE', '%' . $key . '%')->orWhere('que_quan', 'LIKE', '%' . $key . '%')->orWhere('so_dien_thoai', 'LIKE', '%' . $key . '%');
     	}
+    }
+
+    public function scopeNienkhoa($query)
+    {
+        if ($khoahocid = request()->khoa_hoc_id) {
+            return $query->where('khoa_hoc_id', $khoahocid);
+        }
+    }
+
+    public function scopeLophoc($query)
+    {
+        if ($lophocid = request()->lop_hoc_id) {
+            return $query->where('lop_hoc_id', $lophocid);
+        }
+    }
+
+    public function scopeNganhhoc($query)
+    {
+        if ($nganhhocid = request()->nganh_hoc_id) {
+            return $query->where('nganh_hoc_id', $nganhhocid);
+        }
     }
 }

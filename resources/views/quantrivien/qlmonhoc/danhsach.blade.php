@@ -63,6 +63,6 @@
         </table>
     </div>
 </div>
-{{ $monhocs->links() }}
+{{ $monhocs->appends(request()->only('key'))->links() }}
 @endsection
 

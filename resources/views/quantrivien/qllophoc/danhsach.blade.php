@@ -31,8 +31,20 @@
                     <tr>
                         <th>{{ $key + 1 }}</th>
                         <td>{{ $lophoc->ma_lop }}</td>
-                        <td>{{ $lophoc->nganhhocs->ten_nganh }}</td>
-                        <td>{{ $lophoc->khoahocs->ma_khoa_hoc }}</td>
+                        <td>
+                            @if (!empty($lophoc->nganhhocs->ten_nganh))
+                                {{ $lophoc->nganhhocs->ten_nganh }}
+                            @else
+                                <i>Chưa có thông tin</i>
+                            @endif
+                        </td>
+                        <td>
+                            @if (!empty( $lophoc->khoahocs->ma_khoa_hoc))
+                                {{ $lophoc->khoahocs->ma_khoa_hoc }}
+                            @else
+                                <i>Chưa có thông tin</i>
+                            @endif
+                        </td>
                         <td>{{ date('H:i:s d/m/Y', strtotime($lophoc->created_at)) }}</td>
                         <td>
                             <a href="{{ route('lop-hoc.edit', ['id' => $lophoc->id]) }}" class="btn btn-sm btn-success">
@@ -49,5 +61,5 @@
             </table>
         </div>
     </div>
-    {{ $lophocs->links() }}
+    {{ $lophocs->appends(request()->only('key'))->links() }}
 @endsection

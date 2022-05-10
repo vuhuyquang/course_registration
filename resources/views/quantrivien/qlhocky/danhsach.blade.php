@@ -67,5 +67,5 @@
             </table>
         </div>
     </div>
-    {{ $hockys->links() }}
+    {{ $hockys->appends(request()->only('key'))->links() }}
 @endsection

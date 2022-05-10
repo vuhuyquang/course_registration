@@ -13,7 +13,7 @@
         <div class="form-group">
             <label for="nganh_id">Ngành <label style="color: red" for="nganh_id">*</label></label>
             <select id="nganh_id" class="form-control form-control-sm" name="nganh_id">
-                <option value="" selected="" disabled="">--- Chọn khoa ---</option>
+                <option value="" selected="" disabled="">--- Chọn ngành ---</option>
                 @foreach ($nganhhocs as $nganhhoc)
                     <option {{ $lophoc->nganh_id == $nganhhoc->id ? 'selected' : '' }} value="{{ $nganhhoc->id }}">
                         {{ $nganhhoc->ten_nganh }}</option>

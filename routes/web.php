@@ -115,6 +115,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/profile/{id}', [SinhVienController::class, 'profile'])->name('sinh-vien.profile');
         Route::get('/export', [SinhVienController::class, 'export'])->name('sinh-vien.export');
         Route::post('/import', [SinhVienController::class, 'import'])->name('sinh-vien.import');
+        Route::get('/filters', [SinhVienController::class, 'filters'])->name('sinh-vien.filters');
     });
 
     Route::prefix('module')->group(function () {

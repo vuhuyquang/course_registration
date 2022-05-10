@@ -61,7 +61,7 @@
         </table>
     </div>
 </div>
-{{ $giangviens->links() }}
+{{ $giangviens->appends(request()->only('key'))->links() }}
 @endsection
 
 @section('css')
