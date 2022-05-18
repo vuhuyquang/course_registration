@@ -23,7 +23,7 @@ use App\Http\Controllers\TinTucController;
 |--------------------------------------------------------------------------
 |
 */
-Route::get('', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
+
 Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
 Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
@@ -34,6 +34,8 @@ Route::get('change-password', [TaiKhoanController::class, 'getChangePassword'])-
 Route::post('change-password', [TaiKhoanController::class, 'postChangePassword'])->name('postChangePassword');
 
 Route::prefix('admin')->middleware('checkAdmin')->group(function () {
+    Route::get('', [QuanTriVienController::class, 'dashboard'])->name('dashboard');
+
     Route::prefix('department')->group(function () {
         Route::get('/', [KhoaController::class, 'index'])->name('khoa.index');
         Route::get('/create', [KhoaController::class, 'create'])->name('khoa.create');

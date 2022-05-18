@@ -20,72 +20,45 @@ class SinhVienImport implements ToCollection, WithHeadingRow, WithValidation
 
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) {
-
+        foreach ($rows as $key => $row) {
             // Kiểm tra khóa học, nếu chưa có tạo mới, nếu có lấy id
             $khoahoc_exists = KhoaHoc::where('ma_khoa_hoc', $row['ma_khoa_hoc'])->first();
             if (!empty($khoahoc_exists)) {
                 $khoahocid = $khoahoc_exists->id;
             } else {
-                $khoahoc = KhoaHoc::create([
-                    'ma_khoa_hoc' => $row['ma_khoa_hoc'],
-                ]);
-                $khoahocid = KhoaHoc::where('ma_khoa_hoc', $row['ma_khoa_hoc'])->first()->id;
+                $dong = $key + 1;
+                $message = 'Lỗi dòng ' . $dong . '. Khóa học này chưa tồn tại';
+                return redirect()->back()->with('error', $message);
             }
 
             $lophoc_exists = LopHoc::where('ma_lop', $row['ma_lop'])->first();
             if (!empty($lophoc_exists)) {
                 $lophocid = $lophoc_exists->id;
             } else {
-                $lophoc = LopHoc::create([
-                    'ma_lop' => $row['ma_lop'],
-                ]);
-                $lophocid = LopHoc::where('ma_lop', $row['ma_lop'])->first()->id;
+                $dong = $key + 1;
+                $message = 'Lỗi dòng ' . $dong . '. Lớp học này chưa tồn tại';
+                return redirect()->back()->with('error', $message);
             }
 
             $nganhhoc_exists = NganhHoc::where('ten_nganh', $row['ten_nganh'])->first();
             if (!empty($nganhhoc_exists)) {
                 $nganhhocid = $nganhhoc_exists->id;
             } else {
-                $nganhhoc = NganhHoc::create([
-                    'ten_nganh' => $row['ten_nganh'],
-                ]);
-                $nganhhocid = NganhHoc::where('ten_nganh', $row['ten_nganh'])->first()->id;
+                $dong = $key + 1;
+                $message = 'Lỗi dòng ' . $dong . '. Ngành học này chưa tồn tại';
+                return redirect()->back()->with('error', $message);
             }
 
             $sinhvien_exists = SinhVien::where('ma_sinh_vien', $row['ma_sinh_vien'])->first();
             $taikhoan_exists = TaiKhoan::where('email', $row['email'])->first();
             if (!empty($sinhvien_exists)) {
-                $accountid = $sinhvien_exists->tai_khoan_id;
-                $account = TaiKhoan::findOrFail($accountid);
-                $account->email = $row['email'];
-                $account->save();
-
-                $sinhvienid = $sinhvien_exists->id;
-                $sinhvien = SinhVien::findOrFail($sinhvienid);
-                $sinhvien->ma_sinh_vien = $row['ma_sinh_vien'];
-                $sinhvien->ho_ten = $row['ho_ten'];
-                $sinhvien->khoa_hoc_id = $khoahocid;
-                $sinhvien->lop_hoc_id = $lophocid;
-                $sinhvien->nganh_hoc_id = $nganhhocid;
-                $sinhvien->ngay_sinh = $this->transformDate($row['ngay_sinh']);
-                $sinhvien->gioi_tinh = $row['gioi_tinh'];
-                $sinhvien->que_quan = $row['que_quan'];
-                $sinhvien->so_dien_thoai = $row['so_dien_thoai'];
-                $sinhvien->save();
+                $dong = $key + 1;
+                $message = 'Lỗi dòng ' . $dong . '. Mã sinh viên đã tồn tại';
+                return redirect()->back()->with('error', $message);
             } elseif (!empty($taikhoan_exists)) {
-                $account = TaiKhoan::findOrFail($taikhoan_exists->id);
-                $sinhvien = SinhVien::where('tai_khoan_id', $account->id)->first();
-                $sinhvien->ma_sinh_vien = $row['ma_sinh_vien'];
-                $sinhvien->ho_ten = $row['ho_ten'];
-                $sinhvien->khoa_hoc_id = $khoahocid;
-                $sinhvien->lop_hoc_id = $lophocid;
-                $sinhvien->nganh_hoc_id = $nganhhocid;
-                $sinhvien->ngay_sinh = $this->transformDate($row['ngay_sinh']);
-                $sinhvien->gioi_tinh = $row['gioi_tinh'];
-                $sinhvien->que_quan = $row['que_quan'];
-                $sinhvien->so_dien_thoai = $row['so_dien_thoai'];
-                $sinhvien->save();
+                $dong = $key + 1;
+                $message = 'Lỗi dòng ' . $dong . '. Email đã tồn tại';
+                return redirect()->back()->with('error', $message);
             } else {
                 $account = TaiKhoan::create([
                     'email' => $row['email'],
@@ -106,9 +79,10 @@ class SinhVienImport implements ToCollection, WithHeadingRow, WithValidation
                     'que_quan' => $row['que_quan'],
                     'so_dien_thoai' => $row['so_dien_thoai'],
                     'tai_khoan_id' => $id,
-                ]);   
+                ]);
             }
         }
+        return redirect()->back()->with('success', 'Nhập dữ liệu thành công');
     }
 
     public function rules(): array

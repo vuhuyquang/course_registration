@@ -373,6 +373,8 @@ class GiangVienController extends Controller
                     $danhgia = $dstl['danh_gia'];
                     $lanthi = $dstl['lan_thi'];
                     $lanhoc = $dstl['lan_hoc'];
+                    $monhocid = $dstl['mon_hoc_id'];
+                    $sinhvienid = $dstl['sinh_vien_id'];
                 }
                 if ($lanthi%2 == 1 &&  $danhgia = 'Thi lại') {
                     $diemso = DiemSo::findOrFail($id);
@@ -422,6 +424,10 @@ class GiangVienController extends Controller
                         return redirect()->back()->with('error', 'Lưu thất bại');
                     }
                 } elseif ($danhgia == 'Học lại') {
+                    $solandkmon = SVDK::where('sinh_vien_id', $sinhvienid)->where('mon_hoc_id', $monhocid)->get()->count();
+                    if ($solandkmon - 1 != $lanhoc) {
+                        return redirect()->back()->with('error', 'Đã nhập điểm cho sinh viên này rồi');
+                    }
                     $diemso = DiemSo::findOrFail($id);
                     $diemso->giang_vien_id = Auth::user()->giangviens->id;
                     $diemso->chuyen_can = $request->chuyen_can;

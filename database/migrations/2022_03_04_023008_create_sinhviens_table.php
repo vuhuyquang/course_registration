@@ -20,8 +20,8 @@ class CreateSinhviensTable extends Migration
             $table->integer('khoa_hoc_id');
             $table->integer('lop_hoc_id');
             $table->integer('nganh_hoc_id');
-            $table->string('ngay_sinh')->nullable();
-            $table->string('gioi_tinh');
+            $table->string('ngay_sinh', 50)->nullable();
+            $table->string('gioi_tinh', 10);
             $table->string('que_quan', 80);
             $table->string('so_dien_thoai', 10)->nullable()->unique();
             $table->text('avatar')->default('avatar_default.png');

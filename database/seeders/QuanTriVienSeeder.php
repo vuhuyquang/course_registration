@@ -22,7 +22,7 @@ class QuanTriVienSeeder extends Seeder
             'don_vi' => 'Công nghệ thông tin',
             'ngay_sinh' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'gioi_tinh' => 'Nam',
-            'que_quan' => 'TP Hải Dương, Hải Dương',
+            'que_quan' => 'Quỳnh Phụ, Thái Bình',
             'so_dien_thoai ' => '0344396798',
             'avatar' => 'avatar_default.png',
             'tai_khoan_id' => 1,

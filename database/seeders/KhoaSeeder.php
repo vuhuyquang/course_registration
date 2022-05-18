@@ -21,5 +21,12 @@ class KhoaSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);
+        DB::table('khoas')->insert([
+            'id' => '2',
+            'ma_khoa' => 'KT',
+            'ten_khoa' => 'Kinh tế',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
     }
 }

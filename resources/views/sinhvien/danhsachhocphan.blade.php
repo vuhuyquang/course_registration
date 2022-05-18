@@ -44,7 +44,7 @@
                         @if ($hocphan->giang_vien_id == null)
                             <i>Chưa có thông tin</i>
                         @else
-                            {{ $hocphan->giang_vien_id }}
+                            {{ $hocphan->giangviens->ho_ten }}
                         @endif
                     </td>
                     <td>{{ $hocphan->dk_toi_da }}</td>

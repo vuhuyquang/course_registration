@@ -73,11 +73,11 @@
                 <tr>
                     <th>#</th>
                     <th>Mã sinh viên</th>
-                    <th>Ảnh</th>
                     <th>Họ tên</th>
                     <th>Khóa học</th>
                     <th>Lớp học</th>
                     <th>Ngành học</th>
+                    <th>SĐT</th>
                     <th>Email</th>
                     <th style="width: 156px;">Hành động</th>
                 </tr>
@@ -85,11 +85,12 @@
                     <tr>
                         <th>{{ $key + 1 }}</th>
                         <td>{{ $sinhvien->ma_sinh_vien }}</td>
-                        <td><img style="height: 68px;" src="{{ url('uploads') }}/{{ $sinhvien->avatar }}"></td>
+                        {{-- <td><img style="height: 68px;" src="{{ url('uploads') }}/{{ $sinhvien->avatar }}"></td> --}}
                         <td>{{ $sinhvien->ho_ten }}</td>
                         <td>{{ $sinhvien->khoahocs->ma_khoa_hoc }}</td>
                         <td>{{ $sinhvien->lophocs->ma_lop }}</td>
                         <td>{{ $sinhvien->nganhhocs->ten_nganh }}</td>
+                        <td>{{ $sinhvien->so_dien_thoai }}</td>
                         <td>{{ $sinhvien->taikhoans->email }}</td>
                         <td>
                             <a href="{{ route('sinh-vien.profile', ['id' => $sinhvien->id]) }}"

@@ -17,7 +17,7 @@ class CreateGiangviensTable extends Migration
             $table->id();
             $table->string('ma_giang_vien', 20)->unique();
             $table->string('ho_ten', 50);
-            $table->string('trinh_do');
+            $table->string('trinh_do', 20);
             $table->integer('nganh_hoc_id');
             $table->date('ngay_sinh');
             $table->string('gioi_tinh');

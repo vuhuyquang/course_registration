@@ -495,7 +495,10 @@ class SinhVienController extends Controller
             'file.mimes' => 'Dữ liệu nhập vào phải là file xlsx, xls',
         ]);
 
-        Excel::import(new SinhVienImport, $request->file);
-        return back()->with('success', 'Nhập dữ liệu thành công');
+        if (Excel::import(new SinhVienImport, $request->file)) {
+            return back();
+        } else {
+            return back();
+        }
     }
 }

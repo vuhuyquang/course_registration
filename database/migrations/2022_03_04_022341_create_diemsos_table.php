@@ -18,12 +18,12 @@ class CreateDiemsosTable extends Migration
             $table->integer('mon_hoc_id');
             $table->integer('sinh_vien_id');
             $table->integer('giang_vien_id');
-            $table->string('danh_gia');    // Đạt, thi lại, học lại
+            $table->string('danh_gia', 15);    // Đạt, thi lại, học lại
             $table->double('chuyen_can');
             $table->double('giua_ky');
             $table->double('cuoi_ky');
             $table->double('diem_tong_ket');
-            $table->string('diem_chu');
+            $table->string('diem_chu', 3);
             $table->integer('lan_hoc')->default(0);
             $table->integer('lan_thi')->default(0);
             $table->timestamps();

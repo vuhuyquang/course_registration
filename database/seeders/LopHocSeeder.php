@@ -22,5 +22,13 @@ class LopHocSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);
+        DB::table('lophocs')->insert([
+            'id' => '2',
+            'ma_lop' => '69DCKT25',
+            'nganh_id' => '2',
+            'khoa_hoc_id' => '1',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
     }
 }

@@ -11,7 +11,7 @@ class TaiKhoan extends Authenticatable
 {
     use HasFactory, Notifiable;
     protected $table = 'taikhoans';
-    protected $fillable = ['email', 'password', 'quyen'];
+    protected $fillable = ['email', 'password', 'lan_dau_tien', 'quyen'];
     protected $hidden = [
         'password', 'remember_token',
     ];

@@ -22,5 +22,13 @@ class NganhHocSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);
+        DB::table('nganhhocs')->insert([
+            'id' => '2',
+            'ma_nganh' => 'KT',
+            'ten_nganh' => 'Kế toán',
+            'khoa_id' => '2',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
     }
 }
