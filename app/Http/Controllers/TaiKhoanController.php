@@ -57,7 +57,7 @@ class TaiKhoanController extends Controller
             } elseif (Auth::user()->quyen == 2) {
                 return redirect()->route('giangvien.classSubjects');
             } elseif (Auth::user()->quyen == 3) {
-                return redirect()->route('sinh-vien.index');
+                return redirect()->route('dashboard');
             } else {
                 return redirect()->route('getLogin');
             }

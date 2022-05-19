@@ -19,6 +19,7 @@ class CreateHockysTable extends Migration
             $table->string('mo_ta', 50)->nullable();
             $table->string('trang_thai', 10)->default('Đóng');   // Mở, đóng
             $table->integer('hien_tai')->default(0);
+            $table->integer('da_mo')->default(0);   // 0: Chưa mở, 1: Đã mở
             $table->timestamps();
         });
     }

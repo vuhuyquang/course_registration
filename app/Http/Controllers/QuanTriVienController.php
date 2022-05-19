@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\HocKy;
 use App\Models\HocPhan;
 use App\Models\MonHoc;
+use App\Models\NganhHoc;
+use App\Models\GiangVien;
+use App\Models\SinhVien;
+use App\Models\KhoaHoc;
+use App\Models\LopHoc;
 use DB;
 
 class QuanTriVienController extends Controller
@@ -42,6 +47,7 @@ class QuanTriVienController extends Controller
         $hocphans = HocPhan::groupBy('mon_hoc_id')
         ->selectRaw('sum(da_dang_ky) as sum, mon_hoc_id')
         ->where('ma_hoc_ky', $mhk)
+        ->where('da_dang_ky', '!=', 0)
         ->pluck('sum','mon_hoc_id');
         $arr = (array) null;
         $dem2 = 0;
@@ -59,69 +65,97 @@ class QuanTriVienController extends Controller
         return view('quantrivien.dashboard', compact('subjects', 'students', 'modules', 'teachers', 'arrhk', 'arr', 'hocphans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function subjectsList()
     {
-        //
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+            $monhocs = DB::table('svdks')->select('mon_hoc_id')->where('ma_hoc_ky', $mhk)->groupBy('mon_hoc_id')->get()->toArray();
+            if (empty($monhocs)) {
+                return redirect()->route('dashboard');
+            }
+            $arr = (array) null;
+            foreach ($monhocs as $key => $monhoc) {
+                $mh = MonHoc::find($monhoc->mon_hoc_id)->toArray();
+                $arr[] = $mh;
+            }
+            $nganhhocs = NganhHoc::all();
+            return view('quantrivien.dsmonhoc', compact('arr', 'nganhhocs'));
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function moduleList()
     {
-        //
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+            $hocphans = DB::table('svdks')->select('hoc_phan_id')->where('ma_hoc_ky', $mhk)->groupBy('hoc_phan_id')->get()->toArray();
+            if (empty($hocphans)) {
+                return redirect()->route('dashboard');
+            }
+            $arr = (array) null;
+            foreach ($hocphans as $key => $hocphan) {
+                $hp = HocPhan::find($hocphan->hoc_phan_id)->toArray();
+                $arr[] = $hp;
+            }
+            $monhocs = MonHoc::all();
+            $giangviens = GiangVien::all();
+            if (!empty($giangviens)) {
+                return view('quantrivien.dshocphan', compact('arr', 'monhocs', 'giangviens'));
+            } else {
+                return view('quantrivien.dshocphan', compact('arr', 'monhocs'));
+            }
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\QuanTriVien  $quanTriVien
-     * @return \Illuminate\Http\Response
-     */
-    public function show(QuanTriVien $quanTriVien)
+    public function studentList()
     {
-        //
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+            $svdks = DB::table('svdks')->select('sinh_vien_id')->where('ma_hoc_ky', $mhk)->groupBy('sinh_vien_id')->get()->toArray();
+            if (empty($svdks)) {
+                return redirect()->route('dashboard');
+            }
+            $arr = (array) null;
+            foreach ($svdks as $key => $svdk) {
+                $sv = SinhVien::find($svdk->sinh_vien_id)->toArray();
+                $arr[] = $sv;
+            }
+            $khoahocs = KhoaHoc::all();
+            $lophocs = LopHoc::all();
+            $nganhhocs = NganhHoc::all();
+            return view('quantrivien.dssinhvien', compact('arr', 'khoahocs', 'lophocs', 'nganhhocs'));
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\QuanTriVien  $quanTriVien
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(QuanTriVien $quanTriVien)
+    public function teacherList()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\QuanTriVien  $quanTriVien
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, QuanTriVien $quanTriVien)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\QuanTriVien  $quanTriVien
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(QuanTriVien $quanTriVien)
-    {
-        //
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+            $giangviens = DB::table('hocphans')->select('giang_vien_id')->where('ma_hoc_ky', $mhk)->groupBy('giang_vien_id')->get()->toArray();
+            dd($giangviens);
+            $arr = (array) null;
+            foreach ($giangviens as $key => $giangvien) {
+                if ($giangvien->giang_vien_id != null) {
+                    dd($giangvien->giang_vien_id);
+                    $gv = GiangVien::find($giangvien->giang_vien_id)->toArray();
+                    var_dump($gv);
+                    $arr[] = $gv;
+                }
+                dd($arr);
+                $nganhhocs = NganhHoc::all();
+                return view('quantrivien.dsgiangvien', compact('arr', 'nganhhocs'));
+            }
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 }

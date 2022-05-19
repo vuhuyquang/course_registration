@@ -35,6 +35,10 @@ Route::post('change-password', [TaiKhoanController::class, 'postChangePassword']
 
 Route::prefix('admin')->middleware('checkAdmin')->group(function () {
     Route::get('', [QuanTriVienController::class, 'dashboard'])->name('dashboard');
+    Route::get('subjects-list', [QuanTriVienController::class, 'subjectsList'])->name('subjectsList');
+    Route::get('module-list', [QuanTriVienController::class, 'moduleList'])->name('moduleList');
+    Route::get('student-list', [QuanTriVienController::class, 'studentList'])->name('studentList');
+    Route::get('teacher-list', [QuanTriVienController::class, 'teacherList'])->name('teacherList');
 
     Route::prefix('department')->group(function () {
         Route::get('/', [KhoaController::class, 'index'])->name('khoa.index');

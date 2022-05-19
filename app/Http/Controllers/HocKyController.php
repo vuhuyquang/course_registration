@@ -76,6 +76,9 @@ class HocKyController extends Controller
 
         if ($hocky->trang_thai == 'Đóng' && $sl == 0) {
             //
+            if ($hocky->da_mo == 1) {
+                return redirect()->back()->with('error', 'Không thể mở học kỳ trong quá khứ');
+            }
             $hkhts = DB::table('hockys')->where('hien_tai', 1)->get()->toArray();
             foreach ($hkhts as $key => $hkht) {
                 $mahkht = $hkht->ma_hoc_ky;
@@ -100,6 +103,7 @@ class HocKyController extends Controller
             //
             $hocky->trang_thai = 'Mở';
             $hocky->hien_tai = 0;
+            $hocky->da_mo = 1;
 
             if ($hocky->save()) {
                 $hockys = HocKy::where('hien_tai', 1)->get();

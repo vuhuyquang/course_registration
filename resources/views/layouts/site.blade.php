@@ -74,10 +74,18 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ url('uploads') }}/avatar_default.png" alt="Avatar">
+                        @if (Auth::user()->quyen == 1)
+                            <img src="{{ url('uploads') }}/{{ Auth::user()->sinhviens->avatar }}" alt="Avatar">
+                        @elseif (Auth::user()->quyen == 2)
+                            <img src="{{ url('uploads') }}/{{ Auth::user()->giangviens->avatar }}" alt="Avatar">
+                        @elseif (Auth::user()->quyen == 3)
+                            <img src="{{ url('uploads') }}/{{ Auth::user()->quantriviens->avatar }}" alt="Avatar">
+                        @else
+                            <img src="{{ url('uploads') }}/avatar_default.png" alt="Avatar">
+                        @endif
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">
+                        <a href="{{ route('profile') }}" class="d-block">
                             @if (Auth::user()->quyen == 1)
                             {{ Auth::user()->sinhviens->ho_ten }}
                             @elseif (Auth::user()->quyen == 2)
