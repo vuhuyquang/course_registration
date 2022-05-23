@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Quản trị viên</title>
+    <title>Đăng ký học phần</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -328,13 +328,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="{{ route('tin-tuc.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm mới</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="{{ route('tin-tuc.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Danh sách</p>
                                     </a>

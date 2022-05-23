@@ -3,6 +3,23 @@
 @section('main')
 <div class="card">
     <div class="card-header" style="background-color: rgba(0,0,0,.03);">
+        <h5 class="card-title">Điểm tổng kết</h5>
+    </div>
+    <div class="card-body">
+        <table>
+            <tr>
+                <td>Mã sinh viên: {{ Auth::user()->sinhviens->ma_sinh_vien }}</td>
+                <td>Họ tên: {{ Auth::user()->sinhviens->ho_ten }}</td>
+            </tr>
+            <tr>
+                <td>Điểm tổng kết: {{ $dtb }}</td>
+                <td>GPA: {{ $gpa }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header" style="background-color: rgba(0,0,0,.03);">
         <h5 class="card-title">Danh sách môn học</h5>
         <div class="row float-right">
             <div class="col">

@@ -23,7 +23,7 @@ use App\Http\Controllers\TinTucController;
 |--------------------------------------------------------------------------
 |
 */
-
+Route::get('', [TaiKhoanController::class, 'home'])->name('home');
 Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
 Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
@@ -38,7 +38,9 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
     Route::get('subjects-list', [QuanTriVienController::class, 'subjectsList'])->name('subjectsList');
     Route::get('module-list', [QuanTriVienController::class, 'moduleList'])->name('moduleList');
     Route::get('student-list', [QuanTriVienController::class, 'studentList'])->name('studentList');
+    Route::get('student-list/{id}', [QuanTriVienController::class, 'studentListID'])->name('studentListID');
     Route::get('teacher-list', [QuanTriVienController::class, 'teacherList'])->name('teacherList');
+    Route::get('teacher-list/{id}', [QuanTriVienController::class, 'teacherListID'])->name('teacherListID');
 
     Route::prefix('department')->group(function () {
         Route::get('/', [KhoaController::class, 'index'])->name('khoa.index');
@@ -69,6 +71,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/reset-password/{id}', [GiangVienController::class, 'resetPassword'])->name('giang-vien.resetPassword');
         Route::get('/profile/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
         Route::get('/export', [GiangVienController::class, 'export'])->name('giang-vien.export');
+        Route::post('/import', [GiangVienController::class, 'import'])->name('giang-vien.import');
     });
 
     Route::prefix('term')->group(function () {
@@ -133,6 +136,14 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/destroy/{id}', [HocPhanController::class, 'destroy'])->name('hoc-phan.destroy');
         Route::get('/class-list/{id}', [HocPhanController::class, 'show'])->name('hoc-phan.show');
         Route::get('/export/{id}', [HocPhanController::class, 'export'])->name('svdk.export');
+        Route::get('/export', [HocPhanController::class, 'exportModule'])->name('hoc-phan.export');
+    });
+
+    Route::prefix('news')->group(function () {
+        Route::get('/', [TinTucController::class, 'index'])->name('tin-tuc.index');
+        Route::get('/create', [TinTucController::class, 'create'])->name('tin-tuc.create');
+        Route::post('/store', [TinTucController::class, 'store'])->name('tin-tuc.store');
+        Route::get('/destroy/{id}', [TinTucController::class, 'destroy'])->name('tin-tuc.destroy');
     });
 });
 

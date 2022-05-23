@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use App\Jobs\SendEmailSendAccount;
 use App\Jobs\SendMailResetPassword;
 use App\Exports\GiangVienExport;
+use App\Imports\GiangVienImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GiangVienController extends Controller
@@ -27,10 +28,12 @@ class GiangVienController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate(10);
-        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens'));
+        $nganhhocs = NganhHoc::all();
+        $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate($request->banghi);
+        $banghi = $request->banghi;
+        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs', 'banghi'));
     }
 
     /**
@@ -237,7 +240,12 @@ class GiangVienController extends Controller
     public function destroy($id)
     {
         $giangvien = GiangVien::findOrFail($id);
-        if ($giangvien->delete()) {
+        $taikhoan = TaiKhoan::findOrFail($giangvien->tai_khoan_id);
+        $duongdan = public_path('uploads/' . $giangvien->avatar);
+        if ($giangvien->delete() && $taikhoan->delete()) {
+            if (File::exists($duongdan)) {
+                unlink($duongdan);
+            }
             return redirect()->back()->with('success', 'Xóa thành công');
         } else {
             return redirect()->back()->with('error', 'Xóa thất bại');
@@ -268,6 +276,23 @@ class GiangVienController extends Controller
     public function export()
     {
         return Excel::download(new GiangVienExport, 'Teachers.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|max:10000|mimes:xlsx,xls',
+        ], [
+            'file.required' => 'Trường dữ liệu không được để trống',
+            'file.max' => 'Dữ liệu nhập vào có tối đa 10kb',
+            'file.mimes' => 'Dữ liệu nhập vào phải là file xlsx, xls',
+        ]);
+
+        if (Excel::import(new GiangVienImport, $request->file)) {
+            return back();
+        } else {
+            return back();
+        }
     }
 
     public function classSubject()

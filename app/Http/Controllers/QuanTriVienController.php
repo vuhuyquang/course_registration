@@ -12,6 +12,8 @@ use App\Models\GiangVien;
 use App\Models\SinhVien;
 use App\Models\KhoaHoc;
 use App\Models\LopHoc;
+use App\Models\SVDK;
+use App\Models\DiemSo;
 use DB;
 
 class QuanTriVienController extends Controller
@@ -54,15 +56,23 @@ class QuanTriVienController extends Controller
         foreach ($hocphans as $key => $hocphan) {
             $monhoc = MonHoc::find($key);
             $tenmonhoc = $monhoc->ten_mon_hoc;
+            $mamonhoc = $monhoc->ma_mon_hoc;
             $dem2++;
-            if ($dem2 >= 6) {
+            if ($dem2 >= 11) {
                 continue;
             }
-            $arr[$monhoc->ten_mon_hoc] = $hocphan;
+            // $arr[$monhoc->ten_mon_hoc] = $hocphan;
+            // $arr['ma_mon_hoc'] = $mamonhoc;
+            $arr[] = array('ten_mon_hoc' => $monhoc->ten_mon_hoc, 'ma_mon_hoc' => $mamonhoc, 'da_dang_ky' => $hocphan );
             unset($hocphans);
         }
-        $hocphans = HocPhan::orderBy('da_dang_ky', 'ASC')->where('ma_hoc_ky', $mhk)->paginate(5);
-        return view('quantrivien.dashboard', compact('subjects', 'students', 'modules', 'teachers', 'arrhk', 'arr', 'hocphans'));
+        $diemsos = DB::table('diemsos')->get();
+        $sxdiem = collect($diemsos);
+        $sxdiemtheodiemchu = $sxdiem->groupBy('diem_chu')->map(function($values) {
+            return $values->count();
+        })->sort()->reverse();
+        $sxdiems = $sxdiemtheodiemchu->toArray();
+        return view('quantrivien.dashboard.dashboard', compact('subjects', 'students', 'modules', 'teachers', 'arrhk', 'arr', 'sxdiems'));
     }
 
     public function subjectsList()
@@ -80,7 +90,7 @@ class QuanTriVienController extends Controller
                 $arr[] = $mh;
             }
             $nganhhocs = NganhHoc::all();
-            return view('quantrivien.dsmonhoc', compact('arr', 'nganhhocs'));
+            return view('quantrivien.dashboard.dsmonhoc', compact('arr', 'nganhhocs'));
         } else {
             return redirect()->route('dashboard');
         }
@@ -103,9 +113,9 @@ class QuanTriVienController extends Controller
             $monhocs = MonHoc::all();
             $giangviens = GiangVien::all();
             if (!empty($giangviens)) {
-                return view('quantrivien.dshocphan', compact('arr', 'monhocs', 'giangviens'));
+                return view('quantrivien.dashboard.dshocphan', compact('arr', 'monhocs', 'giangviens'));
             } else {
-                return view('quantrivien.dshocphan', compact('arr', 'monhocs'));
+                return view('quantrivien.dashboard.dshocphan', compact('arr', 'monhocs'));
             }
         } else {
             return redirect()->route('dashboard');
@@ -129,7 +139,19 @@ class QuanTriVienController extends Controller
             $khoahocs = KhoaHoc::all();
             $lophocs = LopHoc::all();
             $nganhhocs = NganhHoc::all();
-            return view('quantrivien.dssinhvien', compact('arr', 'khoahocs', 'lophocs', 'nganhhocs'));
+            return view('quantrivien.dashboard.dssinhvien', compact('arr', 'khoahocs', 'lophocs', 'nganhhocs'));
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    public function studentListID($id)
+    {
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+        $svdks = SVDK::where('sinh_vien_id', $id)->where('ma_hoc_ky', $mhk)->get();
+        return view('quantrivien.dashboard.dssvid', compact('svdks'));
         } else {
             return redirect()->route('dashboard');
         }
@@ -140,20 +162,28 @@ class QuanTriVienController extends Controller
         $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
         if (!empty($mahocky)) {
             $mhk = $mahocky->ma_hoc_ky;
-            $giangviens = DB::table('hocphans')->select('giang_vien_id')->where('ma_hoc_ky', $mhk)->groupBy('giang_vien_id')->get()->toArray();
-            dd($giangviens);
+            $giangviens = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '>', 0)->distinct('giang_vien_id')->get()->toArray();
             $arr = (array) null;
             foreach ($giangviens as $key => $giangvien) {
-                if ($giangvien->giang_vien_id != null) {
-                    dd($giangvien->giang_vien_id);
-                    $gv = GiangVien::find($giangvien->giang_vien_id)->toArray();
-                    var_dump($gv);
+                if ($giangvien['giang_vien_id'] != null) {
+                    $gv = GiangVien::find($giangvien['giang_vien_id'])->toArray();
                     $arr[] = $gv;
                 }
-                dd($arr);
                 $nganhhocs = NganhHoc::all();
-                return view('quantrivien.dsgiangvien', compact('arr', 'nganhhocs'));
+                return view('quantrivien.dashboard.dsgiangvien', compact('arr', 'nganhhocs'));
             }
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    public function teacherListID($id)
+    {
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+        $hocphans = HocPhan::where('giang_vien_id', $id)->where('ma_hoc_ky', $mhk)->get();
+        return view('quantrivien.dashboard.dsgvid', compact('hocphans'));
         } else {
             return redirect()->route('dashboard');
         }

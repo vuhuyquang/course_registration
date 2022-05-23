@@ -14,7 +14,8 @@ class TinTucController extends Controller
      */
     public function index()
     {
-        //
+        $tintucs = TinTuc::orderBy('ngay_dang', 'DESC')->paginate(10);
+        return view('quantrivien.qltintuc.danhsach', compact('tintucs'));
     }
 
     /**
@@ -24,7 +25,7 @@ class TinTucController extends Controller
      */
     public function create()
     {
-        //
+        return view('quantrivien.qltintuc.them');
     }
 
     /**
@@ -35,51 +36,37 @@ class TinTucController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tieu_de' => 'required',
+            'noi_dung_ngan' => 'required',
+            'hinh_anh' => 'required',
+            'duong_dan' => 'required',
+        ], [
+            'tieu_de.required' => 'Trường dữ liệu không được để trống',
+            'noi_dung_ngan.required' => 'Trường dữ liệu không được để trống',
+            'hinh_anh.required' => 'Trường dữ liệu không được để trống',
+            'duong_dan.required' => 'Trường dữ liệu không được để trống',
+        ]);
+        $tintuc = new TinTuc;
+        $tintuc->tieu_de = $request->tieu_de;
+        $tintuc->noi_dung_ngan = $request->noi_dung_ngan;
+        $tintuc->hinh_anh = $request->hinh_anh;
+        $tintuc->duong_dan = $request->duong_dan;
+        $tintuc->ngay_dang = $request->ngay_dang;
+        if ($tintuc->save()) {
+            return back()->with('success', 'Thêm thành công');
+        } else {
+            return back()->with('error', 'Thêm thất bại');
+        }   
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TinTuc  $tinTuc
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TinTuc $tinTuc)
+    public function destroy(TinTuc $tinTuc, $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TinTuc  $tinTuc
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TinTuc $tinTuc)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TinTuc  $tinTuc
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TinTuc $tinTuc)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TinTuc  $tinTuc
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TinTuc $tinTuc)
-    {
-        //
+        $tintuc = TinTuc::findOrFail($id);
+        if ($tintuc->delete()) {
+            return redirect()->back()->with('success', 'Xóa thành công');
+        } else {
+            return redirect()->back()->with('error', 'Xóa thất bại');
+        }
     }
 }

@@ -9,6 +9,7 @@ use App\Models\HocKy;
 use App\Models\SVDK;
 use Illuminate\Http\Request;
 use App\Exports\SVDKExport;
+use App\Exports\HocPhanExport;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
 
@@ -201,5 +202,10 @@ class HocPhanController extends Controller
     public function export(Request $request)
     {
         return Excel::download(new SVDKExport($request->id), 'ClassList.xlsx');
+    }
+
+    public function exportModule()
+    {
+        return Excel::download(new HocPhanExport(), 'ClassModule.xlsx');
     }
 }

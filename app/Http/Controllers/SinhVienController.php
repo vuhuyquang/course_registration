@@ -37,7 +37,8 @@ class SinhVienController extends Controller
         $khoahocs = KhoaHoc::all();
         $lophocs = LopHoc::all();
         $nganhhocs = NganhHoc::all();
-        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
+        $banghi = $request->banghi;
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs', 'banghi'));
     }
 
     /**
@@ -481,8 +482,16 @@ class SinhVienController extends Controller
 
     public function scores()
     {
+        $sl = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->count();
+        $idsv = Auth::user()->sinhviens->id;
+        $diemtongket = DiemSo::groupBy('sinh_vien_id')
+        ->selectRaw('sum(diem_tong_ket) as sum, sinh_vien_id')
+        ->where('sinh_vien_id', $idsv)
+        ->pluck('sum', 'sinh_vien_id')->toArray();
+        $dtb = round(($diemtongket[Auth::user()->sinhviens->id]) / $sl, 2);
+        $gpa = round($dtb/10 * 4, 2);
         $diemsos = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
-        return view('sinhvien.diemso', compact('diemsos'));
+        return view('sinhvien.diemso', compact('diemsos', 'dtb', 'gpa'));
     }
 
     public function import(Request $request)

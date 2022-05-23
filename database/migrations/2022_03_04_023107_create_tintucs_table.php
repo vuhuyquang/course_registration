@@ -15,9 +15,9 @@ class CreateTintucsTable extends Migration
     {
         Schema::create('tintucs', function (Blueprint $table) {
             $table->id();
-            $table->string('tieu_de');
+            $table->string('tieu_de', 350);
             $table->text('noi_dung_ngan');
-            $table->text('hình_anh');
+            $table->text('hinh_anh');
             $table->text('duong_dan');
             $table->date('ngay_dang');
             $table->timestamps();

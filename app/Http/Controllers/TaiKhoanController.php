@@ -7,14 +7,19 @@ use App\Models\SinhVien;
 use App\Models\QuanTriVien;
 use App\Models\LopHoc;
 use App\Models\NganhHoc;
+use App\Models\TinTuc;
 use Illuminate\Http\Request;
 use Auth;
-use Image;
-use File;
 use Hash;
 
 class TaiKhoanController extends Controller
 {
+    public function home()
+    {
+        $tintucs = TinTuc::orderBy('ngay_dang', 'DESC')->paginate(5);
+        return view('index', compact('tintucs'));
+    }
+
     public function getLogin()
     {
         return view('dangnhap');

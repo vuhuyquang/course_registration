@@ -2,7 +2,7 @@
 @section('main')
     <div class="card">
         <div style="background-color: rgba(0,0,0,.03);" class="card-header">
-            <h5 class="card-title">Thêm sinh viên</h5>
+            <h5 class="card-title">Thêm sinh viên nhập excel</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('sinh-vien.import') }}" method="POST" enctype="multipart/form-data">

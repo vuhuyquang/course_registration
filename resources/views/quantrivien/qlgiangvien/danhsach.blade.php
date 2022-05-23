@@ -2,23 +2,56 @@
 
 @section('main')
 <div class="card">
-    <div style="background-color: rgba(0,0,0,.03);" class="card-header">
-        <h5 class="card-title">Danh sách nhân viên</h5>
-        <div class="row">
-            <div class="col">
-                <a class="btn-export" href="{{ route('giang-vien.export') }}">Xuất excel</a>
+    <div class="card">
+        <form action="{{ route('sinh-vien.filters') }}" method="GET">
+            <div style="background-color: rgba(0,0,0,.03);" class="card-header">
+                <h5 class="card-title">Bộ lọc</h5>
             </div>
-            <div class="col">
-                <form action="" class="form-inline">
-                    <div class="form-group">
-                        <input class="form-control" name="key" placeholder="Nhập tên giảng viên" autocomplete="off">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <input class="form-control form-control-sm" name="key"
+                                    placeholder="Nhập họ tên / mã giảng viên" autocomplete="off">
+                            </div>
+                        </form>
                     </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
+                    <div class="col">
+                        <select id="nganh_hoc_id" class="form-control form-control-sm" name="nganh_hoc_id"
+                            id="gioi_tinh">
+                            <option value="" selected="" disabled="">--- Chọn ngành ---</option>
+                            @foreach ($nganhhocs as $nganhhoc)
+                                <option value="{{ $nganhhoc->id }}">{{ $nganhhoc->ten_nganh }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary form-control-sm">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
+    <div style="background-color: rgba(0,0,0,.03);" class="card-header">
+        <h5 class="card-title">Danh sách giảng viên</h5>
+            <form action="{{ route('giang-vien.index') }}" method="GET">
+                <select style="width: 58px;" name="banghi" style="width:68px;" class="form-control form-control-sm" onchange="this.form.submit()">
+                    <option value="" selected="" disabled="">SL</option>
+                    <option {{ $banghi == 1 ? 'selected' : '' }} value="1">1</option>
+                    <option {{ $banghi == 10 ? 'selected' : '' }} value="10">10</option>
+                    <option {{ $banghi == 25 ? 'selected' : '' }} value="25">25</option>
+                    <option {{ $banghi == 50 ? 'selected' : '' }} value="50">50</option>
+                    <option {{ $banghi == 100 ? 'selected' : '' }} value="100">100</option>
+                </select>
+            </form>
+            <div class="row float-right">
+                <div class="col">
+                    <a class="btn-export" href="{{ route('giang-vien.export') }}">Xuất excel</a>
+                </div>
+            </div>
     </div>
     <div class="card-body">
         <table style="text-align: center" class="table table-hover table-sm">

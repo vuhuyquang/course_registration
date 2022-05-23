@@ -55,11 +55,12 @@
             <h5 class="card-title">Danh sách sinh viên</h5>
             <form action="{{ route('sinh-vien.index') }}" method="GET">
                 <select style="width: 58px;" name="banghi" style="width:68px;" class="form-control form-control-sm" onchange="this.form.submit()">
-                    <option value="1">1</option>
-                    <option selected value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option value="" selected="" disabled="">SL</option>
+                    <option {{ $banghi == 1 ? 'selected' : '' }} value="1">1</option>
+                    <option {{ $banghi == 10 ? 'selected' : '' }} value="10">10</option>
+                    <option {{ $banghi == 25 ? 'selected' : '' }} value="25">25</option>
+                    <option {{ $banghi == 50 ? 'selected' : '' }} value="50">50</option>
+                    <option {{ $banghi == 100 ? 'selected' : '' }} value="100">100</option>
                 </select>
             </form>
             <div class="row float-right">
