@@ -19,7 +19,7 @@
             <td>{{ $giangvien->ho_ten }}</td>
             <td>{{ $giangvien->trinh_do }}</td>
             <td>{{ $giangvien->nganhhocs->ten_nganh }}</td>
-            <td>{{ $giangvien->ngay_sinh }}</td>
+            <td>{{ date('d/m/Y', strtotime($giangvien->ngay_sinh)) }}</td>
             <td>{{ $giangvien->gioi_tinh }}</td>
             <td>{{ $giangvien->que_quan }}</td>
             <td>{{ $giangvien->so_dien_thoai }}</td>

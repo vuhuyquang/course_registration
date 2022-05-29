@@ -72,6 +72,7 @@ Route::prefix('admin')->middleware('checkAdmin')->group(function () {
         Route::get('/profile/{id}', [GiangVienController::class, 'profile'])->name('giang-vien.profile');
         Route::get('/export', [GiangVienController::class, 'export'])->name('giang-vien.export');
         Route::post('/import', [GiangVienController::class, 'import'])->name('giang-vien.import');
+        Route::get('/filters', [GiangVienController::class, 'filters'])->name('giang-vien.filters');
     });
 
     Route::prefix('term')->group(function () {
@@ -160,4 +161,6 @@ Route::prefix('student')->middleware('checkStudent')->group(function () {
     Route::post('/course-registration', [SinhVienController::class, 'registerStore'])->name('sinhvien.register.store');
     Route::get('/cancel-registration/{id}', [SinhVienController::class, 'cancelRegister'])->name('sinhvien.cancelRegister');
     Route::get('/scores', [SinhVienController::class, 'scores'])->name('sinhvien.scores');
+    Route::get('/fee', [SinhVienController::class, 'fee'])->name('sinhvien.fee');
+    Route::post('/fee', [SinhVienController::class, 'feeStore'])->name('sinhvien.feeStore');
 });

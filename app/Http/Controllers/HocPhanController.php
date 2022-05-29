@@ -52,7 +52,12 @@ class HocPhanController extends Controller
         $monhocs = MonHoc::all();
         $giangviens = GiangVien::all();
         $hockys = HocKy::all();
-        return view('quantrivien.qlhocphan.them', compact('monhocs', 'giangviens', 'hockys'));
+        $hkmo = DB::table('hockys')->where('trang_thai', 'Mở')->count();
+        if ($hkmo == 1) {
+            return view('quantrivien.qlhocphan.them', compact('monhocs', 'giangviens', 'hockys'));
+        } else {
+            return redirect()->back()->with('error', 'Không thể tạo học phần khi chưa mở học kỳ đăng ký');
+        }
     }
 
     /**

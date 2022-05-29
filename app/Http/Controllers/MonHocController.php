@@ -18,7 +18,7 @@ class MonHocController extends Controller
      */
     public function index()
     {
-        $monhocs = MonHoc::orderBy('id', 'ASC')->search()->paginate(10);
+        $monhocs = MonHoc::orderBy('nganh_id', 'DESC')->search()->paginate(15);
         return view('quantrivien.qlmonhoc.danhsach', compact('monhocs'));
     }
 

@@ -31,7 +31,7 @@ class GiangVienController extends Controller
     public function index(Request $request)
     {
         $nganhhocs = NganhHoc::all();
-        $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate($request->banghi);
+        $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate(15);
         $banghi = $request->banghi;
         return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs', 'banghi'));
     }
@@ -173,6 +173,7 @@ class GiangVienController extends Controller
     public function update(Request $request, $id)
     {
         $giangvien = GiangVien::findOrFail($id);
+        $newid = $giangvien->taikhoans->id;
         $request->validate([
             'ma_giang_vien' => 'required|max:20|unique:giangviens,ma_giang_vien,'.$id,
             'ho_ten' => 'required|max:50',
@@ -181,7 +182,7 @@ class GiangVienController extends Controller
             'ngay_sinh' => 'required|date',
             'gioi_tinh' => 'required|max:20',
             'que_quan' => 'required|max:80',
-            'email' => 'required|email|max:50|unique:giangviens,email,'.$id,
+            'email' => 'required|email|max:50|unique:taikhoans,email,'.$newid,
             'so_dien_thoai' => 'max:40'
         ], [
             'ma_giang_vien.required' => 'Dữ liệu nhập vào không được để trống',
@@ -211,24 +212,41 @@ class GiangVienController extends Controller
             $data = $this->resizeimage($request);
             $tenanh = $data['tenanh'];
             $hinhanh_resize = $data['hinhanh_resize'];
+        } else {
+            $tenanh = 'avatar_default.png';
         }
 
         $giangvien = GiangVien::findOrFail($id);
-        $giangvien->ma_giang_vien = $request->ma_giang_vien;
-        $giangvien->ho_ten = $request->ho_ten;
-        $giangvien->trinh_do = $request->trinh_do;
-        $giangvien->nganh_hoc_id = $request->nganh_hoc_id;
-        $giangvien->ngay_sinh = $request->ngay_sinh;
-        $giangvien->gioi_tinh = $request->gioi_tinh;
-        $giangvien->que_quan = $request->que_quan;
-        $giangvien->email = $request->email;
-        $giangvien->so_dien_thoai = $request->so_dien_thoai;
-        if ($giangvien->save()) {
-            $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-            return redirect()->back()->with('success', 'Cập nhật thành công');
+        $taikhoan = TaiKhoan::findOrFail($giangvien->tai_khoan_id);
+        $taikhoan->email = $request->email;
+        if ($taikhoan->save()) {
+            $giangvien->ma_giang_vien = $request->ma_giang_vien;
+            $giangvien->ho_ten = $request->ho_ten;
+            $giangvien->trinh_do = $request->trinh_do;
+            $giangvien->nganh_hoc_id = $request->nganh_hoc_id;
+            $giangvien->ngay_sinh = $request->ngay_sinh;
+            $giangvien->gioi_tinh = $request->gioi_tinh;
+            $giangvien->que_quan = $request->que_quan;
+            $giangvien->so_dien_thoai = $request->so_dien_thoai;
+            if ($giangvien->save()) {
+                if ($request->has('avatar')) {
+                    $hinhanh_resize->save(public_path('uploads/' . $tenanh));
+                } 
+                return redirect()->back()->with('success', 'Cập nhật thành công');
+            } else {
+                return redirect()->back()->with('error', 'Cập nhật thất bại');
+            }
         } else {
             return redirect()->back()->with('error', 'Cập nhật thất bại');
         }
+    }
+
+    public function filters(Request $request)
+    {
+        $banghi = 15;
+        $nganhhocs = NganhHoc::all();
+        $giangviens = GiangVien::query()->nganhhoc($request)->search()->paginate($banghi);
+        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs', 'banghi'));
     }
 
     /**
@@ -261,11 +279,12 @@ class GiangVienController extends Controller
     public function resetPassword($id)
     {
         $sinhvien = GiangVien::findOrFail($id);
+        $taikhoan = TaiKhoan::findOrFail($sinhvien->tai_khoan_id);
         $password = $random = Str::random(10);
-        $sinhvien->password = bcrypt($password);
+        $taikhoan->password = bcrypt($password);
 
         if ($sinhvien->save()) {
-            $resetPassword = new SendMailResetPassword($sinhvien, $password);
+            $resetPassword = new SendMailResetPassword($sinhvien->ho_ten, $taikhoan, $password);
             dispatch($resetPassword);
             return redirect()->back()->with('success', 'Đã gửi mail đặt lại mật khẩu');
         } else {

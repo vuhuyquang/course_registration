@@ -369,6 +369,15 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sinhvien.fee') }}" class="nav-link">
+                                <i class="nav-icon fas fa-dollar-sign"></i>
+                                <p>
+                                    Học phí
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
                         @elseif (Auth::user()->quyen == 2)
                         <li class="nav-item">
                             <a href="{{ route('giangvien.classSubjects') }}" class="nav-link">

@@ -15,7 +15,7 @@ class KhoaHocController extends Controller
      */
     public function index()
     {
-        $khoahocs = KhoaHoc::orderBy('id', 'ASC')->search()->paginate(10);    
+        $khoahocs = KhoaHoc::orderBy('id', 'DESC')->search()->paginate(10);    
         return view('quantrivien.qlkhoahoc.danhsach', compact('khoahocs'));
     }
 
@@ -118,11 +118,16 @@ class KhoaHocController extends Controller
      */
     public function destroy($id)
     {
-        $khoahoc = KhoaHoc::findOrFail($id);
-        if ($khoahoc->delete()) {
-            return redirect()->back()->with('success', 'Xóa thành công');
+        $check = LopHoc::where('khoa_hoc_id', $id)->get()->count();
+        if ($check == 0) {
+            $khoahoc = KhoaHoc::findOrFail($id);
+            if ($khoahoc->delete()) {
+                return redirect()->back()->with('success', 'Xóa thành công');
+            } else {
+                return redirect()->back()->with('error', 'Xóa thất bại');
+            }
         } else {
-            return redirect()->back()->with('error', 'Xóa thất bại');
+            return redirect()->back()->with('error', 'Niên khóa này vẫn tồn tại lớp học');
         }
     }
 }

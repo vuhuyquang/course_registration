@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Khoa;
 use App\Models\LopHoc;
+use App\Models\NganhHoc;
 use Illuminate\Http\Request;
 
 class KhoaController extends Controller
@@ -15,7 +16,7 @@ class KhoaController extends Controller
      */
     public function index()
     {
-        $khoas = Khoa::orderBy('id', 'ASC')->search()->paginate(10);
+        $khoas = Khoa::orderBy('id', 'DESC')->search()->paginate(10);
         return view('quantrivien.qlkhoa.danhsach', compact('khoas'));
     }
 
@@ -117,11 +118,16 @@ class KhoaController extends Controller
      */
     public function destroy($id)
     {
-        $khoa = Khoa::findOrFail($id);
-        if ($khoa->delete()) {
-            return redirect()->back()->with('success', 'Xóa thành công');
+        $check = NganhHoc::where('khoa_id', $id)->get()->count();
+        if ($check == 0) {
+            $khoa = Khoa::findOrFail($id);
+            if ($khoa->delete()) {
+                return redirect()->back()->with('success', 'Xóa thành công');
+            } else {
+                return redirect()->back()->with('error', 'Xóa thất bại');
+            }
         } else {
-            return redirect()->back()->with('error', 'Xóa thất bại');
+            return redirect()->back()->with('error', 'Khoa này vẫn tồn tại ngành học');
         }
     }
 }

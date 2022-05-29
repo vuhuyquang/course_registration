@@ -3,7 +3,7 @@
 @section('main')
 <div class="card">
     <div class="card">
-        <form action="{{ route('sinh-vien.filters') }}" method="GET">
+        <form action="{{ route('giang-vien.filters') }}" method="GET">
             <div style="background-color: rgba(0,0,0,.03);" class="card-header">
                 <h5 class="card-title">Bộ lọc</h5>
             </div>
@@ -37,16 +37,6 @@
     </div>
     <div style="background-color: rgba(0,0,0,.03);" class="card-header">
         <h5 class="card-title">Danh sách giảng viên</h5>
-            <form action="{{ route('giang-vien.index') }}" method="GET">
-                <select style="width: 58px;" name="banghi" style="width:68px;" class="form-control form-control-sm" onchange="this.form.submit()">
-                    <option value="" selected="" disabled="">SL</option>
-                    <option {{ $banghi == 1 ? 'selected' : '' }} value="1">1</option>
-                    <option {{ $banghi == 10 ? 'selected' : '' }} value="10">10</option>
-                    <option {{ $banghi == 25 ? 'selected' : '' }} value="25">25</option>
-                    <option {{ $banghi == 50 ? 'selected' : '' }} value="50">50</option>
-                    <option {{ $banghi == 100 ? 'selected' : '' }} value="100">100</option>
-                </select>
-            </form>
             <div class="row float-right">
                 <div class="col">
                     <a class="btn-export" href="{{ route('giang-vien.export') }}">Xuất excel</a>

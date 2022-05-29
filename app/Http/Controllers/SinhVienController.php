@@ -31,14 +31,13 @@ class SinhVienController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate($request->banghi);
+        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate(15);
         $khoahocs = KhoaHoc::all();
         $lophocs = LopHoc::all();
         $nganhhocs = NganhHoc::all();
-        $banghi = $request->banghi;
-        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs', 'banghi'));
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
     }
 
     /**
@@ -56,12 +55,12 @@ class SinhVienController extends Controller
 
     public function filters(Request $request)
     {
-        $sinhviens = SinhVien::orderBy('id', 'ASC')->search()->paginate(10);
+        $banghi = 15;
         $khoahocs = KhoaHoc::all();
         $lophocs = LopHoc::all();
         $nganhhocs = NganhHoc::all();
-        $sinhviens = SinhVien::query()->nienkhoa($request)->lophoc($request)->nganhhoc($request)->search()->paginate($request->banghi);
-        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
+        $sinhviens = SinhVien::query()->nienkhoa($request)->lophoc($request)->nganhhoc($request)->search()->paginate($banghi);
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs', 'banghi'));
     }
 
     /**
@@ -509,5 +508,15 @@ class SinhVienController extends Controller
         } else {
             return back();
         }
+    }
+
+    public function fee()
+    {
+        return view('quantrivien.hocphi.index');
+    }
+
+    public function feeStore(Request $request)
+    {
+        dd($request);
     }
 }

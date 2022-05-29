@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NganhHoc;
 use App\Models\Khoa;
+use App\Models\LopHoc;
 use Illuminate\Http\Request;
 
 class NganhHocController extends Controller
@@ -15,7 +16,7 @@ class NganhHocController extends Controller
      */
     public function index()
     {
-        $nganhhocs = NganhHoc::orderBy('id', 'ASC')->search()->paginate(10);
+        $nganhhocs = NganhHoc::orderBy('khoa_id', 'DESC')->search()->paginate(10);
         return view('quantrivien.qlnganhhoc.danhsach', compact('nganhhocs'));
     }
 
@@ -131,11 +132,16 @@ class NganhHocController extends Controller
      */
     public function destroy($id)
     {
-        $nganhhoc = NganhHoc::findOrFail($id);
-        if ($nganhhoc->delete()) {
-            return redirect()->back()->with('success', 'Xóa thành công');
+        $check = LopHoc::where('nganh_id', $id)->get()->count();
+        if ($check == 0) {
+            $nganhhoc = NganhHoc::findOrFail($id);
+            if ($nganhhoc->delete()) {
+                return redirect()->back()->with('success', 'Xóa thành công');
+            } else {
+                return redirect()->back()->with('error', 'Xóa thất bại');
+            }
         } else {
-            return redirect()->back()->with('error', 'Xóa thất bại');
+            return redirect()->back()->with('error', 'Ngành học này vẫn tồn tại lớp học');
         }   
     }
 }

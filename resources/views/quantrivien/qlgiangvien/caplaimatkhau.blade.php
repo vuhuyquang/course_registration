@@ -33,7 +33,7 @@
                                         <span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                                         <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
-                                            Xin chào {{ $sinhvien->ho_ten }},<br>
+                                            Xin chào {{ $hoten }},<br>
                                             Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn.<br>
                                             Nhập mã đặt lại mật khẩu sau đây:<br>
                                         </p>

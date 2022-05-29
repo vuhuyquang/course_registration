@@ -37,7 +37,13 @@
                     <td>{{ $monhoc->ma_mon_hoc }}</td>
                     <td>{{ $monhoc->ten_mon_hoc }}</td>
                     <td>{{ $monhoc->so_tin_chi }}</td>
-                    <td>{{ $monhoc->nganhhocs->ten_nganh }}</td>
+                    <td>
+                        @if (!empty($monhoc->nganhhocs->ten_nganh))
+                            {{ $monhoc->nganhhocs->ten_nganh }}
+                        @else
+                            <i>Chưa có thông tin</i>
+                        @endif
+                    </td>
                     <td>
                         @if ($monhoc->duoc_phep == 1)
                             <span class="badge badge-success">V</span>

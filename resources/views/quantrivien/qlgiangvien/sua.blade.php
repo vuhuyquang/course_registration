@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
             <label for="email">Email <label style="color: red" for="email">*</label></label>
-            <input id="email" type="email" class="form-control form-control-sm" name="email" value="{{ $giangvien->email }}" placeholder="Nhập tên khoa" autocomplete="off"
+            <input id="email" type="email" class="form-control form-control-sm" name="email" value="{{ $giangvien->taikhoans->email }}" placeholder="Nhập tên khoa" autocomplete="off"
                 required>
             @error('email')
                 <small class="help-block">{{ $message }}</small>
@@ -90,9 +90,9 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="avatar">Ảnh đại diện <label style="color: red" for="avatar">*</label></label>
+            <label for="avatar">Ảnh đại diện</label>
             <input id="avatar" type="file" class="form-control form-control-sm" name="avatar" placeholder="Nhập ảnh đại diện" autocomplete="off"
-                required>
+                >
             @error('avatar')
                 <small class="help-block">{{ $message }}</small>
             @enderror

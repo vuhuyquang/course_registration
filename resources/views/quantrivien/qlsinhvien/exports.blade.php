@@ -22,7 +22,7 @@
             <td>{{ $sinhvien->lophocs->ma_lop }}</td>
             <td>{{ $sinhvien->nganhhocs->ten_nganh }}</td>
             <td>{{ $sinhvien->taikhoans->email }}</td>
-            <td>{{ $sinhvien->ngay_sinh }}</td>
+            <td>{{ date('d/m/Y', strtotime($sinhvien->ngay_sinh)) }}</td>
             <td>{{ $sinhvien->gioi_tinh }}</td>
             <td>{{ $sinhvien->que_quan }}</td>
             <td>{{ $sinhvien->so_dien_thoai }}</td>
