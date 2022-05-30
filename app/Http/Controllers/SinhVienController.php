@@ -60,7 +60,7 @@ class SinhVienController extends Controller
         $lophocs = LopHoc::all();
         $nganhhocs = NganhHoc::all();
         $sinhviens = SinhVien::query()->nienkhoa($request)->lophoc($request)->nganhhoc($request)->search()->paginate($banghi);
-        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs', 'banghi'));
+        return view('quantrivien.qlsinhvien.danhsach', compact('sinhviens', 'khoahocs', 'lophocs', 'nganhhocs'));
     }
 
     /**
@@ -487,8 +487,13 @@ class SinhVienController extends Controller
         ->selectRaw('sum(diem_tong_ket) as sum, sinh_vien_id')
         ->where('sinh_vien_id', $idsv)
         ->pluck('sum', 'sinh_vien_id')->toArray();
-        $dtb = round(($diemtongket[Auth::user()->sinhviens->id]) / $sl, 2);
-        $gpa = round($dtb/10 * 4, 2);
+        if (!empty($diemtongket)) {
+            $dtb = round(($diemtongket[Auth::user()->sinhviens->id]) / $sl, 2);
+            $gpa = round($dtb/10 * 4, 2);
+        } else {
+            $dtb = null;
+            $gpa = null;
+        }
         $diemsos = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
         return view('sinhvien.diemso', compact('diemsos', 'dtb', 'gpa'));
     }

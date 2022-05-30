@@ -59,6 +59,7 @@ class GiangVienImport implements ToCollection, WithHeadingRow, WithValidation
                 ]);
             }
         }
+        return redirect()->back()->with('success', 'Nhập dữ liệu thành công');
     }
 
     public function rules(): array
@@ -67,7 +68,7 @@ class GiangVienImport implements ToCollection, WithHeadingRow, WithValidation
             '*.ma_giang_vien' => 'bail|required|min:3|max:20',
             '*.ho_ten' => 'bail|required|max:20',
             '*.trinh_do' => 'bail|required|min:3|max:20',
-            '*.ten_nganh' => 'bail|required|min:3|max:35',
+            '*.ten_nganh' => 'bail|required|min:3|max:70',
             '*.ngay_sinh' => 'bail|required',
             '*.gioi_tinh' => 'bail|required',
             '*.que_quan' => 'bail|required',

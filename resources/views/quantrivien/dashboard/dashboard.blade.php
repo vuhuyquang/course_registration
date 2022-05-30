@@ -95,11 +95,13 @@
                     </thead>
                     <tbody>
                         @foreach ($arr as $key => $items)
-                            <tr>
-                                <td>{{ $items['ma_mon_hoc'] }}</td>
-                                <td>{{ $items['ten_mon_hoc'] }}</td>
-                                <td>{{ $items['da_dang_ky'] }}</td>
-                            </tr>
+                        @if ($key < 10)
+                        <tr>
+                            <td>{{ $items['ma_mon_hoc'] }}</td>
+                            <td>{{ $items['ten_mon_hoc'] }}</td>
+                            <td>{{ $items['da_dang_ky'] }}</td>
+                        </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -173,4 +175,4 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     <script>
-    @endsection
+@endsection

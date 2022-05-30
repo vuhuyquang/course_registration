@@ -204,6 +204,98 @@ class MonHocSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
         ]);
+
+        //
+        DB::table('monhocs')->insert([
+            'id' => '22',
+            'ma_mon_hoc' => 'DC2CT20',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Hình hoạ - Vẽ kỹ thuật',
+            'so_tin_chi' => '4',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '23',
+            'ma_mon_hoc' => 'DC2CT21',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Nền và móng',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '24',
+            'ma_mon_hoc' => 'DC2CT22',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Sức bền vật liệu 1',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '25',
+            'ma_mon_hoc' => 'DC2CT23',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Kết cấu nhà thép',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '26',
+            'ma_mon_hoc' => 'DC2CT24',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Kiến trúc dân dụng và công nghiệp',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '27',
+            'ma_mon_hoc' => 'DC2CT25',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Tổ chức thi công công trình xây dựng',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '28',
+            'ma_mon_hoc' => 'DC2CT26',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Máy xây dựng',
+            'so_tin_chi' => '2',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '29',
+            'ma_mon_hoc' => 'DC2CT27',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Cơ học cơ sở',
+            'so_tin_chi' => '3',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '30',
+            'ma_mon_hoc' => 'DC2CT28',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Thực hành trắc địa',
+            'so_tin_chi' => '2',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
+        DB::table('monhocs')->insert([
+            'id' => '31',
+            'ma_mon_hoc' => 'DC2CT29',
+            'nganh_id' => '3',
+            'ten_mon_hoc' => 'Thí nghiệm và kiểm định chất lượng công trình',
+            'so_tin_chi' => '2',
+            'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+        ]);
         
     }
 }

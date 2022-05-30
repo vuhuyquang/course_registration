@@ -4,11 +4,6 @@
     <div class="card">
         <div style="background-color: rgba(0,0,0,.03);" class="card-header">
             <h5 class="card-title">Danh sách sinh viên đăng ký</h5>
-            <div class="row float-right">
-                <div class="col">
-                    <a class="btn-export" href="{{ route('sinh-vien.export') }}">Xuất excel</a>
-                </div>
-            </div>
         </div>
         <div class="card-body">
             <table style="text-align: center" class="table table-hover table-sm">

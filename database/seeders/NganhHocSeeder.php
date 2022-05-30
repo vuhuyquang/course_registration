@@ -16,7 +16,7 @@ class NganhHocSeeder extends Seeder
     {
         DB::table('nganhhocs')->insert([
             'id' => '1',
-            'ma_nganh' => 'CNTT',
+            'ma_nganh' => 'TT',
             'ten_nganh' => 'Công nghệ thông tin',
             'khoa_id' => '1',
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
@@ -24,8 +24,8 @@ class NganhHocSeeder extends Seeder
         ]);
         DB::table('nganhhocs')->insert([
             'id' => '2',
-            'ma_nganh' => 'KT',
-            'ten_nganh' => 'Kế toán',
+            'ma_nganh' => 'QT',
+            'ten_nganh' => 'Quản trị kinh doanh',
             'khoa_id' => '2',
             'created_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at' => \Carbon\Carbon::now('Asia/Ho_Chi_Minh')

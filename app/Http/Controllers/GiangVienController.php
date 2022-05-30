@@ -28,12 +28,11 @@ class GiangVienController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $nganhhocs = NganhHoc::all();
         $giangviens = GiangVien::orderBy('id', 'ASC')->search()->paginate(15);
-        $banghi = $request->banghi;
-        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs', 'banghi'));
+        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs'));
     }
 
     /**
@@ -245,8 +244,8 @@ class GiangVienController extends Controller
     {
         $banghi = 15;
         $nganhhocs = NganhHoc::all();
-        $giangviens = GiangVien::query()->nganhhoc($request)->search()->paginate($banghi);
-        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs', 'banghi'));
+        $giangviens = GiangVien::query()->trinhdo($request)->nganhhoc($request)->search()->paginate($banghi);
+        return view('quantrivien.qlgiangvien.danhsach', compact('giangviens', 'nganhhocs'));
     }
 
     /**
@@ -336,6 +335,8 @@ class GiangVienController extends Controller
 
     public function markStore(Request $request)
     {
+        $mahocky = DB::table('hockys')->orWhere('hien_tai', 1)->first();
+        $mhk = $mahocky->ma_hoc_ky;
         $request->validate([
             'chuyen_can' => 'required|numeric',
             'giua_ky' => 'required|numeric',
@@ -372,6 +373,7 @@ class GiangVienController extends Controller
                 $diemso->lan_thi = 1;
                 $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
                 $diemso->diem_tong_ket = $diemtongket;
+                $diemso->ma_hoc_ky = $mhk;
                 if ($diemtongket >= 8.5) {
                     $diemchu = 'A';
                     $danhgia = 'Đạt';
@@ -428,6 +430,7 @@ class GiangVienController extends Controller
                     $diemso->cuoi_ky = $request->cuoi_ky;
                     $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
                     $diemso->diem_tong_ket = $diemtongket;
+                    $diemso->ma_hoc_ky = $mhk;
                     if ($diemtongket >= 8.5) {
                         $diemchu = 'A';
                         $danhgia = 'Đạt';
@@ -482,6 +485,7 @@ class GiangVienController extends Controller
 
                     $diemtongket = ($request->chuyen_can * 0.1) + ($request->giua_ky * 0.2) + ($request->cuoi_ky * 0.7);
                     $diemso->diem_tong_ket = $diemtongket;
+                    $diemso->ma_hoc_ky = $mhk;
                     if ($diemtongket >= 8.5) {
                         $diemchu = 'A';
                         $danhgia = 'Đạt';

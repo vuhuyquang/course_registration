@@ -52,21 +52,21 @@ class SinhVien extends Model
 
     public function scopeNienkhoa($query)
     {
-        if ($khoahocid = request()->khoa_hoc_id) {
+        if ($khoahocid = request()->schoolYear) {
             return $query->where('khoa_hoc_id', $khoahocid);
         }
     }
 
     public function scopeLophoc($query)
     {
-        if ($lophocid = request()->lop_hoc_id) {
+        if ($lophocid = request()->class) {
             return $query->where('lop_hoc_id', $lophocid);
         }
     }
 
     public function scopeNganhhoc($query)
     {
-        if ($nganhhocid = request()->nganh_hoc_id) {
+        if ($nganhhocid = request()->majors) {
             return $query->where('nganh_hoc_id', $nganhhocid);
         }
     }

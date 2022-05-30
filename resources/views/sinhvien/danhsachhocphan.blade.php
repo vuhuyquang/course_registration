@@ -41,10 +41,14 @@
                         @endif
                     </td>
                     <td>
-                        @if ($hocphan->giang_vien_id == null)
+                        @if (empty($hocphan->giang_vien_id))
                             <i>Chưa có thông tin</i>
                         @else
+                            @if (empty($hocphan->giangviens->ho_ten))
+                                <i>Chưa có thông tin</i>
+                            @else
                             {{ $hocphan->giangviens->ho_ten }}
+                            @endif
                         @endif
                     </td>
                     <td>{{ $hocphan->dk_toi_da }}</td>

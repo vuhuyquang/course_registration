@@ -51,8 +51,15 @@ class GiangVien extends Model
 
     public function scopeNganhhoc($query)
     {
-        if ($nganhhocid = request()->nganh_hoc_id) {
+        if ($nganhhocid = request()->majors) {
             return $query->where('nganh_hoc_id', $nganhhocid);
+        }
+    }
+
+    public function scopeTrinhdo($query)
+    {
+        if ($trinhdo = request()->level) {
+            return $query->where('trinh_do', $trinhdo);
         }
     }
 }

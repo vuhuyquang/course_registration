@@ -4,11 +4,6 @@
 <div class="card">
     <div class="card-header" style="background-color: rgba(0,0,0,.03);">
         <h5 class="card-title">Danh sách lớp học</h5>
-        <div class="row">
-            <div class="col">
-                <a class="btn-export" href="">Xuất excel</a>
-            </div>
-        </div>
     </div>
     <div class="card-body">
         <table style="text-align: center" class="table table-hover table-sm">

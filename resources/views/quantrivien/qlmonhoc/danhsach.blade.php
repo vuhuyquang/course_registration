@@ -24,11 +24,11 @@
                     <th>#</th>
                     <th>Mã môn học</th>
                     <th>Tên môn học</th>
-                    <th>Số tín chỉ</th>
+                    <th>STC</th>
                     <th>Ngành học</th>
                     <th>Trạng thái</th>
-                    <th>Ngày tạo</th>
-                    <th>Hành động</th>
+                    <th style="width: 120px;">Ngày tạo</th>
+                    <th style="width: 120px;">Hành động</th>
                 </tr>
             </tr>
             @foreach ($monhocs as $key => $monhoc)

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,11 +74,23 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->quyen == 1)
-                            <img src="{{ url('uploads') }}/{{ Auth::user()->sinhviens->avatar }}" alt="Avatar">
+                            @if (empty(Auth::user()->sinhviens->avatar))
+                                <i>Chưa có thông tin</i>
+                            @else
+                                <img src="{{ url('uploads') }}/{{ Auth::user()->sinhviens->avatar }}" alt="Avatar">
+                            @endif
                         @elseif (Auth::user()->quyen == 2)
-                            <img src="{{ url('uploads') }}/{{ Auth::user()->giangviens->avatar }}" alt="Avatar">
+                            @if (empty(Auth::user()->giangviens->avatar))
+                                <i>Chưa có thông tin</i>
+                            @else
+                                <img src="{{ url('uploads') }}/{{ Auth::user()->giangviens->avatar }}" alt="Avatar">
+                            @endif
                         @elseif (Auth::user()->quyen == 3)
-                            <img src="{{ url('uploads') }}/{{ Auth::user()->quantriviens->avatar }}" alt="Avatar">
+                            @if (empty(Auth::user()->quantriviens->avatar))
+                                <i>Chưa có thông tin</i>
+                            @else
+                                <img src="{{ url('uploads') }}/{{ Auth::user()->quantriviens->avatar }}" alt="Avatar">
+                            @endif
                         @else
                             <img src="{{ url('uploads') }}/avatar_default.png" alt="Avatar">
                         @endif

@@ -18,8 +18,18 @@
                         </form>
                     </div>
                     <div class="col">
-                        <select id="nganh_hoc_id" class="form-control form-control-sm" name="nganh_hoc_id"
-                            id="gioi_tinh">
+                        <select id="level" class="form-control form-control-sm" name="level">
+                            <option value="" selected="" disabled="">--- Chọn trình độ ---</option>
+                            <option value="Tú tài">Tú tài</option>
+                            <option value="Cử nhân">Cử nhân</option>
+                            <option value="Kỹ sư">Kỹ sư</option>
+                            <option value="Thạc sĩ">Thạc sĩ</option>
+                            <option value="Tiến sĩ">Tiến sĩ</option>
+                            <option value="Giáo sư">Giáo sư</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select id="nganh_hoc_id" class="form-control form-control-sm" name="majors">
                             <option value="" selected="" disabled="">--- Chọn ngành ---</option>
                             @foreach ($nganhhocs as $nganhhoc)
                                 <option value="{{ $nganhhoc->id }}">{{ $nganhhoc->ten_nganh }}</option>

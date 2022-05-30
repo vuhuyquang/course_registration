@@ -92,7 +92,7 @@ class SinhVienImport implements ToCollection, WithHeadingRow, WithValidation
             '*.ho_ten' => 'bail|required|max:20',
             '*.ma_khoa_hoc' => 'bail|required|min:3|max:20',
             '*.ma_lop' => 'bail|required|min:3|max:20',
-            '*.ten_nganh' => 'bail|required|min:3|max:35',
+            '*.ten_nganh' => 'bail|required|min:3|max:70',
             '*.ngay_sinh' => 'bail|required',
             '*.gioi_tinh' => 'bail|required',
             '*.que_quan' => 'bail|required',
