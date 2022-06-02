@@ -515,13 +515,18 @@ class SinhVienController extends Controller
         }
     }
 
-    public function fee()
-    {
-        return view('quantrivien.hocphi.index');
-    }
+    // public function fee()
+    // {
+    //     $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+    //     if (!empty($mahocky)) {
+    //         $mhk = $mahocky->ma_hoc_ky;   
+    //     }
+    //     $hocphi
+    //     return view('sinhvien.hocphi.index');
+    // }
 
-    public function feeStore(Request $request)
-    {
-        dd($request);
-    }
+    // public function feeStore(Request $request)
+    // {
+    //     dd($request);
+    // }
 }

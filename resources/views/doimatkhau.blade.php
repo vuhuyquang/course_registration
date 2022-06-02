@@ -17,7 +17,7 @@
                         @endif
                     </div>
                     <div class="card">
-                        <div class="card-header">Đổi mật khẩu</div>
+                        <div class="card-header" style="background-color: rgba(0,0,0,.03);">Đổi mật khẩu</div>
                         <div class="card-body">
                             <form action="{{ route('postChangePassword') }}" method="POST">
                                 @csrf

@@ -9,7 +9,7 @@
                 <form action="{{ route('sinhvien.register') }}" class="form-inline" method="POST">
                     @csrf
                     <div class="form-group">
-                        <input class="form-control" name="ma_lop" placeholder="Nhập mã lớp" autocomplete="off">
+                        <input class="form-control" name="ma_lop" placeholder="Nhập mã lớp" autocomplete="off" autofocus>
                     </div>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus-circle"></i>

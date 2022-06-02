@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaiKhoan;
+use App\Models\GiangVien;
 use App\Models\SinhVien;
 use App\Models\QuanTriVien;
 use App\Models\LopHoc;
@@ -86,7 +87,12 @@ class TaiKhoanController extends Controller
             $nganhhocs = NganhHoc::all();
             return view('hosocanhan', compact('sinhvien', 'lophocs', 'nganhhocs'));
         } elseif (Auth::user()->quyen == 2) {
-
+            $giangviens = GiangVien::where('tai_khoan_id', Auth::user()->id)->get();
+            foreach ($giangviens as $key => $giangvien) {
+                $giangvien = $giangvien;
+            } 
+            $nganhhocs = NganhHoc::all();
+            return view('hosocanhan', compact('nganhhocs', 'giangvien'));
         } elseif (Auth::user()->quyen == 3) {
             $quantriviens = QuanTriVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($quantriviens as $key => $quantrivien) {

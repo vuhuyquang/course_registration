@@ -42,13 +42,15 @@ class QuanTriVienController extends Controller
             $mhk = null;
         }
 
-        $allhk = HocKy::orderBy('id', 'DESC')->get()->toArray();
-        foreach ($allhk as $key => $itemhk) {
-            if ($itemhk['ma_hoc_ky'] == $mhk) {
-                $idFlag = $key+1;
-            }
-        }
-        $hkifo = $allhk[$idFlag]['ma_hoc_ky'];
+        // $allhk = HocKy::orderBy('id', 'DESC')->get()->toArray();
+        // foreach ($allhk as $key => $itemhk) {
+        //     if ($itemhk['ma_hoc_ky'] == $mhk) {
+        //         $idFlag = $key+1;
+        //     }
+        // }
+        // if ($idFlag != null) {
+        //     $hkifo = $allhk[$idFlag]['ma_hoc_ky'];   
+        // }
 
         $subjects = DB::table('svdks')->where('ma_hoc_ky', $mhk)->distinct('mon_hoc_id')->count('mon_hoc_id');
         $students = DB::table('svdks')->where('ma_hoc_ky', $mhk)->distinct('sinh_vien_id')->count('sinh_vien_id');
@@ -75,11 +77,11 @@ class QuanTriVienController extends Controller
             $arr[] = array('ten_mon_hoc' => $monhoc->ten_mon_hoc, 'ma_mon_hoc' => $mamonhoc, 'da_dang_ky' => $hocphan );
             unset($hocphans);
         }
-        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->first();
-        if (!empty($mahocky)) {
-            $mhk = $hkifo;
-        }
-        $diemsos = DB::table('diemsos')->where('ma_hoc_ky', $mhk)->get();
+        // $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->first();
+        // if (!empty($mahocky)) {
+        //     $mhk = $hkifo;
+        // }
+        $diemsos = DB::table('diemsos')->get();
         $sxdiem = collect($diemsos);
         $sxdiemtheodiemchu = $sxdiem->groupBy('diem_chu')->map(function($values) {
             return $values->count();

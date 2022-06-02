@@ -13,6 +13,9 @@
         }
     }
 
+    .h-custom-2 {
+    height: 85%;
+}
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -20,10 +23,10 @@
 <section class="vh-100">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 text-black">
+            <div class="col-sm-4 text-black">
                 <div class="px-5 ms-xl-4">
                     <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
-                    <span class="h1 fw-bold mb-0">Logo</span>
+                    <span class="h1 fw-bold mb-0"><img style="height: 62px; width: 96px; margin: 60px 0 -66px 120px;" src="https://ci3.googleusercontent.com/proxy/7RJrDORxCsPOwYwEAW-1g0WsEP-w0Zh4xMI8wJdjSnH1sBPUrEHya8Oon5_FADaB8dZONQa1qRrI9cLcvGohymHJlpyXKNyiz_16WQ=s0-d-e1-ft#http://utt.edu.vn/home/images/stories/logo-utt-border.png" alt="Logo UTT"></span>
                 </div>
                 @if (session('thongbao'))
                     <div class="alert error">
@@ -64,10 +67,11 @@
                 </div>
 
             </div>
-            <div class="col-sm-6 px-0 d-none d-sm-block">
-                <img src="{{ asset('uploads') }}/abc.jpg" alt="Login image" class="w-100 vh-100"
+            <div class="col-sm-8 px-0 d-none d-sm-block">
+                <img src="{{ asset('uploads') }}/totnghiep.jpg" alt="Login image" class="w-100 vh-100"
                     style="object-fit: cover; object-position: left;">
             </div>
         </div>
     </div>
 </section>
+

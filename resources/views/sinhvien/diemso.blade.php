@@ -6,7 +6,7 @@
         <h5 class="card-title">Điểm tổng kết</h5>
     </div>
     <div class="card-body">
-        <table>
+        <table class="table-hover table-sm">
             <tr>
                 <td>Mã sinh viên: {{ Auth::user()->sinhviens->ma_sinh_vien }}</td>
                 <td>Họ tên: {{ Auth::user()->sinhviens->ho_ten }}</td>
@@ -21,18 +21,6 @@
 <div class="card">
     <div class="card-header" style="background-color: rgba(0,0,0,.03);">
         <h5 class="card-title">Danh sách môn học</h5>
-        <div class="row float-right">
-            <div class="col">
-                <form action="" class="form-inline">
-                    <div class="form-group">
-                        <input class="form-control" name="key" placeholder="Nhập tên môn học" autocomplete="off">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
     <div class="card-body">
         <table style="text-align: center" class="table table-hover table-sm">
