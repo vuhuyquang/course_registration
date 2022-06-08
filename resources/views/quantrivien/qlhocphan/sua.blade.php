@@ -58,7 +58,7 @@
         <div class="form-group">
             <label for="giang_vien_id">Giảng viên <label style="color: red" for="giang_vien_id">*</label></label>
             <select id="giang_vien_id" class="form-control form-control-sm" name="giang_vien_id" id="gioi_tinh">
-                <option value="" selected="" disabled="">--- Chọn môn học ---</option>
+                <option value="" selected="" disabled="">--- Chọn giảng viên ---</option>
                 @foreach ($giangviens as $giangvien)
                     <option {{ $giangvien->id == $hocphan->giang_vien_id ? 'selected' : '' }} value="{{ $giangvien->id }}">{{ $giangvien->ho_ten }} / {{ $giangvien->nganhhocs->ten_nganh }}</option>
                 @endforeach

@@ -18,7 +18,7 @@ class MonHocController extends Controller
      */
     public function index()
     {
-        $monhocs = MonHoc::orderBy('nganh_id', 'DESC')->search()->paginate(15);
+        $monhocs = MonHoc::orderBy('nganh_id', 'DESC')->orderBy('hoc_ky', 'ASC')->search()->paginate(15);
         return view('quantrivien.qlmonhoc.danhsach', compact('monhocs'));
     }
 
@@ -45,7 +45,9 @@ class MonHocController extends Controller
             'ma_mon_hoc' => 'required|unique:monhocs,ma_mon_hoc|max:20',
             'ten_mon_hoc' => 'required|max:80',
             'so_tin_chi' => 'required|numeric',
-            'nganh_id' => 'required|numeric'
+            'nganh_id' => 'required|numeric',
+            'hoc_ky' => 'required|numeric',
+
         ], [
             'ma_mon_hoc.required' => 'Trường dữ liệu không được để trống',
             'ma_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -56,13 +58,16 @@ class MonHocController extends Controller
             'so_tin_chi.required' => 'Trường dữ liệu không được để trống',
             'so_tin_chi.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
             'nganh_id.required' => 'Trường dữ liệu không được để trống',
-            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
+            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'hoc_ky.required' => 'Trường dữ liệu không được để trống',
+            'hoc_ky.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
         ]);
         $monhoc = new MonHoc;
         $monhoc->ma_mon_hoc = $request->ma_mon_hoc;
         $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
+        $monhoc->hoc_ky = $request->hoc_ky;
 
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
         if ($sl == 0) {
@@ -113,7 +118,8 @@ class MonHocController extends Controller
             'ma_mon_hoc' => 'required|max:20|unique:monhocs,ma_mon_hoc,'.$id,
             'ten_mon_hoc' => 'required|max:80',
             'so_tin_chi' => 'required|numeric',
-            'nganh_id' => 'required|numeric'
+            'nganh_id' => 'required|numeric',
+            'hoc_ky' => 'required|numeric',
         ], [
             'ma_mon_hoc.required' => 'Trường dữ liệu không được để trống',
             'ma_mon_hoc.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -124,7 +130,9 @@ class MonHocController extends Controller
             'so_tin_chi.required' => 'Trường dữ liệu không được để trống',
             'so_tin_chi.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
             'nganh_id.required' => 'Trường dữ liệu không được để trống',
-            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số'
+            'nganh_id.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
+            'hoc_ky.required' => 'Trường dữ liệu không được để trống',
+            'hoc_ky.numeric' => 'Dữ liệu nhập vào phải là kiểu số',
         ]);
 
         $monhoc = MonHoc::findOrFail($id);
@@ -132,6 +140,7 @@ class MonHocController extends Controller
         $monhoc->nganh_id = $request->nganh_id;
         $monhoc->ten_mon_hoc = $request->ten_mon_hoc;
         $monhoc->so_tin_chi = $request->so_tin_chi;
+        $monhoc->hoc_ky = $request->hoc_ky;
         if ($monhoc->save()) {
             return redirect()->back()->with('success', 'Cập nhật thành công');
         } else {

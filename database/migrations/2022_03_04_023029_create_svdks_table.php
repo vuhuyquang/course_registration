@@ -21,6 +21,7 @@ class CreateSvdksTable extends Migration
             $table->integer('so_tin_chi');
             $table->integer('nganh_id');
             $table->string('ma_hoc_ky', 20);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

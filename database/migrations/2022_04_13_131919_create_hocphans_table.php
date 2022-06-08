@@ -25,6 +25,8 @@ class CreateHocphansTable extends Migration
             $table->integer('dk_toi_da')->default(60);
             $table->integer('da_dang_ky')->default(0);
             $table->string('ma_hoc_ky', 20);
+            $table->integer('giu_lai')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

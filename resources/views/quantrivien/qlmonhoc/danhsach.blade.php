@@ -26,8 +26,9 @@
                     <th>Tên môn học</th>
                     <th>STC</th>
                     <th>Ngành học</th>
+                    <th>Học kỳ</th>
                     <th>Trạng thái</th>
-                    <th style="width: 120px;">Ngày tạo</th>
+                    {{-- <th style="width: 120px;">Ngày tạo</th> --}}
                     <th style="width: 120px;">Hành động</th>
                 </tr>
             </tr>
@@ -44,6 +45,7 @@
                             <i>Chưa có thông tin</i>
                         @endif
                     </td>
+                    <td>{{ $monhoc->hoc_ky }}</td>
                     <td>
                         @if ($monhoc->duoc_phep == 1)
                             <span class="badge badge-success">V</span>
@@ -51,7 +53,7 @@
                             <span class="badge badge-danger">X</span>
                         @endif
                     </td>
-                    <td>{{ date('H:i:s d/m/Y', strtotime($monhoc->created_at)) }}</td>
+                    {{-- <td>{{ date('H:i:s d/m/Y', strtotime($monhoc->created_at)) }}</td> --}}
                     <td>
                         <a style="color: white;" href="{{ route('mon-hoc.block', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-warning">
                             <i class="fas fa-ban"></i>

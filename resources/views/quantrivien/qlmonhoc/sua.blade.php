@@ -37,6 +37,23 @@
                 <small class="help-block">{{ $message }}</small>
             @enderror
         </div>
+        <div class="form-group">
+            <label for="hoc_ky">Học kỳ <label style="color: red" for="ma_lop_hoc">*</label></label>
+            <select id="hoc_ky" class="form-control form-control-sm" name="hoc_ky" id="gioi_tinh">
+                <option value="" selected="" disabled="">--- Chọn học kỳ ---</option>
+                <option {{ $monhoc->hoc_ky == 1 ? 'selected' : '' }} value="1">1</option>
+                <option {{ $monhoc->hoc_ky == 2 ? 'selected' : '' }} value="2">2</option>
+                <option {{ $monhoc->hoc_ky == 3 ? 'selected' : '' }} value="3">3</option>
+                <option {{ $monhoc->hoc_ky == 4 ? 'selected' : '' }} value="4">4</option>
+                <option {{ $monhoc->hoc_ky == 5 ? 'selected' : '' }} value="5">5</option>
+                <option {{ $monhoc->hoc_ky == 6 ? 'selected' : '' }} value="6">6</option>
+                <option {{ $monhoc->hoc_ky == 7 ? 'selected' : '' }} value="7">7</option>
+                <option {{ $monhoc->hoc_ky == 8 ? 'selected' : '' }} value="8">8</option>
+            </select>
+            @error('hoc_ky')
+                <small class="help-block">{{ $message }}</small>
+            @enderror
+        </div>
         <button type="submit" class="btn btn-primary">Lưu</button>
     </form>
 @stop()

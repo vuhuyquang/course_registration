@@ -7,13 +7,13 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ url('ad123') }}/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{ url('public/ad123') }}/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ url('ad123') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="{{ url('public/ad123') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ url('ad123') }}/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{ url('public/ad123') }}/dist/css/adminlte.min.css">
     <!-- Nhúng css -->
     @yield('css')
 </head>
@@ -55,7 +55,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="../../index3.html" class="brand-link">
-                <img src="{{ url('ad123') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+                <img src="{{ url('public/ad123') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">
                     @if (Auth::user()->quyen == 1)
@@ -77,22 +77,22 @@
                             @if (empty(Auth::user()->sinhviens->avatar))
                                 <i>Chưa có thông tin</i>
                             @else
-                                <img src="{{ url('uploads') }}/{{ Auth::user()->sinhviens->avatar }}" alt="Avatar">
+                                <img src="{{ url('public/uploads') }}/{{ Auth::user()->sinhviens->avatar }}" alt="Avatar">
                             @endif
                         @elseif (Auth::user()->quyen == 2)
                             @if (empty(Auth::user()->giangviens->avatar))
                                 <i>Chưa có thông tin</i>
                             @else
-                                <img src="{{ url('uploads') }}/{{ Auth::user()->giangviens->avatar }}" alt="Avatar">
+                                <img src="{{ url('public/uploads') }}/{{ Auth::user()->giangviens->avatar }}" alt="Avatar">
                             @endif
                         @elseif (Auth::user()->quyen == 3)
                             @if (empty(Auth::user()->quantriviens->avatar))
                                 <i>Chưa có thông tin</i>
                             @else
-                                <img src="{{ url('uploads') }}/{{ Auth::user()->quantriviens->avatar }}" alt="Avatar">
+                                <img src="{{ url('public/uploads') }}/{{ Auth::user()->quantriviens->avatar }}" alt="Avatar">
                             @endif
                         @else
-                            <img src="{{ url('uploads') }}/avatar_default.png" alt="Avatar">
+                            <img src="{{ url('public/uploads') }}/avatar_default.png" alt="Avatar">
                         @endif
                     </div>
                     <div class="info">
@@ -380,6 +380,15 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sinhvien.curriculum') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chalkboard"></i>
+                                <p>
+                                    Chương trình học
+                                    {{-- <i class="fas fa-angle-left right"></i> --}}
+                                </p>
+                            </a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a href="{{ route('sinhvien.fee') }}" class="nav-link">
                                 <i class="nav-icon fas fa-dollar-sign"></i>
@@ -459,15 +468,15 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ url('ad123') }}/plugins/jquery/jquery.min.js"></script>
+    <script src="{{ url('public/ad123') }}/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="{{ url('ad123') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url('public/ad123') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
-    <script src="{{ url('ad123') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="{{ url('public/ad123') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="{{ url('ad123') }}/dist/js/adminlte.min.js"></script>
+    <script src="{{ url('public/ad123') }}/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="{{ url('ad123') }}/dist/js/demo.js"></script>
+    <script src="{{ url('public/ad123') }}/dist/js/demo.js"></script>
     @yield('js')
 </body>
 

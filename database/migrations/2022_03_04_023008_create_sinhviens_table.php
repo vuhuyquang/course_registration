@@ -26,6 +26,7 @@ class CreateSinhviensTable extends Migration
             $table->string('so_dien_thoai', 10)->nullable()->unique();
             $table->text('avatar')->default('avatar_default.png');
             $table->integer('tai_khoan_id');
+            $table->integer('so_ky_hoc')->default(0);
             $table->timestamps();
         });
     }

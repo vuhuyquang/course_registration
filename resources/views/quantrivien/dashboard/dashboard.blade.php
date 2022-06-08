@@ -4,6 +4,35 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <head>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var a = [
+            ['Học kỳ', 'Lượt đăng ký', 'Lượt hủy đăng ký']
+        ]
+        var luotdk = <?php echo json_encode($arrhk); ?>;
+        luotdk.forEach(ldk => {
+                a.push([ldk[0], ldk[1], ldk[2]])
+            });
+            console.log(a)
+        var data = google.visualization.arrayToDataTable(a);
+
+        var options = {
+          title: 'Học kỳ vs. Lượt đăng ký',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    </head>
     <section class="content">
         <div class="row">
             <div class="col-lg-3 col-6">
@@ -71,7 +100,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
-                    <div id="mc" style="width:100%; max-width:900px; height:500px;"></div>
+                    {{-- <div id="mc" style="width:100%; max-width:900px; height:500px;"></div> --}}
+                    <div id="curve_chart" style="width:100%; max-width:900px; height:500px;"></div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -135,36 +165,39 @@
 
         /////////////////////////////////////////
 
-        google.charts.load('current', {
-            packages: ['corechart']
-        });
-        google.charts.setOnLoadCallback(drawChart);
+        // google.charts.load('current', {
+        //     packages: ['corechart']
+        // });
+        // google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var a = [
-                ['Học kỳ', 'Lượt']
-            ]
-            var mangs = <?php echo json_encode($arrhk); ?>;
-            mangs.forEach(mang => {
-                a.push([mang['mahocky'], mang['sl']])
-            });
-            // Set Data
-            var data = google.visualization.arrayToDataTable(a);
-            // Set Options
-            var options = {
-                title: 'Học kỳ vs. Lượt đăng ký',
-                hAxis: {
-                    title: 'Học kỳ'
-                },
-                vAxis: {
-                    title: 'Lượt đăng ký'
-                },
-                legend: 'none'
-            };
-            // Draw
-            var chart = new google.visualization.LineChart(document.getElementById('mc'));
-            chart.draw(data, options);
-        }
+        // function drawChart() {
+        //     var a = [
+        //         ['Học kỳ', 'Lượt']
+        //     ]
+        //     var mangs = <?php echo json_encode($arrhk); ?>;
+        //     mangs.forEach(mang => {
+        //         a.push([mang['mahocky'], mang['sl']])
+        //     });
+
+        //     // Set Data
+        //     var data = google.visualization.arrayToDataTable(a);
+        //     // Set Options
+        //     var options = {
+        //         title: 'Học kỳ vs. Lượt đăng ký',
+        //         hAxis: {
+        //             title: 'Học kỳ'
+        //         },
+        //         vAxis: {
+        //             title: 'Lượt đăng ký'
+        //         },
+        //         legend: 'none'
+        //     };
+        //     // Draw
+        //     var chart = new google.visualization.LineChart(document.getElementById('mc'));
+        //     chart.draw(data, options);
+        // }
+
+        ///////////////////////////////////////////////////////
     </script>
 
     <script src="{{ url('ad123') }}/plugins/jquery/jquery.min.js"></script>

@@ -23,7 +23,12 @@ use App\Http\Controllers\TinTucController;
 |--------------------------------------------------------------------------
 |
 */
+// Route::get('', function () {
+//     return view();
+// });
+
 Route::get('', [TaiKhoanController::class, 'home'])->name('home');
+Route::get('news', [TaiKhoanController::class, 'news'])->name('news');
 Route::get('login', [TaiKhoanController::class, 'getLogin'])->name('getLogin');
 Route::post('login', [TaiKhoanController::class, 'postLogin'])->name('postLogin');
 Route::get('logout', [TaiKhoanController::class, 'getLogout'])->name('getLogout');
@@ -155,6 +160,7 @@ Route::prefix('teacher')->middleware('checkTeacher')->group(function () {
 });
 
 Route::prefix('student')->middleware('checkStudent')->group(function () {
+    Route::get('/curriculum', [SinhVienController::class, 'curriculum'])->name('sinhvien.curriculum');
     Route::get('/subjects-lookup', [SinhVienController::class, 'lookup'])->name('sinhvien.lookup');
     Route::get('/subjects-lookup/{id}', [SinhVienController::class, 'lookupid'])->name('sinhvien.lookup.id');
     Route::get('/course-registration', [SinhVienController::class, 'register'])->name('sinhvien.register');

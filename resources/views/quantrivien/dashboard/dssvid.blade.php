@@ -15,6 +15,7 @@
                 <th>Mã môn học</th>
                 <th>Tên môn học</th>
                 <th>Thời gian ĐK</th>
+                <th>Thời gian hủy ĐK</th>
             </tr>
             @foreach ($svdks as $key => $svdk)
                 <tr>
@@ -25,6 +26,13 @@
                     <td>{{ $svdk->hocphans->ma_hoc_phan }}</td>
                     <td>{{ $svdk->monhocs->ten_mon_hoc }}</td>
                     <td>{{ date('H:i:s d/m/Y', strtotime($svdk->created_at)) }}</td>
+                    <td>
+                        @if (empty($svdk->deleted_at))
+                            <i>N/A</i>
+                        @else
+                        {{ date('H:i:s d/m/Y', strtotime($svdk->deleted_at)) }}
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </table>

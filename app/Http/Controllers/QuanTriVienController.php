@@ -36,7 +36,7 @@ class QuanTriVienController extends Controller
                     continue;
                 }
                 $hocky = HocKy::find($i);
-                $arrhk[] = array('mahocky' => $hocky['ma_hoc_ky'], 'sl' => DB::table('svdks')->where('ma_hoc_ky', $hocky['ma_hoc_ky'])->count());
+                $arrhk[] = array($hocky['ma_hoc_ky'], DB::table('svdks')->where('ma_hoc_ky', $hocky['ma_hoc_ky'])->count(), SVDK::where('ma_hoc_ky', $hocky['ma_hoc_ky'])->onlyTrashed()->count());
             }
         } else {
             $mhk = null;
@@ -52,9 +52,9 @@ class QuanTriVienController extends Controller
         //     $hkifo = $allhk[$idFlag]['ma_hoc_ky'];   
         // }
 
-        $subjects = DB::table('svdks')->where('ma_hoc_ky', $mhk)->distinct('mon_hoc_id')->count('mon_hoc_id');
+        $subjects = DB::table('svdks')->where('deleted_at', null)->where('ma_hoc_ky', $mhk)->distinct('mon_hoc_id')->count('mon_hoc_id');
         $students = DB::table('svdks')->where('ma_hoc_ky', $mhk)->distinct('sinh_vien_id')->count('sinh_vien_id');
-        $modules = DB::table('svdks')->where('ma_hoc_ky', $mhk)->distinct('hoc_phan_id')->count('hoc_phan_id');
+        $modules = DB::table('svdks')->where('deleted_at', null)->where('ma_hoc_ky', $mhk)->distinct('hoc_phan_id')->count('hoc_phan_id');
         $teachers = DB::table('hocphans')->where('ma_hoc_ky', $mhk)->distinct('giang_vien_id')->count('giang_vien_id');
         //
         $hocphans = HocPhan::groupBy('mon_hoc_id')
@@ -95,7 +95,7 @@ class QuanTriVienController extends Controller
         $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
         if (!empty($mahocky)) {
             $mhk = $mahocky->ma_hoc_ky;
-            $monhocs = DB::table('svdks')->select('mon_hoc_id')->where('ma_hoc_ky', $mhk)->groupBy('mon_hoc_id')->get()->toArray();
+            $monhocs = DB::table('svdks')->select('mon_hoc_id')->where('deleted_at', null)->where('ma_hoc_ky', $mhk)->groupBy('mon_hoc_id')->get()->toArray();
             if (empty($monhocs)) {
                 return redirect()->route('dashboard');
             }
@@ -116,7 +116,7 @@ class QuanTriVienController extends Controller
         $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
         if (!empty($mahocky)) {
             $mhk = $mahocky->ma_hoc_ky;
-            $hocphans = DB::table('svdks')->select('hoc_phan_id')->where('ma_hoc_ky', $mhk)->groupBy('hoc_phan_id')->get()->toArray();
+            $hocphans = DB::table('svdks')->select('hoc_phan_id')->where('deleted_at', null)->where('ma_hoc_ky', $mhk)->groupBy('hoc_phan_id')->get()->toArray();
             if (empty($hocphans)) {
                 return redirect()->route('dashboard');
             }
@@ -165,7 +165,7 @@ class QuanTriVienController extends Controller
         $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
         if (!empty($mahocky)) {
             $mhk = $mahocky->ma_hoc_ky;
-        $svdks = SVDK::where('sinh_vien_id', $id)->where('ma_hoc_ky', $mhk)->get();
+        $svdks = SVDK::where('sinh_vien_id', $id)->where('ma_hoc_ky', $mhk)->withTrashed()->get();
         return view('quantrivien.dashboard.dssvid', compact('svdks'));
         } else {
             return redirect()->route('dashboard');
@@ -182,7 +182,13 @@ class QuanTriVienController extends Controller
             foreach ($giangviens as $key => $giangvien) {
                 if ($giangvien['giang_vien_id'] != null) {
                     $gv = GiangVien::find($giangvien['giang_vien_id'])->toArray();
-                    $arr[] = $gv;
+                    if (in_array($gv, $arr)) {
+                        // dd('Đã tồn tại');
+                        continue;
+                    } else {
+                        // dd('Chưa tồn tại');
+                        $arr[] = $gv;
+                    }
                 }
             }
             $nganhhocs = NganhHoc::all();

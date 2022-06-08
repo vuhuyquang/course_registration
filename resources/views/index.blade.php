@@ -144,7 +144,8 @@
     .hh1 {
         /* width: 34%; */
         text-align: center;
-        margin: 14px 0px;
+        margin: 52px 0px;
+        margin-bottom: 6px;
         border-bottom: #cd2122;
         border: 1px solid #cd2122;
         border-top: none;
@@ -166,7 +167,7 @@
 <div>
     <div style="align: center" style="padding-top: 20px">
         <div class="container mt-5">
-            <table style="" width="">
+            <table style="margin-left: auto; margin-right: auto;" width="">
                 @if (isset($tintucs))
                     @foreach ($tintucs as $key => $item)
                         @if ($key == 0)
@@ -177,16 +178,16 @@
                             </tr>
                         @endif
                         <tr class="tr mb-2">
-                            <td class="" rowspan="2"><img height="240px" src="{{ $item->hinh_anh }}"
+                            <td class="" rowspan="2"><img height="220px" src="{{ $item['hinh_anh'] }}"
                                     alt="">
                             </td>
-                            <td class="h1"><a class="a3" href="{{ $item->duong_dan }}">
-                                    {{ $item->tieu_de }}</a>
+                            <td height="220px" class="h1"><a class="a3" href="{{ $item['duong_dan'] }}">
+                                    {{ $item['tieu_de'] }}</a>
 
-                                <p>{{ date('d-m-Y', strtotime($item->ngay_dang)) }}</p>
+                                <p>{{ date('d-m-Y', strtotime($item['ngay_dang'])) }}</p>
                             </td>
                         <tr>
-                            <td class="h2">{{ $item->noi_dung_ngan }}</td>
+                            <td class="h2">{{ $item['noi_dung_ngan'] }}</td>
                         </tr>
                         </tr>
                     @endforeach
@@ -194,7 +195,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center mb-5 mt-5">
-            {!! $tintucs->links() !!}
+            {{-- {!! $tintucs->links() !!} --}}
         </div>
     </div>
 </div>

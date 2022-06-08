@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SVDK extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     protected $table = 'svdks';
     protected $fillable = [
         'hoc_phan_id',
@@ -20,7 +23,7 @@ class SVDK extends Model
 
     public function hocphans()
     {
-        return $this->hasOne(HocPhan::class, 'id', 'hoc_phan_id');
+        return $this->hasOne(HocPhan::class, 'id', 'hoc_phan_id')->withTrashed();
     }
 
     public function giangviens()

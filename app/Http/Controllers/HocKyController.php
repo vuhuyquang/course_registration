@@ -6,6 +6,7 @@ use App\Models\HocPhan;
 use App\Models\HocKy;
 use App\Models\MonHoc;
 use App\Models\SVDK;
+use App\Models\SinhVien;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
@@ -79,6 +80,12 @@ class HocKyController extends Controller
             if ($hocky->da_mo == 1) {
                 return redirect()->back()->with('error', 'Không thể mở học kỳ trong quá khứ');
             }
+            $sinhviens = SinhVien::all();
+            foreach ($sinhviens as $i => $sinhvien) {
+                $sinhvien->so_ky_hoc = $sinhvien->so_ky_hoc + 1;
+                $sinhvien->save();
+            }
+
             $hkhts = DB::table('hockys')->where('hien_tai', 1)->get()->toArray();
             foreach ($hkhts as $key => $hkht) {
                 $mahkht = $hkht->ma_hoc_ky;
@@ -116,12 +123,18 @@ class HocKyController extends Controller
                 return redirect()->back()->with('error', 'Mở đăng ký học kỳ thất bại');
             }
         } elseif ($hocky->trang_thai == 'Mở') {
-            // $hocphan = DB::table('hocphans')->delete();
-            $hocphans = DB::table('hocphans')->where('da_dang_ky', '<', 1)->orWhere('da_dang_ky', '>', 60)->get()->toArray();
+            $mhk = $hocky->ma_hoc_ky;
+            $hocphans = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '<=', 0)->orWhere('da_dang_ky', '>', 60)->get();
             foreach ($hocphans as $key => $hocphan) {
-                $svdkbihuy = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
+                if ($hocphan->giu_lai == 1) {
+                    $hocphan->delete();
+                } else {
+                    $hocphan->forceDelete();
+                }
+                $svhdk = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
             }
-            $hocphan = DB::table('hocphans')->where('da_dang_ky', '<', 1)->orWhere('da_dang_ky', '>', 60)->delete();
+
+            //
             $hocky->trang_thai = 'Đóng';
             $hocky->hien_tai = 1;
             $monhocs = MonHoc::where('duoc_phep', 'false')->get();

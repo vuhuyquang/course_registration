@@ -25,6 +25,7 @@
                 <th>Mã môn học</th>
                 <th>Tên môn học</th>
                 <th>Số tín chỉ</th>
+                <th>Học kỳ</th>
                 <th>Lớp học phần</th>
             </tr>
             </tr>
@@ -35,6 +36,7 @@
                         <td>{{ $monhoc->ma_mon_hoc }}</td>
                         <td>{{ $monhoc->ten_mon_hoc }}</td>
                         <td>{{ $monhoc->so_tin_chi }}</td>
+                        <td>{{ $monhoc->hoc_ky }}</td>
                         <td>
                             <a href="{{ route('sinhvien.lookup.id', ['id' => $monhoc->id]) }}" class="btn btn-sm btn-warning">
                                 <i style="color: white;" class="fas fa-ellipsis-h"></i>

@@ -10,6 +10,7 @@ use App\Models\LopHoc;
 use App\Models\NganhHoc;
 use App\Models\TinTuc;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Auth;
 use Hash;
 
@@ -17,8 +18,16 @@ class TaiKhoanController extends Controller
 {
     public function home()
     {
-        $tintucs = TinTuc::orderBy('ngay_dang', 'DESC')->paginate(5);
+        $getTT = Http::get('http://qldt.utt.edu.vn/news');
+        $tintucs = json_decode($getTT, true);
         return view('index', compact('tintucs'));
+    }
+
+    public function news()
+    {
+        // $tintucs = TinTuc::orderBy('ngay_dang', 'DESC')->paginate(5);
+        $tintucs = TinTuc::orderBy('ngay_dang', 'DESC')->get();
+        return response()->json($tintucs);
     }
 
     public function getLogin()

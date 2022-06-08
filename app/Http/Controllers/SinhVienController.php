@@ -315,7 +315,8 @@ class SinhVienController extends Controller
 
     public function lookup()
     {
-        $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->search()->paginate(15);
+        $skh = SinhVien::where('tai_khoan_id', Auth::user()->id)->first()->so_ky_hoc;
+        $monhocs = MonHoc::where('duoc_phep', 1)->where('nganh_id', Auth::user()->sinhviens->nganh_hoc_id)->where('hoc_ky', '<=', $skh + 1)->orderBy('hoc_ky')->search()->paginate(15);
         $svdks = SVDK::join('hocphans', function ($join) {
             $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
         })->paginate(15);
@@ -364,7 +365,8 @@ class SinhVienController extends Controller
         ], [
             'ma_lop.required' => 'Trường dữ liệu không được để trống',
         ]);
-        
+        $skh = SinhVien::where('tai_khoan_id', Auth::user()->id)->first()->so_ky_hoc;
+
         $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
         foreach ($hockymos as $key => $hockymo) {
             $hockymo = $hockymo->ma_hoc_ky;
@@ -379,9 +381,19 @@ class SinhVienController extends Controller
                     $monhocid = $hocphan['mon_hoc_id'];
                     $sotinchi = $hocphan['so_tin_chi'];
                     $monhoc = MonHoc::findOrFail($hocphan['mon_hoc_id']);
-                    $monhocnganhid = $monhoc->nganh_id;
-                    $hp = HocPhan::findOrFail($hocphanid);
-                    $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                    if ($skh == 1 && $monhoc->hoc_ky <= $skh + 1) {
+                        $monhocnganhid = $monhoc->nganh_id;
+                        $hp = HocPhan::findOrFail($hocphanid);
+                        $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                    } else {
+                        if ($monhoc->hoc_ky <= $skh + 1) {
+                            $monhocnganhid = $monhoc->nganh_id;
+                            $hp = HocPhan::findOrFail($hocphanid);
+                            $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                        } else {
+                            return redirect()->back()->with('error', 'Không thể đăng ký môn học này vì số kỳ học chưa đủ');
+                        }   
+                    }
                 }
 
                 // Lấy ra sinh_vien_id và ngành học của sv
@@ -451,6 +463,13 @@ class SinhVienController extends Controller
         }
     }
 
+    public function curriculum()
+    {
+        $nganhhocid = SinhVien::where('tai_khoan_id', Auth::user()->id)->first()->nganh_hoc_id;
+        $monhocs = MonHoc::orderBy('hoc_ky')->where('nganh_id', $nganhhocid)->paginate(15);
+        return view('sinhvien.chuongtrinhhoc', compact('monhocs'));
+    }
+
     public function export()
     {
         return Excel::download(new SinhVienExport, 'Students.xlsx');
@@ -461,6 +480,8 @@ class SinhVienController extends Controller
         $svdk = SVDK::where('sinh_vien_id', Auth::user()->sinhviens->id)->where('hoc_phan_id', $id);
         $hocphan = HocPhan::findOrFail($id);
         $hocphan->da_dang_ky = $hocphan->da_dang_ky - 1;
+        $hocphan->giu_lai = 1;
+        // $hocphan->deleted_at = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
 
         $hockymos = DB::table('hockys')->where('trang_thai', 'Mở')->get()->toArray();
         foreach ($hockymos as $key => $hockymo) {
