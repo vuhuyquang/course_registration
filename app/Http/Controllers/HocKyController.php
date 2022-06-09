@@ -95,6 +95,8 @@ class HocKyController extends Controller
                 return redirect()->back()->with('error', 'Không thể mở đăng ký chính học kỳ hiện tại');
             }
 
+            // $hocphan = HocPhan::all()->withTrashed()->forceDelete();
+            //
                 $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
                 foreach ($monhocmodks as $key => $monhocmodk) {
                     for ($i=1; $i <= 3 ; $i++) { 
@@ -124,7 +126,7 @@ class HocKyController extends Controller
             }
         } elseif ($hocky->trang_thai == 'Mở') {
             $mhk = $hocky->ma_hoc_ky;
-            $hocphans = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '<=', 0)->orWhere('da_dang_ky', '>', 60)->get();
+            $hocphans = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '<=', 1)->orWhere('da_dang_ky', '>', 60)->get();
             foreach ($hocphans as $key => $hocphan) {
                 if ($hocphan->giu_lai == 1) {
                     $hocphan->delete();
