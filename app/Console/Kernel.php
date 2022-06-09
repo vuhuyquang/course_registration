@@ -26,10 +26,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('minute:study_warning')->everyMinute();
+        $schedule->command('minute:study_warning')->yearlyOn(1, 1, '7:00');
+        $schedule->command('minute:study_warning')->yearlyOn(8, 1, '7:00');
+
+
         // hourly();
         // daily();
         // weekly();
         // monthly();
+        // quarterly();
+        // yearly();
+        // yearlyOn(6, 1, '17:00');
         // dailyAt('07:00');
     }
 

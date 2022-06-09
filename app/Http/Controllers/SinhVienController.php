@@ -136,20 +136,18 @@ class SinhVienController extends Controller
             if ($sinhvien->save()) {
                 if ($request->has('avatar')) {
                     $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-                } 
+                }
                 if (dispatch(new SendEmailSendAccount($sinhvien->ho_ten, $taikhoan, $password))) {
                     return redirect()->back()->with('success', 'Thêm thành công. Đã gửi mail cấp tài khoản');
                 } else {
                     return redirect()->back()->with('success', 'Thêm thành công. Đã có lỗi khi gửi mail');
                 }
-                
             } else {
                 return redirect()->back()->with('error', 'Thêm thất bại');
-            }  
+            }
         } else {
             return redirect()->back()->with('error', 'Thêm thất bại');
         }
-        
     }
 
     public function resizeimage($request)
@@ -202,7 +200,7 @@ class SinhVienController extends Controller
         $sinhvien = SinhVien::findOrFail($id);
         $newid = $sinhvien->taikhoans->id;
         $request->validate([
-            'ma_sinh_vien' => 'required|max:20|unique:sinhviens,ma_sinh_vien,'.$id,
+            'ma_sinh_vien' => 'required|max:20|unique:sinhviens,ma_sinh_vien,' . $id,
             'ho_ten' => 'required|max:50',
             'nganh_hoc_id' => 'required|numeric',
             'khoa_hoc_id' => 'required|numeric',
@@ -210,7 +208,7 @@ class SinhVienController extends Controller
             'ngay_sinh' => 'required|date|before:today',
             'gioi_tinh' => 'required|max:20',
             'que_quan' => 'required|max:80',
-            'email' => 'required|email|max:50|unique:taikhoans,email,'.$newid,
+            'email' => 'required|email|max:50|unique:taikhoans,email,' . $newid,
         ], [
             'ma_sinh_vien.required' => 'Trường dữ liệu không được để trống',
             'ma_sinh_vien.unique' => 'Dữ liệu nhập vào không được trùng lặp',
@@ -261,7 +259,7 @@ class SinhVienController extends Controller
             if ($sinhvien->save()) {
                 if ($request->has('avatar')) {
                     $hinhanh_resize->save(public_path('uploads/' . $tenanh));
-                } 
+                }
                 return redirect()->back()->with('success', 'Cập nhật thành công');
             } else {
                 return redirect()->back()->with('error', 'Cập nhật thất bại');
@@ -289,7 +287,7 @@ class SinhVienController extends Controller
             return redirect()->back()->with('success', 'Xóa thành công');
         } else {
             return redirect()->back()->with('error', 'Xóa thất bại');
-        }   
+        }
     }
 
     public function resetPassword($id)
@@ -304,7 +302,7 @@ class SinhVienController extends Controller
             return redirect()->back()->with('success', 'Đã gửi mail đặt lại mật khẩu');
         } else {
             return redirect()->back()->with('error', 'Đặt lại mật khẩu thất bại');
-        }   
+        }
     }
 
     public function profile($id)
@@ -344,7 +342,7 @@ class SinhVienController extends Controller
 
     public function register()
     {
-        $svdks = SVDK::join('hocphans', function ($join){
+        $svdks = SVDK::join('hocphans', function ($join) {
             $join->on('svdks.hoc_phan_id', '=', 'hocphans.id')->where('sinh_vien_id', Auth::user()->sinhviens->id);
         })->paginate(15);
         $hkhts = HocKy::where('hien_tai', 1)->orWhere('trang_thai', 'Mở')->get()->toArray();
@@ -394,7 +392,7 @@ class SinhVienController extends Controller
                             $hp->giu_lai = 1;
                         } else {
                             return redirect()->back()->with('error', 'Không thể đăng ký môn học này vì số kỳ học chưa đủ');
-                        }   
+                        }
                     }
                 }
 
@@ -507,12 +505,12 @@ class SinhVienController extends Controller
         $sl = DiemSo::where('sinh_vien_id', Auth::user()->sinhviens->id)->count();
         $idsv = Auth::user()->sinhviens->id;
         $diemtongket = DiemSo::groupBy('sinh_vien_id')
-        ->selectRaw('sum(diem_tong_ket) as sum, sinh_vien_id')
-        ->where('sinh_vien_id', $idsv)
-        ->pluck('sum', 'sinh_vien_id')->toArray();
+            ->selectRaw('sum(diem_tong_ket) as sum, sinh_vien_id')
+            ->where('sinh_vien_id', $idsv)
+            ->pluck('sum', 'sinh_vien_id')->toArray();
         if (!empty($diemtongket)) {
             $dtb = round(($diemtongket[Auth::user()->sinhviens->id]) / $sl, 2);
-            $gpa = round($dtb/10 * 4, 2);
+            $gpa = round($dtb / 10 * 4, 2);
         } else {
             $dtb = null;
             $gpa = null;
@@ -538,18 +536,82 @@ class SinhVienController extends Controller
         }
     }
 
-    // public function fee()
-    // {
-    //     $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
-    //     if (!empty($mahocky)) {
-    //         $mhk = $mahocky->ma_hoc_ky;   
-    //     }
-    //     $hocphi
-    //     return view('sinhvien.hocphi.index');
-    // }
+    public function fee()
+    {
+        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        if (!empty($mahocky)) {
+            $mhk = $mahocky->ma_hoc_ky;
+        }
+        $hocphis = SVDK::groupBy('sinh_vien_id')
+            ->selectRaw('sum(so_tin_chi) as sum, sinh_vien_id')
+            ->where('ma_hoc_ky', $mhk)
+            ->where('sinh_vien_id', Auth::user()->sinhviens->id)
+            ->pluck('sum', 'sinh_vien_id')->toArray();
+        foreach ($hocphis as $key => $hocphi) {
+            $hocphi = $hocphi * 390000;
+        }
+        return view('sinhvien.hocphi.index', compact('hocphi'));
+    }
+    /////////// THANH TOÁN HỌC PHÍ /////////////
+    public function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data))
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
+    }
 
-    // public function feeStore(Request $request)
-    // {
-    //     dd($request);
-    // }
+    public function feeStore(Request $request)
+    {
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+        $amount = $request->hoc_phi;
+        $orderId = time() . "";
+        $redirectUrl = "https://qldt.utt.edu.vn/student/fee";
+        $ipnUrl = "https://qldt.utt.edu.vn/student/fee";
+        $extraData = "";
+
+        $requestId = time() . "";
+        $requestType = "payWithATM";
+        // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
+        //before sign HMAC SHA256 signature
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+        $data = array(
+            'partnerCode' => $partnerCode,
+            'partnerName' => "Test",
+            "storeId" => "MomoTestStore",
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'lang' => 'vi',
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature
+        );
+        $result = $this->execPostRequest($endpoint, json_encode($data));
+        $jsonResult = json_decode($result, true);  // decode json
+
+        //Just a example, please check more in there
+        return redirect()->to($jsonResult['payUrl']);
+    }
 }
