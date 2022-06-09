@@ -385,11 +385,13 @@ class SinhVienController extends Controller
                         $monhocnganhid = $monhoc->nganh_id;
                         $hp = HocPhan::findOrFail($hocphanid);
                         $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                        $hp->giu_lai = 1;
                     } else {
                         if ($monhoc->hoc_ky <= $skh + 1) {
                             $monhocnganhid = $monhoc->nganh_id;
                             $hp = HocPhan::findOrFail($hocphanid);
                             $hp->da_dang_ky = $hocphan['da_dang_ky'] + 1;
+                            $hp->giu_lai = 1;
                         } else {
                             return redirect()->back()->with('error', 'Không thể đăng ký môn học này vì số kỳ học chưa đủ');
                         }   

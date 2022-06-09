@@ -26,6 +26,7 @@ use App\Http\Controllers\TinTucController;
 // Route::get('', function () {
 //     return view();
 // });
+// Route::get('warning', [TaiKhoanController::class, 'warning'])->name('warning');
 
 Route::get('', [TaiKhoanController::class, 'home'])->name('home');
 Route::get('news', [TaiKhoanController::class, 'news'])->name('news');

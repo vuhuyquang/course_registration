@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\SWCommand'
     ];
 
     /**
@@ -24,7 +25,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('daily:study_warning')->dailyAt('07:00');
+        $schedule->command('minute:study_warning')->everyMinute();
+        // hourly();
+        // daily();
+        // weekly();
+        // monthly();
+        // dailyAt('07:00');
     }
 
     /**

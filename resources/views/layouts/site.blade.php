@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ url('public/ad123') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('public/ad123') }}/dist/css/adminlte.min.css">
+<link rel="shortcut icon" href="https://utt.edu.vn/publics/template/default/img/favicon.ico">
+
     <!-- Nhúng css -->
     @yield('css')
 </head>
@@ -389,7 +391,7 @@
                                 </p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ route('sinhvien.fee') }}" class="nav-link">
                                 <i class="nav-icon fas fa-dollar-sign"></i>
                                 <p>
@@ -397,7 +399,7 @@
                                     {{-- <i class="fas fa-angle-left right"></i> --}}
                                 </p>
                             </a>
-                        </li> --}}
+                        </li>
                         @elseif (Auth::user()->quyen == 2)
                         <li class="nav-item">
                             <a href="{{ route('giangvien.classSubjects') }}" class="nav-link">

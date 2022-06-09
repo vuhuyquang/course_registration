@@ -1,3 +1,4 @@
+<title>Đăng nhập</title>
 <style>
     .bg-image-vertical {
         position: relative;
@@ -19,6 +20,7 @@
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="shortcut icon" href="https://utt.edu.vn/publics/template/default/img/favicon.ico">
 
 <section class="vh-100">
     <div class="container-fluid">
@@ -58,13 +60,7 @@
                         <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>
 
                     </form>
-                    @if (session('thongbao'))
-                    <div class="alert error">
-                        {{ session('thongbao') }}
-                    </div>
-                @endif
                 </div>
-
             </div>
             <div class="col-sm-8 px-0 d-none d-sm-block">
                 <img src="{{ asset('public/uploads') }}/totnghiep.jpg" alt="Login image" class="w-100 vh-100"

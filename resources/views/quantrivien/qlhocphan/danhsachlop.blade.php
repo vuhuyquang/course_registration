@@ -37,7 +37,7 @@
                     <th>{{ $key + 1 }}</th>
                     <td>{{ $svdk->sinhviens->ma_sinh_vien }}</td>
                     <td>{{ $svdk->sinhviens->ho_ten }}</td>
-                    <td>{{ $svdk->sinhviens->ngay_sinh }}</td>
+                    <td>{{ date('d/m/Y', strtotime($svdk->sinhviens->ngay_sinh)) }}</td>
                     <td>{{ $svdk->sinhviens->gioi_tinh }}</td>
                     <td>{{ $svdk->sinhviens->que_quan }}</td>
                     <td>{{ $svdk->sinhviens->so_dien_thoai }}</td>

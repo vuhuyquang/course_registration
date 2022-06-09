@@ -1,3 +1,4 @@
+<title>Trường Đại học Công nghệ Giao thông vận tải</title>
 <link rel="stylesheet" href="{{ url('ad123') }}/dist/css/adminlte.min.css">
 <link rel="shortcut icon" href="https://utt.edu.vn/publics/template/default/img/favicon.ico">
 <style>
