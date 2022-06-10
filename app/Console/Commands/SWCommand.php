@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\SMRemindBirthday;
 use App\Models\DiemSo;
 use App\Models\SinhVien;
 use App\Models\CanhCao;
@@ -71,7 +70,7 @@ class SWCommand extends Command
                 $email = $taikhoan->email;
                 $mucdo = $canhcao->muc_do;
                 //
-                if ($mucdo >=5) {
+                if ($mucdo >= 100) {
                     continue;
                 }
                 if ($sinhvien->so_ky_hoc <= 2 && $gpa < 1.2) {

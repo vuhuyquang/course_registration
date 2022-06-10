@@ -12,6 +12,7 @@ use App\Models\DiemSo;
 use App\Models\LopHoc;
 use App\Models\MonHoc;
 use App\Models\TaiKhoan;
+use App\Models\HocPhi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Jobs\SendEmailSendAccount;
@@ -538,19 +539,34 @@ class SinhVienController extends Controller
 
     public function fee()
     {
-        $mahocky = DB::table('hockys')->where('trang_thai', 'Mở')->orWhere('hien_tai', 1)->first();
+        $mahocky = DB::table('hockys')->orWhere('hien_tai', 1)->first();
         if (!empty($mahocky)) {
             $mhk = $mahocky->ma_hoc_ky;
+        } else {
+            return redirect()->back()->with('error', 'Chỉ được xem học phí khi đã đóng đăng ký học phần');
         }
-        $hocphis = SVDK::groupBy('sinh_vien_id')
-            ->selectRaw('sum(so_tin_chi) as sum, sinh_vien_id')
-            ->where('ma_hoc_ky', $mhk)
-            ->where('sinh_vien_id', Auth::user()->sinhviens->id)
-            ->pluck('sum', 'sinh_vien_id')->toArray();
-        foreach ($hocphis as $key => $hocphi) {
-            $hocphi = $hocphi * 390000;
+
+        if (isset($_GET['message'])) {
+            $hocphi = HocPhi::where('sinh_vien_id', Auth::user()->sinhviens->id)->get();
+            foreach ($hocphi as $key => $hp) {
+                $hp->da_dong = 1;
+                $hp->save();
+            }
         }
-        return view('sinhvien.hocphi.index', compact('hocphi'));
+
+        $tonghocphi = HocPhi::groupBy('sinh_vien_id')
+        ->selectRaw('sum(so_tin_chi) as sum, sinh_vien_id')
+        ->where('sinh_vien_id', Auth::user()->sinhviens->id)
+        ->whereNull('da_dong')
+        ->pluck('sum', 'sinh_vien_id')->toArray();
+        if ($tonghocphi == null) {
+            return view('sinhvien.hocphi.index');
+        } else {
+            foreach ($tonghocphi as $key => $hocphi) {
+                $hocphi = $hocphi * 390000;
+            }
+            return view('sinhvien.hocphi.index', compact('hocphi'));
+        }  
     }
     /////////// THANH TOÁN HỌC PHÍ /////////////
     public function execPostRequest($url, $data)

@@ -7,6 +7,7 @@ use App\Models\HocKy;
 use App\Models\MonHoc;
 use App\Models\SVDK;
 use App\Models\SinhVien;
+use App\Models\HocPhi;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
@@ -72,7 +73,7 @@ class HocKyController extends Controller
     public function setStatus($id)
     {
         $sl = DB::table('hockys')->where('trang_thai', 'Mở')->count();
-        
+
         $hocky = HocKy::findOrFail($id);
 
         if ($hocky->trang_thai == 'Đóng' && $sl == 0) {
@@ -96,19 +97,19 @@ class HocKyController extends Controller
             }
 
             // $hocphan = HocPhan::all()->withTrashed()->forceDelete();
-            //
-                $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
-                foreach ($monhocmodks as $key => $monhocmodk) {
-                    for ($i=1; $i <= 3 ; $i++) { 
-                        $hocphan = new HocPhan;
-                        $hocphan->ma_lop = Str::upper(substr(md5($monhocmodk->ma_mon_hoc . Str::upper(Str::random(8)) . time()), 0, 10));
-                        $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc;
-                        $hocphan->mon_hoc_id = $monhocmodk->id;
-                        $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;
-                        $hocphan->ma_hoc_ky = $hocky->ma_hoc_ky;
-                        $hocphan->save();
-                    }
+            // Tạo 3 học phần từ mỗi môn học
+            $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
+            foreach ($monhocmodks as $key => $monhocmodk) {
+                for ($i = 1; $i <= 3; $i++) {
+                    $hocphan = new HocPhan;
+                    $hocphan->ma_lop = Str::upper(substr(md5($monhocmodk->ma_mon_hoc . Str::upper(Str::random(8)) . time()), 0, 10));
+                    $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc;
+                    $hocphan->mon_hoc_id = $monhocmodk->id;
+                    $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;
+                    $hocphan->ma_hoc_ky = $hocky->ma_hoc_ky;
+                    $hocphan->save();
                 }
+            }
             //
             $hocky->trang_thai = 'Mở';
             $hocky->hien_tai = 0;
@@ -126,6 +127,8 @@ class HocKyController extends Controller
             }
         } elseif ($hocky->trang_thai == 'Mở') {
             $mhk = $hocky->ma_hoc_ky;
+
+            // Xóa học kỳ nếu sĩ số <=1 hoặc >60
             $hocphans = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '<=', 1)->orWhere('da_dang_ky', '>', 60)->get();
             foreach ($hocphans as $key => $hocphan) {
                 if ($hocphan->giu_lai == 1) {
@@ -136,7 +139,7 @@ class HocKyController extends Controller
                 $svhdk = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
             }
 
-            //
+            // Cập nhật trạng thái học kỳ
             $hocky->trang_thai = 'Đóng';
             $hocky->hien_tai = 1;
             $monhocs = MonHoc::where('duoc_phep', 'false')->get();
@@ -144,6 +147,22 @@ class HocKyController extends Controller
                 $monhoc->duoc_phep = 'true';
                 $monhoc->save();
             }
+
+            // Tạo dữ liệu học phí cho sinh viên
+            $hocphis = SVDK::groupBy('sinh_vien_id')
+                ->selectRaw('sum(so_tin_chi) as sum, sinh_vien_id')
+                ->where('ma_hoc_ky', $mhk)
+                ->pluck('sum', 'sinh_vien_id')->toArray();
+
+            foreach ($hocphis as $key => $hocphi) {
+                $hp = (int) $hocphi;
+                $hocphi = new HocPhi;
+                $hocphi->sinh_vien_id = $key;
+                $hocphi->so_tin_chi = $hp;
+                $hocphi->ma_hoc_ky = $mhk;
+                $hocphi->save();
+            }
+            //
             if ($hocky->save()) {
                 return redirect()->back()->with('success', 'Đóng đăng ký học kỳ thành công');
             } else {
@@ -177,8 +196,8 @@ class HocKyController extends Controller
     {
         $hocky = HocKy::findOrFail($id);
         $request->validate([
-            'ma_hoc_ky' => 'required|max:20|unique:hockys,ma_hoc_ky,'.$id,
-            'mo_ta' => 'required|max:50|unique:hockys,mo_ta,'.$id
+            'ma_hoc_ky' => 'required|max:20|unique:hockys,ma_hoc_ky,' . $id,
+            'mo_ta' => 'required|max:50|unique:hockys,mo_ta,' . $id
         ], [
             'ma_hoc_ky.required' => 'Dữ liệu nhập vào không được để trống',
             'ma_hoc_ky.unique' => 'Dữ liệu nhập vào không được trùng lặp',

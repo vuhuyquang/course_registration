@@ -9,61 +9,106 @@ use App\Models\QuanTriVien;
 use App\Models\LopHoc;
 use App\Models\NganhHoc;
 use App\Models\TinTuc;
-use App\Models\DiemSo;
-use App\Models\CanhCao;
+use App\Models\HocPhan;
+use App\Models\HocKy;
+use App\Models\MonHoc;
+use App\Models\SVDK;
+use App\Models\HocPhi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Jobs\StudyWarning;
+use Illuminate\Support\Str;
 use Auth;
 use Hash;
 
 class TaiKhoanController extends Controller
 {
-    // public function warning()
-    // {
-    //     $diemsos = DiemSo::groupBy('sinh_vien_id')->selectRaw('sum(diem_tong_ket) as sum, sinh_vien_id, count(*) as count')->get()->toArray();
-    //     foreach ($diemsos as $key => $diemso) {
-    //         $dtb = $diemso['sum'] / $diemso['count'];
-    //         $gpa = round($dtb/10 * 4, 2);
-    //         $sinhvien = SinhVien::find($diemso['sinh_vien_id']);
-    //         if ($gpa < 1.8) {
-    //             $canhcao = CanhCao::where('sinh_vien_id', $diemso['sinh_vien_id'])->get()->toArray();
-    //             if (empty($canhcao)) {
-    //                 $cc = new CanhCao;
-    //                 $cc->sinh_vien_id = $sinhvien->id;
-    //                 $cc->muc_do = 1;
-    //                 $cc->save();
-    //                 $id = $cc->id;
-    //             } else {
-    //                 foreach ($canhcao as $key => $cc) {
-    //                     $cc = CanhCao::find($cc['id']);
-    //                     $cc->muc_do = $cc['muc_do'] + 1;
-    //                     $cc->save();
-    //                     $id = $cc->id;
-    //                 }
-    //             }
-    //             $canhcao = CanhCao::find($id);
-    //             $sinhvien = SinhVien::find($canhcao->sinh_vien_id);
-    //             $taikhoan = TaiKhoan::where('id', $sinhvien->tai_khoan_id)->first();
-    //             $email = $taikhoan->email;
-    //             $mucdo = $canhcao->muc_do;
-    //             //
-    //             if ($sinhvien->so_ky_hoc <= 2 && $gpa < 1.2) {
-    //                 // dd('< 1.2');
-    //                 dispatch(new StudyWarning($sinhvien, $mucdo, $email));
-    //             } elseif ($sinhvien->so_ky_hoc <= 4 && $sinhvien->so_ky_hoc >= 3 && $gpa < 1.4) {
-    //                 // dd('< 1.4');
-    //                 dispatch(new StudyWarning($sinhvien, $mucdo, $email));
-    //             } elseif ($sinhvien->so_ky_hoc >= 5 && $sinhvien->so_ky_hoc <= 6 && $gpa < 1.6) {
-    //                 // dd('< 1.6');
-    //                 dispatch(new StudyWarning($sinhvien, $mucdo, $email));
-    //             } elseif ($sinhvien->so_ky_hoc >= 7 && $gpa < 1.8) {
-    //                 // dd('< 1.8');
-    //                 dispatch(new StudyWarning($sinhvien, $mucdo, $email));
-    //             } 
-    //         }    
-    //     }
-    // }
+    public function openTerm()
+    {
+        // Tạo học kỳ mới và mở luôn
+        $thang = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->month;
+        $nam = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->year;
+        if ($thang >= 8) {
+            $namSau = $nam + 1;
+            $mahocky = $nam . '_' . $namSau . '_1';
+            $mota = 'Học kỳ 1 năm học ' . $nam . ' - ' . $namSau;
+        } else {
+            $namTruoc = $nam - 1;
+            $mahocky = $namTruoc . '_' . $nam . '_2';
+            $mota = 'Học kỳ 2 năm học ' . $namTruoc . ' - ' . $nam;
+        }
+        $hocky = new HocKy;
+        $hocky->ma_hoc_ky = $mahocky;
+        $hocky->mo_ta = $mota;
+        $hocky->trang_thai = 'Mở';
+        $hocky->hien_tai = 0;
+        $hocky->da_mo = 1;
+        $hocky->save();
+
+        // Tăng số kỳ học của sv lên 1
+        $sinhviens = SinhVien::all();
+        foreach ($sinhviens as $i => $sinhvien) {
+            $sinhvien->so_ky_hoc = $sinhvien->so_ky_hoc + 1;
+            $sinhvien->save();
+        }
+
+        // Tạo 3 học phần từ mỗi môn học
+        $monhocmodks = MonHoc::where('duoc_phep', 1)->get();
+        foreach ($monhocmodks as $key => $monhocmodk) {
+            for ($i = 1; $i <= 3; $i++) {
+                $hocphan = new HocPhan;
+                $hocphan->ma_lop = Str::upper(substr(md5($monhocmodk->ma_mon_hoc . Str::upper(Str::random(8)) . time()), 0, 10));
+                $hocphan->ma_hoc_phan = $monhocmodk->ma_mon_hoc;
+                $hocphan->mon_hoc_id = $monhocmodk->id;
+                $hocphan->so_tin_chi = $monhocmodk->so_tin_chi;
+                $hocphan->ma_hoc_ky = $hocky->ma_hoc_ky;
+                $hocphan->save();
+            }
+        }
+    }
+
+    public function closeTerm()
+    {
+        $hocky = HocKy::where('trang_thai', 'Mở')->first();
+        $mhk = $hocky->ma_hoc_ky;
+
+        // Xóa học kỳ nếu sĩ số <=1 hoặc >60
+        $hocphans = HocPhan::where('ma_hoc_ky', $mhk)->where('da_dang_ky', '<=', 1)->orWhere('da_dang_ky', '>', 60)->get();
+        foreach ($hocphans as $key => $hocphan) {
+            if ($hocphan->giu_lai == 1) {
+                $hocphan->delete();
+            } else {
+                $hocphan->forceDelete();
+            }
+            $svhdk = SVDK::where('hoc_phan_id', $hocphan->id)->delete();
+        }
+
+        // Cập nhật trạng thái học kỳ
+        $hocky->trang_thai = 'Đóng';
+        $hocky->hien_tai = 1;
+        $hocky->save();
+
+        // Cập nhật trạng thái môn học
+        $monhocs = MonHoc::where('duoc_phep', 'false')->get();
+        foreach ($monhocs as $key => $monhoc) {
+            $monhoc->duoc_phep = 'true';
+            $monhoc->save();
+        }
+
+        // Tạo dữ liệu học phí cho sinh viên
+        $hocphis = SVDK::groupBy('sinh_vien_id')
+            ->selectRaw('sum(so_tin_chi) as sum, sinh_vien_id')
+            ->where('ma_hoc_ky', $mhk)
+            ->pluck('sum', 'sinh_vien_id')->toArray();
+
+        foreach ($hocphis as $key => $hocphi) {
+            $hp = (int) $hocphi;
+            $hocphi = new HocPhi;
+            $hocphi->sinh_vien_id = $key;
+            $hocphi->so_tin_chi = $hp;
+            $hocphi->ma_hoc_ky = $mhk;
+            $hocphi->save();
+        }
+    }
 
     //
     public function home()
@@ -98,7 +143,7 @@ class TaiKhoanController extends Controller
             'password.min' => 'Dữ liệu nhập vào có tối thiểu 6 ký tự',
             'password.max' => 'Dữ liệu nhập vào có tối đa 32 ký tự',
         ]);
-        
+
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('redirect');
         } else {
@@ -112,7 +157,7 @@ class TaiKhoanController extends Controller
             $taikhoan = TaiKhoan::findOrFail(Auth::user()->id);
             $taikhoan->lan_dau_tien = 0;
             if ($taikhoan->save()) {
-                return redirect()->route('getChangePassword')->with('warning', 'Sau khi reset mật khẩu, hãy đổi lại mật khẩu để đảm bảo an toàn');   
+                return redirect()->route('getChangePassword')->with('warning', 'Sau khi reset mật khẩu, hãy đổi lại mật khẩu để đảm bảo an toàn');
             } else {
                 return redirect()->route('getLogin');
             }
@@ -126,7 +171,7 @@ class TaiKhoanController extends Controller
             } else {
                 return redirect()->route('getLogin');
             }
-        }  
+        }
     }
 
     public function getLogout()
@@ -141,7 +186,7 @@ class TaiKhoanController extends Controller
             $sinhviens = SinhVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($sinhviens as $key => $sinhvien) {
                 $sinhvien = $sinhvien;
-            } 
+            }
             $lophocs = LopHoc::all();
             $nganhhocs = NganhHoc::all();
             return view('hosocanhan', compact('sinhvien', 'lophocs', 'nganhhocs'));
@@ -149,7 +194,7 @@ class TaiKhoanController extends Controller
             $giangviens = GiangVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($giangviens as $key => $giangvien) {
                 $giangvien = $giangvien;
-            } 
+            }
             $nganhhocs = NganhHoc::all();
             return view('hosocanhan', compact('nganhhocs', 'giangvien'));
         } elseif (Auth::user()->quyen == 3) {
@@ -159,7 +204,6 @@ class TaiKhoanController extends Controller
                 return view('hosocanhan', compact('quantrivien'));
             }
         }
-
     }
 
     public function resizeimage($request)
@@ -208,17 +252,17 @@ class TaiKhoanController extends Controller
         if (Auth::user()->quyen == 1) {
             $users = SinhVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($users as $key => $user) {
-                $user = $user;  
-            } 
+                $user = $user;
+            }
         } elseif (Auth::user()->quyen == 2) {
             $users = GiangVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($users as $key => $user) {
-                $user = $user;  
+                $user = $user;
             }
         } elseif (Auth::user()->quyen == 3) {
             $users = QuanTriVien::where('tai_khoan_id', Auth::user()->id)->get();
             foreach ($users as $key => $user) {
-                $user = $user;  
+                $user = $user;
             }
         }
 
@@ -234,7 +278,7 @@ class TaiKhoanController extends Controller
             return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công');
         } else {
             return redirect()->back()->with('error', 'Cập nhật hồ sơ thất bại');
-        }  
+        }
     }
 
     public function getChangePassword()

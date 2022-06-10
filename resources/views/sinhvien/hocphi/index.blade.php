@@ -11,15 +11,19 @@
             <table style="text-align: center" class="table-sm">
                 <tr>
                     <td>Học phí: </td>
-                    <td>{{ number_format($hocphi) }} VND</td>
+                    <td>{{ !isset($hocphi) ? '0' : number_format($hocphi) }} VND</td>
                     <td>
+                        @if (isset($hocphi))
                         <button name="payUrl" type="submit" class="btn btn-primary">
-                            <i class="fas fa-plus-circle"></i>
+                            Thanh toán
                         </button>
+                        @endif
                     </td>
                 </tr>
                 <tr>
+                    @if (isset($hocphi))
                     <input type="hidden" name="hoc_phi" value="{{ $hocphi }}">
+                    @endif
                 </tr> 
             </table>
         </form>
